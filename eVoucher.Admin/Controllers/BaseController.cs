@@ -18,7 +18,7 @@ namespace eVoucher.Admin.Controllers
             }
             if (sessions == null)
             {
-                context.Result = new RedirectToActionResult("Index", "Login", null);
+                context.Result = new RedirectToActionResult("Login", "Staff", null);
             }
             base.OnActionExecuting(context);
         }
