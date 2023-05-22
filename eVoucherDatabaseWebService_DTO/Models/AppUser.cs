@@ -1,16 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace eVoucherDatabaseWebService_DTO.Models
+namespace eVoucher_DTO.Models
 {
     [Table("AppUsers")]
-    public class AppUser : IdentityUser<Guid>
+    public class AppUser : IdentityUser<int>
     {
-        public virtual IEnumerable<GamePlayResult>? GamePlayResults{ get; set; }
-        [ForeignKey("PartnerID")]
-        public Partner? Partner { get; set; }
-        [ForeignKey("CustomerID")]
-        public Customer? Customer { get; set; }
-        [ForeignKey("StaffID")]
-        public Staff? Staff { get; set; }
+        public virtual IEnumerable<GamePlayResult>? GamePlayResults { get; set; }        
     }
 }

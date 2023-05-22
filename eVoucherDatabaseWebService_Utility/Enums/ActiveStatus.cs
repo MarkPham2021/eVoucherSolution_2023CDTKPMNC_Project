@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucherDatabaseWebService_Utility.Enums
+namespace eVoucher_Utility.Enums
 {
     public enum ActiveStatus
     {

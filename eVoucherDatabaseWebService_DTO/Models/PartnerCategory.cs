@@ -1,7 +1,6 @@
-﻿using eVoucherDatabaseWebService_DTO.Abtracts;
+﻿using eVoucher_DTO.Abtracts;
 
-
-namespace eVoucherDatabaseWebService_DTO.Models
+namespace eVoucher_DTO.Models
 {
     [Table("PartnerCategories")]
     public class PartnerCategory : RootClass

@@ -1,6 +1,7 @@
-﻿using eVoucherDatabaseWebService_DAL.InfraStructure;
+﻿using eVoucher_DAL.InfraStructure;
+using eVoucher_DTO.Models;
 
-namespace eVoucherDatabaseWebService_DAL.Repositories
+namespace eVoucher_DAL.Repositories
 {
     public interface IPartnerRepository : IRepository<Partner>
     {

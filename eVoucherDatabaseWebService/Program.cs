@@ -1,11 +1,11 @@
 
-using eVoucherDatabaseWebService_DAL;
-using eVoucherDatabaseWebService_DAL.Repositories;
-using eVoucherDatabaseWebService_DAL.InfraStructure;
-using eVoucherDatabaseWebService_DTO.Models;
+using eVoucher_DAL;
+using eVoucher_DAL.Repositories;
+using eVoucher_DAL.InfraStructure;
+using eVoucher_DTO.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Net.NetworkInformation;
-using eVoucherDatabaseWebService_BUS.Services;
+using eVoucher_BUS.Services;
 using eVoucherDatabaseWebService;
 /*
  * original ASPNetCore Program

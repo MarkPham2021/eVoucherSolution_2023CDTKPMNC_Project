@@ -6,4 +6,29 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.5" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.5">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="7.0.6" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\eVoucher.ClientAPI_Integration\eVoucher.ClientAPI_Integration.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_BUS\eVoucher_BUS.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_DAL\eVoucher_DAL.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_DTO\eVoucher_DTO.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
+    <ProjectReference Include="..\eVoucher_Migrations\eVoucher_Migrations.csproj" />
+  </ItemGroup>
+
 </Project>

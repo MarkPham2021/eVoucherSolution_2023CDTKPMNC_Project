@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucherDatabaseWebService_DTO.Abtracts
+namespace eVoucher_DTO.Abtracts
 {
     public abstract class ObjectImage
     {
@@ -22,6 +22,6 @@ namespace eVoucherDatabaseWebService_DTO.Abtracts
         public int SortOrder { get; set; }
 
         public long FileSize { get; set; }
-        
+
     }
 }
