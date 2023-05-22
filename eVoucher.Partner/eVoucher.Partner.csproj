@@ -6,6 +6,8 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
   <ItemGroup>
     <ProjectReference Include="..\eVoucher.ClientAPI_Integration\eVoucher.ClientAPI_Integration.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_BUS\eVoucher_BUS.csproj" />
