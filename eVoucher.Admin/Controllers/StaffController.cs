@@ -15,6 +15,7 @@ namespace eVoucher.Admin.Controllers
         {
             return View();
         }
+
         [HttpGet]
         public IActionResult Register() {
             return View();
@@ -34,6 +35,11 @@ namespace eVoucher.Admin.Controllers
                 ViewData["result"] = "success";
             return View(request);
             
+        }
+        [HttpGet]
+        public IActionResult Login()
+        {
+            return View("Login");
         }
     }
 }
