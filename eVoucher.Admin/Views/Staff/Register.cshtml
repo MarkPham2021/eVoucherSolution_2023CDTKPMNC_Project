@@ -3,12 +3,15 @@
     ViewData["title"] = "Register staff";
 }
 
+<div class="card-header">
+    <h3 class="text-center font-weight-light my-4">Register Account</h3>
+</div>
 <div class="card-body">
     <form asp-action="Register" method="post" enctype="multipart/form-data">
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="Name" name="Name" type="text" required />
+                    <input class="form-control" asp-for="Name" name ="Name" type="text" required />
                     <label for="Name">Name</label>
                 </div>
             </div>
@@ -19,15 +22,15 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="form-floating mb-3 mb-md-0">
-                    <select class="form-control" asp-for="Gender"
-                        asp-items="Html.GetEnumSelectList<eVoucher_Utility.Enums.Sex>()">
+                <div class="form-floating mb-3 mb-md-0">                    
+                    <select class="form-control" asp-for="Gender" 
+                        asp-items="Html.GetEnumSelectList<eVoucher_Utility.Enums.Sex>()">                                                
                     </select>
                     <label for="Gender">Choose your gender</label>
                 </div>
             </div>
         </div>
-
+        
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="form-floating mb-3">
@@ -57,13 +60,13 @@
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="Password" type="password" />
+                    <input class="form-control" asp-for="Password" type="password"/>
                     <label for="Password">Password</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="ConfirmPassword" type="password" />
+                    <input class="form-control" asp-for="ConfirmPassword" type="password"  />
                     <label for="ConfirmPassword">Confirm Password</label>
                 </div>
             </div>
@@ -71,15 +74,13 @@
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="CreatedBy" name="CreatedBy" type="text" hidden="true"
-                        value="Cuongpm" />
+                    <input class="form-control" asp-for="CreatedBy" name="CreatedBy" type="text" hidden="true" value="Cuongpm" />
                     <label for="CreatedBy" hidden>Create by</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="CreatedTime" name="CreatedTime" type="datetime"
-                        value="@DateTime.Now" hidden="true" />
+                    <input class="form-control" asp-for="CreatedTime" name="CreatedTime" type="datetime" value="@DateTime.Now" hidden="true"/>
                     <label for="CreatedTime" hidden>Creat time</label>
                 </div>
             </div>
@@ -96,4 +97,3 @@
     </form>
     Status: <p>@ViewData["result"]</p>
 </div>
-

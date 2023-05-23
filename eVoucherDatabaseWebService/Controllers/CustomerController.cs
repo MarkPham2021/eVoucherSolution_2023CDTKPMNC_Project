@@ -23,7 +23,6 @@ namespace eVoucherDatabaseWebService.Controllers
         {
 
             var result = await _customerService.RegisterCustomer(request);
-
             if (result == null)
             {
                 return BadRequest(null);

@@ -58,11 +58,11 @@ namespace eVoucher.Client.Controllers
         [HttpPost]
         public async Task<IActionResult> CustomerLogin(LoginRequest request)
         {
-            var token = await _loginAPIClient.Login(request);
+            var result = await _loginAPIClient.Login(request);
 
-            if (!string.IsNullOrEmpty(token))
+            if (result.IsSucceeded)
             {
-                HttpContext.Session.SetString("LoginToken", token);
+                HttpContext.Session.SetString("LoginToken", result.ResultObj);
 
                 TempData["SuccessMessage"] = "Login successfully!";
 

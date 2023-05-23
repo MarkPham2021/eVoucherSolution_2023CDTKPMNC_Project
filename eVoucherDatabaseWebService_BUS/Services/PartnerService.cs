@@ -69,18 +69,15 @@ namespace eVoucher_BUS.Services
             };
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
             var result = await _userManager.CreateAsync(user);
-            var staff = new Partner()
+            var partner = new Partner()
             {
                 Name = request.Name,
-                //Partnercategory = request.PartnerCategoryID,
-                //Department = request.Department,
-                //CreatedBy = request.CreatedBy,
-                //CreatedTime = request.CreatedTime,
-                //IsDeleted = false,
-                //Status = ActiveStatus.Active,
-                //AppUser = user
+                
+                IsDeleted = false,
+                Status = ActiveStatus.Active,
+                AppUser = user
             };
-            var registerResult = await _partnerRepository.Add(staff);
+            var registerResult = await _partnerRepository.Add(partner);
 
             return registerResult;
         }
