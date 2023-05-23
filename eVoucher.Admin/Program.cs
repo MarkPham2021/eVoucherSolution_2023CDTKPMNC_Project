@@ -12,7 +12,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     .AddCookie(options =>
     {
         options.LoginPath = "/Login/Index";
-        options.AccessDeniedPath = "/User/Forbidden/";
+        options.AccessDeniedPath = "/Login/Forbidden/";
     });
 builder.Services.AddControllersWithViews();
 builder.Services.AddSession(options =>

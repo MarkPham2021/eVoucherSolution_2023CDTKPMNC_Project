@@ -19,5 +19,10 @@ namespace eVoucher_BUS.Requests.CustomerRequests
         public string Password { get; set; }
         public string ConfirmPassword { get; set; }
         public string Address { get; set; }
+        public string CreatedBy { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public string UpdatedBy { get; set; }
+        public DateTime UpdatedTime { get; set; } = DateTime.Now;
+        public int UserTypeId { get; set; }
     }
 }

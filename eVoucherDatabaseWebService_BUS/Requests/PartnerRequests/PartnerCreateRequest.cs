@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace eVoucher_BUS.Requests.PartnerRequests
 {
@@ -29,5 +30,8 @@ namespace eVoucher_BUS.Requests.PartnerRequests
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
         public int UserTypeId { get; set; } = 2;
+        public string CreatedBy { get; set; }
+        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public IFormFile? ImageFile { get; set; }
     }
 }

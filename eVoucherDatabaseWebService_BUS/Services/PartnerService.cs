@@ -2,10 +2,12 @@
 using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -28,14 +30,20 @@ namespace eVoucher_BUS.Services
     public class PartnerService : IPartnerService
     {
         private IPartnerRepository _partnerRepository;
+        private IPartnerCategoryRepository _partnerCategoryRepository;
+        private IFileStorageService _fileStorageService;
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
-        public PartnerService(IPartnerRepository partnerRepository, UserManager<AppUser> userManager, 
-            RoleManager<AppRole> roleManager)
+        private const string USER_CONTENT_FOLDER_NAME = "eVoucher_images";
+        public PartnerService(IPartnerRepository partnerRepository, IPartnerCategoryRepository partnerCategoryRepository,
+            IFileStorageService fileStorageService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _partnerRepository = partnerRepository;
+            _partnerCategoryRepository = partnerCategoryRepository;
+            _fileStorageService = fileStorageService;
             _userManager = userManager;
             _roleManager = roleManager;
+
         }
 
         public Task<Partner> DeletePartner(int id)
@@ -60,6 +68,7 @@ namespace eVoucher_BUS.Services
 
         public async Task<Partner?> RegisterPartner(PartnerCreateRequest request)
         {
+            //add AppUser
             var user = new AppUser()
             {
                 UserName = request.UserName,
@@ -69,14 +78,34 @@ namespace eVoucher_BUS.Services
             };
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
             var result = await _userManager.CreateAsync(user);
+            //create partner
             var partner = new Partner()
             {
                 Name = request.Name,
-                
+                Address = request.Address,
+                Partnercategory = await _partnerCategoryRepository.GetSingleById(request.PartnerCategoryID),                
+                AppUser = user,
                 IsDeleted = false,
                 Status = ActiveStatus.Active,
-                AppUser = user
+                CreatedBy = request.CreatedBy,
+                CreatedTime = request.CreatedTime
             };
+            //add image
+            if (request.ImageFile != null)
+            {
+                partner.PartnerImages = new List<PartnerImage>()
+                {
+                    new PartnerImage()
+                    {
+                        Caption = $"{partner.Name}_Thumbnail_image",
+                        DateCreated = DateTime.Now,
+                        FileSize = request.ImageFile.Length,
+                        ImagePath = await this.SaveFile(request.ImageFile),
+                        IsDefault = true,
+                        SortOrder = 1
+                    }
+                };
+            }
             var registerResult = await _partnerRepository.Add(partner);
 
             return registerResult;
@@ -85,6 +114,13 @@ namespace eVoucher_BUS.Services
         public Task<Partner?> UpdateStaff(PartnerEditRequest request)
         {
             throw new NotImplementedException();
+        }
+        private async Task<string> SaveFile(IFormFile file)
+        {
+            var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
+            var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
+            await _fileStorageService.SaveFileAsync(file.OpenReadStream(), fileName);
+            return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
         }
     }
 }

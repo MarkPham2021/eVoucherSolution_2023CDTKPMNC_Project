@@ -66,8 +66,10 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<GameService>();
             services.AddTransient<IStaffRepository, StaffRepository>();
             services.AddTransient<StaffService>();
+            services.AddTransient<IPartnerCategoryRepository, PartnerCategoryRepository>();
             services.AddTransient<IPartnerRepository,PartnerRepository>();
-            services.AddTransient<PartnerService>();
+            services.AddTransient<IPartnerService, PartnerService>();
+            services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddTransient<UserService>();
             services.AddTransient<ICustomerRepository,CustomerRepository>();
             services.AddTransient<CustomerService>();

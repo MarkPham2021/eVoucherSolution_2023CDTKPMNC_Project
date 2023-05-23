@@ -24,9 +24,10 @@ namespace eVoucher.Admin.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return View();            
         }
         [HttpPost]
         public async Task<IActionResult> Index(LoginRequest request)

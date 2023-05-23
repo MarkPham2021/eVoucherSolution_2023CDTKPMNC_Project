@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using eVoucher_BUS.Requests.PartnerRequests;
+using eVoucher_BUS.Services;
+using eVoucher_DTO.Models;
+using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -6,8 +9,14 @@ namespace eVoucherDatabaseWebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+
     public class PartnerController : ControllerBase
     {
+        private IPartnerService _partnerService;
+        public PartnerController(IPartnerService partnerService)
+        {
+            _partnerService = partnerService;
+        }
         
         // GET: api/<PartnerController>
         [HttpGet]
@@ -23,10 +32,16 @@ namespace eVoucherDatabaseWebService.Controllers
             return "value";
         }
 
-        // POST api/<PartnerController>
+        // POST api/partner
         [HttpPost]
-        public void Post([FromBody] string value)
+        public async Task<ActionResult<Partner?>> Register([FromBody] PartnerCreateRequest request)
         {
+            var result = await _partnerService.RegisterPartner(request);
+            if(result==null)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
         }
 
         // PUT api/<PartnerController>/5
