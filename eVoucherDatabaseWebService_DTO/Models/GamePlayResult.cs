@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucherDatabaseWebService_DTO.Models
+namespace eVoucher_DTO.Models
 {
     public class GamePlayResult
     {

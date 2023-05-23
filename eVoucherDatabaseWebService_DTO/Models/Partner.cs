@@ -1,15 +1,15 @@
-﻿using eVoucherDatabaseWebService_DTO.Abtracts;
+﻿using eVoucher_DTO.Abtracts;
 
-namespace eVoucherDatabaseWebService_DTO.Models
+namespace eVoucher_DTO.Models
 {
     [Table("Partners")]
-    public class Partner: RootClass
+    public class Partner : RootClass
     {
         [Required]
         [Column(TypeName = "nvarchar")]
         [MaxLength(250)]
         public string Address { get; set; }
-        
+
         [ForeignKey("PartnerCategoryID")]
         public virtual PartnerCategory Partnercategory { set; get; }
 

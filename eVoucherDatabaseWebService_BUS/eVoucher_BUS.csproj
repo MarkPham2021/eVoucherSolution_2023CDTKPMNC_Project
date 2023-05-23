@@ -12,4 +12,12 @@
     <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Requests\CampaignRequests\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.2.0" />
+  </ItemGroup>
+
 </Project>

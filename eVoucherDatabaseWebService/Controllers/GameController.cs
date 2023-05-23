@@ -1,17 +1,19 @@
-﻿using eVoucherDatabaseWebService_BUS.Services;
-using eVoucherDatabaseWebService_DAL.Repositories;
-using eVoucherDatabaseWebService_DTO.Models;
+﻿using eVoucher_BUS.Requests.GameRequests;
+using eVoucher_BUS.Services;
+using eVoucher_DTO.Models;
+using eVoucher_DAL.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using Microsoft.AspNetCore.Authorization;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace eVoucherDatabaseWebService.Controllers
 {
-    
+
     [Route("api/[controller]")]
     [ApiController]
-    public class GameController : ControllerBase
+    public class GameController : Controller
     {
         private GameService _gameService;
         public GameController(GameService gameService)
@@ -40,17 +42,15 @@ namespace eVoucherDatabaseWebService.Controllers
 
         // POST api/<GameController>
         [HttpPost]
-        public async Task<ActionResult<Game>> Post([FromBody] Game game)
+        [Authorize]
+        public async Task<ActionResult<Game>> Post([FromForm] GameCreateRequest request)
         {
-            if (game == null)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Game to add not valid");
+                return BadRequest(ModelState);
             }
-            else
-            {
-                var _game = await _gameService.AddGame(game);
-                return Ok(game);
-            }
+            var result = await _gameService.AddGame(request);            
+            return Ok(result);            
         }
 
         // PUT api/<GameController>/5

@@ -1,12 +1,12 @@
 ﻿global using System.ComponentModel.DataAnnotations;
 global using System.ComponentModel.DataAnnotations.Schema;
-using eVoucherDatabaseWebService_Utility.Enums;
+using eVoucher_Utility.Enums;
 
-namespace eVoucherDatabaseWebService_DTO.Abtracts
+namespace eVoucher_DTO.Abtracts
 {
     public abstract class RootClass
     {
-        [Key]        
+        [Key]
         public int Id { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace eVoucherDatabaseWebService_DTO.Abtracts
         public string CreatedBy { get; set; }
 
         public string? UpdatedBy { get; set; }
-        public bool IsDeleted { get; set; }=false;
+        public bool IsDeleted { get; set; } = false;
         public ActiveStatus Status { get; set; } = ActiveStatus.Active;
     }
 }

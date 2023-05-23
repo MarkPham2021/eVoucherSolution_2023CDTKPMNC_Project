@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucherDatabaseWebService_DAL.InfraStructure
+namespace eVoucher_DAL.InfraStructure
 {
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
@@ -32,7 +32,7 @@ namespace eVoucherDatabaseWebService_DAL.InfraStructure
         }
         public virtual bool CheckContains(Expression<Func<T, bool>> predicate)
         {
-            return _context.Set<T>().Count<T>(predicate) > 0;
+            return _context.Set<T>().Count(predicate) > 0;
         }
 
         public virtual int Count(Expression<Func<T, bool>> where)
@@ -58,11 +58,11 @@ namespace eVoucherDatabaseWebService_DAL.InfraStructure
 
         public virtual async Task<List<T>> DeleteMulti(Expression<Func<T, bool>> where)
         {
-            IEnumerable<T> objects = _dbSet.Where<T>(where).AsEnumerable();
+            IEnumerable<T> objects = _dbSet.Where(where).AsEnumerable();
             foreach (T obj in objects)
                 _dbSet.Remove(obj);
             await _context.SaveChangesAsync();
-            var ListOfEntities = _dbSet.ToList<T>();    //list of remain entities
+            var ListOfEntities = _dbSet.ToList();    //list of remain entities
             return ListOfEntities;
         }
 
@@ -79,10 +79,10 @@ namespace eVoucherDatabaseWebService_DAL.InfraStructure
                 var query = _context.Set<T>().Include(includes.First());
                 foreach (var include in includes.Skip(1))
                     query = query.Include(include);
-                return query.Where<T>(predicate).AsQueryable<T>();
+                return query.Where(predicate).AsQueryable();
             }
 
-            return _context.Set<T>().Where<T>(predicate).AsQueryable<T>();
+            return _context.Set<T>().Where(predicate).AsQueryable();
         }
 
         public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> filter, out int total, int index = 0, int size = 50, string[] includes = null)
@@ -96,11 +96,11 @@ namespace eVoucherDatabaseWebService_DAL.InfraStructure
                 var query = _context.Set<T>().Include(includes.First());
                 foreach (var include in includes.Skip(1))
                     query = query.Include(include);
-                _resetSet = filter != null ? query.Where<T>(filter).AsQueryable() : query.AsQueryable();
+                _resetSet = filter != null ? query.Where(filter).AsQueryable() : query.AsQueryable();
             }
             else
             {
-                _resetSet = filter != null ? _context.Set<T>().Where<T>(filter).AsQueryable() : _context.Set<T>().AsQueryable();
+                _resetSet = filter != null ? _context.Set<T>().Where(filter).AsQueryable() : _context.Set<T>().AsQueryable();
             }
 
             _resetSet = skipCount == 0 ? _resetSet.Take(size) : _resetSet.Skip(skipCount).Take(size);

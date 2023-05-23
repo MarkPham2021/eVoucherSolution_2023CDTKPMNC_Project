@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucherDatabaseWebService_BUS.Services
+namespace eVoucher_BUS.Services
 {
-    internal class PartnerService
+    public class PartnerService
     {
     }
 }

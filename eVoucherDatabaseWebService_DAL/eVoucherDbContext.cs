@@ -1,24 +1,25 @@
-﻿global using eVoucherDatabaseWebService_DTO.Models;
+﻿global using eVoucher_DTO.Models;
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using System.Reflection.Emit;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
-namespace eVoucherDatabaseWebService_DAL
+namespace eVoucher_DAL
 {
-    public class eVoucherDbContext : IdentityDbContext<AppUser, AppRole, Guid>
+    public class eVoucherDbContext : IdentityDbContext<AppUser, AppRole, int>
     {
-        public eVoucherDbContext(DbContextOptions options) : base(options) {
-            }
+        public eVoucherDbContext(DbContextOptions options) : base(options)
+        {
+        }
+        // the followed functions are disable because it was declare in eVoucherDatabaseWebservice startup.cs -> configureservices
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            base.OnConfiguring(optionsBuilder);            
-            
-            optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection", b => b.MigrationsAssembly("eVoucherDatabaseWebService"));
+            base.OnConfiguring(optionsBuilder);
+
+            optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection", b => b.MigrationsAssembly("eVoucher_Migrations"));
         }
-        protected eVoucherDbContext() { }
+
+        protected eVoucherDbContext()
+        { }
 
         public DbSet<PartnerCategory> PartnerCategories { get; set; }
         public DbSet<Partner> Partners { get; set; }
@@ -28,7 +29,7 @@ namespace eVoucherDatabaseWebService_DAL
         public DbSet<AppRole> AppRoles { get; set; }
         public DbSet<Game> Games { get; set; }
         public DbSet<Campaign> Campaigns { get; set; }
-        public DbSet<CampaignGame> CampaignGames { get; set; }       
+        public DbSet<CampaignGame> CampaignGames { get; set; }
         public DbSet<VoucherType> VoucherTypes { get; set; }
         public DbSet<GamePlayResult> GamePlayResults { get; set; }
         public DbSet<Voucher> Vouchers { get; set; }
@@ -38,12 +39,12 @@ namespace eVoucherDatabaseWebService_DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<IdentityUserClaim<Guid>>().ToTable("AppUserClaims");
-            modelBuilder.Entity<IdentityUserRole<Guid>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
-            modelBuilder.Entity<IdentityUserLogin<Guid>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
+            modelBuilder.Entity<IdentityUserClaim<int>>().ToTable("AppUserClaims");
+            modelBuilder.Entity<IdentityUserRole<int>>().ToTable("AppUserRoles").HasKey(x => new { x.UserId, x.RoleId });
+            modelBuilder.Entity<IdentityUserLogin<int>>().ToTable("AppUserLogins").HasKey(x => x.UserId);
 
-            modelBuilder.Entity<IdentityRoleClaim<Guid>>().ToTable("AppRoleClaims");
-            modelBuilder.Entity<IdentityUserToken<Guid>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
+            modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("AppRoleClaims");
+            modelBuilder.Entity<IdentityUserToken<int>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
             modelBuilder.Entity<VoucherType>()
                 .HasMany(e => e.Vouchers)
                 .WithOne(e => e.VoucherType)

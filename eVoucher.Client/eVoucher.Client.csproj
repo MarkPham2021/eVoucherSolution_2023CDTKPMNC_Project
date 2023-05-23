@@ -6,4 +6,25 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'https' " />
+  <PropertyGroup Condition=" '$(RunConfiguration)' == 'http' " />
+  <ItemGroup>
+    <ProjectReference Include="..\eVoucher.ClientAPI_Integration\eVoucher.ClientAPI_Integration.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_BUS\eVoucher_BUS.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_DTO\eVoucher_DTO.csproj" />
+    <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Views\Customer\" />
+    <None Remove="Views\Campaign\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Views\Customer\" />
+    <Folder Include="Views\Campaign\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
+  </ItemGroup>
 </Project>
