@@ -69,7 +69,11 @@ namespace eVoucher_DAL.InfraStructure
             var objects = _dbSet.AsQueryable();
             return objects;
         }
-
+        public async Task<List<T>> GetAllAsync()
+        {
+            var objects = await _dbSet.ToListAsync();
+            return objects;
+        }
         public IEnumerable<T> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null)
         {
             if (includes != null && includes.Count() > 0)

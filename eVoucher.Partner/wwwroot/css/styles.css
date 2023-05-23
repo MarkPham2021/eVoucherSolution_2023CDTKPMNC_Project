@@ -8157,8 +8157,8 @@ textarea.form-control-lg {
 }
 
 .bg-info {
-  --bs-bg-opacity: 1;
-  background-color: rgba(var(--bs-info-rgb), var(--bs-bg-opacity)) !important;
+    --bs-bg-opacity: 1;
+    background-color: rgba(var(--bs-purple), var(--bs-bg-opacity)) !important;
 }
 
 .bg-warning {
@@ -8187,9 +8187,8 @@ textarea.form-control-lg {
 }
 .bg-purple {
     --bs-bg-opacity: 1;
-    background-color: var(--bs-purple), var(--bs-bg-opacity)) !important;
+    background-color: rgba(var(--bs-purple), var(--bs-bg-opacity)) !important;
 }
-
 .bg-white {
   --bs-bg-opacity: 1;
   background-color: rgba(var(--bs-white-rgb), var(--bs-bg-opacity)) !important;

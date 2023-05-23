@@ -69,6 +69,7 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<IPartnerCategoryRepository, PartnerCategoryRepository>();
             services.AddTransient<IPartnerRepository,PartnerRepository>();
             services.AddTransient<IPartnerService, PartnerService>();
+            services.AddTransient<IPartnerCategoryService, PartnerCategoryService>();
             services.AddTransient<IFileStorageService, FileStorageService>();
             services.AddTransient<UserService>();
             services.AddTransient<ICustomerRepository,CustomerRepository>();

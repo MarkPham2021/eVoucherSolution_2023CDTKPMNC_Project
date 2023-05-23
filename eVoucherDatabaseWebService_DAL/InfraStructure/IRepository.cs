@@ -24,6 +24,7 @@ namespace eVoucher_DAL.InfraStructure
         Task<T?> GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null);
 
         IEnumerable<T> GetAll();
+        Task<List<T>> GetAllAsync();
 
         IEnumerable<T> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null);
 

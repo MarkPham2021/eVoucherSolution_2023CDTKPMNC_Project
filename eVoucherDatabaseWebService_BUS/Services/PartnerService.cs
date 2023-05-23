@@ -1,4 +1,5 @@
 ﻿using eVoucher_BUS.Requests.PartnerRequests;
+using eVoucher_BUS.Response;
 using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
@@ -19,7 +20,7 @@ namespace eVoucher_BUS.Services
 
         Task<Partner?> GetPartnerById(int id);
 
-        Task<Partner?> RegisterPartner(PartnerCreateRequest request);
+        Task<APIResult<string>> RegisterPartner(PartnerCreateRequest request);
 
         Task<Partner?> UpdateStaff(PartnerEditRequest request);
 
@@ -66,7 +67,7 @@ namespace eVoucher_BUS.Services
             throw new NotImplementedException();
         }
 
-        public async Task<Partner?> RegisterPartner(PartnerCreateRequest request)
+        public async Task<APIResult<string>> RegisterPartner(PartnerCreateRequest request)
         {
             //add AppUser
             var user = new AppUser()
@@ -107,8 +108,9 @@ namespace eVoucher_BUS.Services
                 };
             }
             var registerResult = await _partnerRepository.Add(partner);
-
-            return registerResult;
+            if (registerResult != null) { return new APIResult<string>(true, 
+                "Registered account successfully", registerResult.Id.ToString()); }
+            return new APIResult<string>(false, "Registered account fail", "Please try again");
         }
 
         public Task<Partner?> UpdateStaff(PartnerEditRequest request)

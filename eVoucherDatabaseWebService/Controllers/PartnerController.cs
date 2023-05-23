@@ -1,4 +1,5 @@
 ﻿using eVoucher_BUS.Requests.PartnerRequests;
+using eVoucher_BUS.Response;
 using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,19 +11,23 @@ namespace eVoucherDatabaseWebService.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class PartnerController : ControllerBase
+    public class PartnerController : Controller
     {
         private IPartnerService _partnerService;
-        public PartnerController(IPartnerService partnerService)
+        private IPartnerCategoryService _partnerCategoryService;
+        public PartnerController(IPartnerService partnerService, IPartnerCategoryService partnerCategoryService)
         {
             _partnerService = partnerService;
+            _partnerCategoryService = partnerCategoryService;
         }
         
         // GET: api/<PartnerController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        [HttpGet("getallpartnercategories")]
+        public async Task<ActionResult<List<PartnerCategory>>> GetAllPartnerCategories()
         {
-            return new string[] { "value1", "value2" };
+            //var categories = _partnerCategoryService.GetAllPartnerCategorys().ToList();
+            var categories = await _partnerCategoryService.GetAllPartnerCategoriesAsync();
+            return Ok(categories);
         }
 
         // GET api/<PartnerController>/5
@@ -33,8 +38,9 @@ namespace eVoucherDatabaseWebService.Controllers
         }
 
         // POST api/partner
-        [HttpPost]
-        public async Task<ActionResult<Partner?>> Register([FromBody] PartnerCreateRequest request)
+        [HttpPost("register")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResult<string>>> Register([FromForm] PartnerCreateRequest request)
         {
             var result = await _partnerService.RegisterPartner(request);
             if(result==null)
