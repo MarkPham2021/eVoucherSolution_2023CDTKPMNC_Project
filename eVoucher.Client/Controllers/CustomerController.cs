@@ -62,7 +62,7 @@ namespace eVoucher.Client.Controllers
 
             if (result.IsSucceeded)
             {
-                HttpContext.Session.SetString("LoginToken", result.ResultObj);
+                //HttpContext.Session.SetString("LoginToken", result.ResultObj);
 
                 TempData["SuccessMessage"] = "Login successfully!";
 
