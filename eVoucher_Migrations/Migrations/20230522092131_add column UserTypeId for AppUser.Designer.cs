@@ -12,8 +12,8 @@ using eVoucher_DAL;
 namespace eVoucher_Migrations.Migrations
 {
     [DbContext(typeof(eVoucherDbContext))]
-    [Migration("20230521080350_change Id of identity classes to int")]
-    partial class changeIdofidentityclassestoint
+    [Migration("20230522092131_add column UserTypeId for AppUser")]
+    partial class addcolumnUserTypeIdforAppUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -205,6 +205,9 @@ namespace eVoucher_Migrations.Migrations
 
                     b.Property<string>("UserName")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserTypeId")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 

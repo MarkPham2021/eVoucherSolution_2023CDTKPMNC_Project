@@ -19,7 +19,7 @@ namespace eVoucherDatabaseWebService.Controllers
 
         // POST api/<StaffController>
         [HttpPost]
-        public async Task<ActionResult<Customer?>> Post([FromForm] CustomerRegisterRequest request)
+        public async Task<ActionResult<Customer?>> Register([FromBody] CustomerRegisterRequest request)
         {
 
             var result = await _customerService.RegisterCustomer(request);

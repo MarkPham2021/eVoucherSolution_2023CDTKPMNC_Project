@@ -22,8 +22,8 @@ namespace eVoucher_BUS.Services
     }
     public class GameService : IGameService
     {
-        private GameRepository _gameRepository;
-        public GameService(GameRepository gameRepository)
+        private IGameRepository _gameRepository;
+        public GameService(IGameRepository gameRepository)
         {
             _gameRepository = gameRepository;
         }

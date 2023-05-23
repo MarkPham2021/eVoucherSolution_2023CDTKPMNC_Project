@@ -14,7 +14,7 @@ namespace eVoucher_BUS.Requests.PartnerRequests
         public string Address { get; set; }
 
         [Display(Name = "Số điện thoại: ")]
-        public string Phone { get; set; }
+        public string PhoneNumber { get; set; }
 
         public string Email { get; set; }
 
@@ -28,5 +28,6 @@ namespace eVoucher_BUS.Requests.PartnerRequests
         [Display(Name = "Xác nhận mật khẩu: ")]
         [DataType(DataType.Password)]
         public string ConfirmPassword { get; set; }
+        public int UserTypeId { get; set; } = 2;
     }
 }

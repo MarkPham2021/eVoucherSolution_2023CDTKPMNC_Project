@@ -1,6 +1,8 @@
 ﻿using eVoucher_BUS.Requests.GameRequests;
 using eVoucher_BUS.Requests.StaffRequests;
 using eVoucher_DTO.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,6 +15,7 @@ namespace eVoucher.ClientAPI_Integration
     public class StaffAPIClient : BaseAPIClient
     {
         const string BASE_REQUEST = "staff";
+        
         public StaffAPIClient() : base() { }
         public async Task<Staff?> Register(StaffRegisterRequest request)
         {

@@ -28,10 +28,10 @@ namespace eVoucher_BUS.Services
     }
     public class CustomerService : ICustomerService
     {
-        private CustomerRepository _customerRepository;
+        private ICustomerRepository _customerRepository;
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
-        public CustomerService(CustomerRepository customerRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public CustomerService(ICustomerRepository customerRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _customerRepository = customerRepository;
             _userManager = userManager;
@@ -63,7 +63,8 @@ namespace eVoucher_BUS.Services
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                UserTypeId = request.UserTypeId
             };
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
             var result = await _userManager.CreateAsync(user);

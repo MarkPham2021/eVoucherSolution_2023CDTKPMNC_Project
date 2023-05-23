@@ -1,6 +1,8 @@
 ﻿using eVoucher_BUS.Requests.CustomerRequests;
 using eVoucher_BUS.Requests.StaffRequests;
 using eVoucher_DTO.Models;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
 namespace eVoucher.ClientAPI_Integration
@@ -8,7 +10,7 @@ namespace eVoucher.ClientAPI_Integration
     public class CustomerAPIClient : BaseAPIClient
     {
         private const string BASE_REQUEST = "customer";
-
+       
         public CustomerAPIClient() : base()
         {
         }

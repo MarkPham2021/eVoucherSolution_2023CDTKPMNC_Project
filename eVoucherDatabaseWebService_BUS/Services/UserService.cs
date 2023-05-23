@@ -1,4 +1,5 @@
 ﻿using eVoucher_BUS.Requests.UserRequests;
+using eVoucher_BUS.Response;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Exceptions;
 using Microsoft.AspNetCore.Identity;
@@ -16,7 +17,7 @@ namespace eVoucher_BUS.Services
 {
     public interface IUserService
     {
-        Task<string?> Authenticate(LoginRequest request);
+        Task<APIResult<string>> Authenticate(LoginRequest request);
     }
     public class UserService : IUserService
     {
@@ -33,34 +34,33 @@ namespace eVoucher_BUS.Services
             _config = configuration;
         }
 
-        public async Task<string?> Authenticate(LoginRequest request)
+        public async Task<APIResult<string>> Authenticate(LoginRequest request)
         {
             var user = await _userManager.FindByNameAsync(request.UserName);
-            if (user == null) { user = await _userManager.FindByEmailAsync(request.UserName); }
-            if (user == null) { return null; }            
+            if (user == null || user.UserTypeId != request.UserTypeId) { user = await _userManager.FindByEmailAsync(request.UserName); }
+            if (user == null || user.UserTypeId != request.UserTypeId) { return new APIResult<string>(false,"UserName not found", string.Empty); }            
             var result = await _signInManager.PasswordSignInAsync(user, request.Password,request.Rememberme,false);
             if(!result.Succeeded)
             {
-                return null;
+                return new APIResult<string>(false, "Incorrect password", string.Empty);
             }
+
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
-            {
-                new Claim(ClaimTypes.Email,user.Email),
-                new Claim(ClaimTypes.MobilePhone,user.PhoneNumber),
-                new Claim(ClaimTypes.Role, string.Join(";",roles)),
-                new Claim(ClaimTypes.Name, request.UserName)
+            { 
+                new Claim(ClaimTypes.Name, request.UserName),
+                new Claim(ClaimTypes.Role, string.Join(";",roles))                
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
+            
             var token = new JwtSecurityToken(_config["Tokens:Issuer"],
                 _config["Tokens:Issuer"],
                 claims,
                 expires: DateTime.Now.AddHours(3),
                 signingCredentials: creds);
-
-            return (new JwtSecurityTokenHandler().WriteToken(token));
+            
+            return new APIResult<string>(true, "Log in successfully", new JwtSecurityTokenHandler().WriteToken(token));
             
         }
     }

@@ -2,6 +2,7 @@
 
 namespace eVoucher_DAL.Repositories
 {
+
     public interface ICampaignGameRepository : IRepository<CampaignGame>
     { }
 
@@ -10,3 +11,4 @@ namespace eVoucher_DAL.Repositories
         public CampaignGameRepository(eVoucherDbContext context) : base(context) { }
     }
 }
+

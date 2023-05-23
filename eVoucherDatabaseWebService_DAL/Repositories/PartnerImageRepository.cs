@@ -1,12 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using eVoucher_DAL.InfraStructure;
 
 namespace eVoucher_DAL.Repositories
 {
-    internal class PartnerImageRepository
+    public interface IPartnerImageRepository : IRepository<PartnerImage>
+    { }
+
+    public class PartnerImageRepository : RepositoryBase<PartnerImage>, IPartnerImageRepository
     {
+        public PartnerImageRepository(eVoucherDbContext context) : base(context)
+        {
+        }
     }
 }
+

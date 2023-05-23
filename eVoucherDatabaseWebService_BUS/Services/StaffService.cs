@@ -23,10 +23,12 @@ namespace eVoucher_BUS.Services
 
     public class StaffService : IStaffService
     {
-        private StaffRepository _staffRepository;
+        private IStaffRepository _staffRepository;
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
-        public StaffService(StaffRepository staffRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+
+        public StaffService(IStaffRepository staffRepository, UserManager<AppUser> userManager, 
+            RoleManager<AppRole> roleManager)
         {
             _staffRepository = staffRepository;
             _userManager = userManager;
@@ -60,10 +62,11 @@ namespace eVoucher_BUS.Services
             {
                 UserName = request.UserName,
                 Email = request.Email,
-                PhoneNumber = request.PhoneNumber
+                PhoneNumber = request.PhoneNumber,
+                UserTypeId = request.UserTypeId
             };
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);
-            var result = await _userManager.CreateAsync(user);            
+            var result = await _userManager.CreateAsync(user);
             var staff = new Staff()
             {
                 Name = request.Name,
@@ -74,9 +77,9 @@ namespace eVoucher_BUS.Services
                 IsDeleted = false,
                 Status = ActiveStatus.Active,
                 AppUser = user
-            };            
+            };
             var registerResult = await _staffRepository.Add(staff);
-            
+
             return registerResult;
         }
 

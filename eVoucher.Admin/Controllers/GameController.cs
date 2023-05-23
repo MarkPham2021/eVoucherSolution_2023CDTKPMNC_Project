@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucher.Admin.Controllers
 {
-    public class GameController : Controller
+    public class GameController : BaseController
     {
         private GameAPIClient _gameAPIClient;
         public GameController(GameAPIClient gameAPIClient)
@@ -27,7 +27,8 @@ namespace eVoucher.Admin.Controllers
         {
             if (!ModelState.IsValid)
                 return View(request);            
-            var result = await _gameAPIClient.Create(request);
+            var token = HttpContext.Session.GetString("Token");
+            var result = await _gameAPIClient.Create(request, token);
             if (result == null)
             {
                 ViewData["result"] = "unsuccess";

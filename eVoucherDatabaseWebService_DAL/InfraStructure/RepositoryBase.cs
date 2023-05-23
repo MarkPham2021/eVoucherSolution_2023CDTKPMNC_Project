@@ -1,10 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
 
 namespace eVoucher_DAL.InfraStructure
 {
@@ -12,17 +6,20 @@ namespace eVoucher_DAL.InfraStructure
     {
         private eVoucherDbContext _context;
         private DbSet<T> _dbSet;
+
         public RepositoryBase(eVoucherDbContext context)
         {
             _context = context;
             _dbSet = _context.Set<T>();
         }
+
         public virtual async Task<T> Add(T entity)
         {
             await _dbSet.AddAsync(entity);
             await _context.SaveChangesAsync();
             return entity;
         }
+
         public virtual async Task<T> Update(T entity)
         {
             _dbSet.Attach(entity);
@@ -30,6 +27,7 @@ namespace eVoucher_DAL.InfraStructure
             await _context.SaveChangesAsync();
             return entity;
         }
+
         public virtual bool CheckContains(Expression<Func<T, bool>> predicate)
         {
             return _context.Set<T>().Count(predicate) > 0;

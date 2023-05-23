@@ -43,7 +43,7 @@ namespace eVoucherDatabaseWebService.Controllers
         // POST api/<GameController>
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<Game>> Post([FromForm] GameCreateRequest request)
+        public async Task<ActionResult<Game>> Post([FromBody] GameCreateRequest request)
         {
             if (!ModelState.IsValid)
             {
