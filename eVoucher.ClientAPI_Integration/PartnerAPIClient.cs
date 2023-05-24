@@ -41,8 +41,7 @@ namespace eVoucher.ClientAPI_Integration
                 }
                 ByteArrayContent bytes = new ByteArrayContent(data);
                 requestContent.Add(bytes, "ImageFile",$"{request.Name}thumbnailImage{request.ImageFile.FileName}");
-            }
-            
+            }            
             requestContent.Add(new StringContent(request.Name), "Name");
             requestContent.Add(new StringContent(request.Address), "Address");
             requestContent.Add(new StringContent(request.PartnerCategoryID.ToString()), "PartnerCategoryID");
@@ -56,9 +55,8 @@ namespace eVoucher.ClientAPI_Integration
             requestContent.Add(new StringContent(request.CreatedTime.ToString()), "CreatedTime");
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
-            var response = await _httpClient.PostAsync(uri, requestContent);
+            var response = await _httpClient.PostAsync(uri, requestContent);            
             
-            //var response = await _httpClient.PostAsJsonAsync(uri, request);
             var savedpartnerstring = await response.Content.ReadAsStringAsync();
             var savedpartner = JsonConvert.DeserializeObject<APIResult<string>>(savedpartnerstring);
             return savedpartner;
