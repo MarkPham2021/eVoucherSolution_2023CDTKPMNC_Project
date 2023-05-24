@@ -22,9 +22,18 @@ namespace eVoucher.ClientAPI_Integration
         public async Task<List<PartnerCategory>?> GetAllPartnerCategoriesAsync()
         {
             var uri = BASE_REQUEST + "/getallpartnercategories";
+            //uri: ROOTPATH/partner/getallpartnercategories
             var response = await _httpClient.GetStringAsync(uri);            
             var categories = JsonConvert.DeserializeObject<List<PartnerCategory>>(response);
             return categories;
+        }
+        public async Task<List<Partner>?> GetAllPartnersAsync()
+        {
+            var uri = BASE_REQUEST ;
+            //uri: ROOTPATH/partner
+            var response = await _httpClient.GetStringAsync(uri);
+            var partners = JsonConvert.DeserializeObject<List<Partner>>(response);
+            return partners;
         }
         public async Task<APIResult<string>> Register(PartnerCreateRequest request)
         {
@@ -55,11 +64,12 @@ namespace eVoucher.ClientAPI_Integration
             requestContent.Add(new StringContent(request.CreatedTime.ToString()), "CreatedTime");
             _httpClient.DefaultRequestHeaders.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
-            var response = await _httpClient.PostAsync(uri, requestContent);            
-            
-            var savedpartnerstring = await response.Content.ReadAsStringAsync();
-            var savedpartner = JsonConvert.DeserializeObject<APIResult<string>>(savedpartnerstring);
-            return savedpartner;
+            var response = await _httpClient.PostAsync(uri, requestContent);
+
+            var responsestring = await response.Content.ReadAsStringAsync();
+            var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
+            return apiresult;
         }
+
     }
 }
