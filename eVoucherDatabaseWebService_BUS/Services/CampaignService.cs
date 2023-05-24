@@ -42,7 +42,7 @@ namespace eVoucher_BUS.Services
             {
                 Name = request.Name,
                 Slogan = request.Slogan,
-                Partner = await _partnerRepository.GetSingleById(request.PartnerID),
+                Partner = await _partnerRepository.GetSingleByCondition(x=>x.AppUser.Id==request.PartnerAppUserId),
                 MetaKeyword = request.MetaKeyword,
                 MetaDescription = request.MetaDescription,
                 BeginningDate = request.BeginningDate,

@@ -14,16 +14,17 @@ namespace eVoucher.ClientAPI_Integration
         {
         }
 
-        public async Task<List<Campaign>?> GetAllCampaignsAsync()
+        public async Task<List<Campaign>?> GetAllCampaignsAsync(string token)
         {
             var uri = BASE_REQUEST;
             //uri: ROOTPATH/campaign
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
             var campaigns = JsonConvert.DeserializeObject<List<Campaign>>(response);
             return campaigns;
         }
 
-        public async Task<APIResult<string>> Create(CampaignCreateRequest request)
+        public async Task<APIResult<string>> Create(CampaignCreateRequest request, string token)
         {
             var uri = BASE_REQUEST + "/create";
 
@@ -41,7 +42,7 @@ namespace eVoucher.ClientAPI_Integration
             }
             requestContent.Add(new StringContent(request.Name), "Name");
             requestContent.Add(new StringContent(request.Slogan), "Slogan");
-            requestContent.Add(new StringContent(request.PartnerID.ToString()), "PartnerID");
+            requestContent.Add(new StringContent(request.PartnerAppUserId.ToString()), "PartnerID");
             requestContent.Add(new StringContent(request.MetaKeyword), "MetaKeyword");
             requestContent.Add(new StringContent(request.MetaDescription), "MetaDescription");
             requestContent.Add(new StringContent(request.HomeFlag.ToString()), "HomeFlag");
@@ -52,6 +53,7 @@ namespace eVoucher.ClientAPI_Integration
             requestContent.Add(new StringContent(request.CreatedTime.ToString()), "CreatedTime");
 
             _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
             var response = await _httpClient.PostAsync(uri, requestContent);
 

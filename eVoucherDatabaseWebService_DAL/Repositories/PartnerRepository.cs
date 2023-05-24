@@ -12,5 +12,6 @@ namespace eVoucher_DAL.Repositories
         public PartnerRepository(eVoucherDbContext context) : base(context)
         {
         }
+        //public async Task<Partner?> Get
     }
 }

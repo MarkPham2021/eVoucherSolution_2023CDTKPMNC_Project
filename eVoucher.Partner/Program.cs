@@ -25,6 +25,7 @@ builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<StaffAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<PartnerAPIClient>();
+builder.Services.AddTransient<CampaignAPIClient>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

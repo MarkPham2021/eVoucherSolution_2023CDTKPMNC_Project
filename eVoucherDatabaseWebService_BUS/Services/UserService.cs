@@ -47,8 +47,8 @@ namespace eVoucher_BUS.Services
 
             var roles = await _userManager.GetRolesAsync(user);
             var claims = new[]
-            { 
-                new Claim(ClaimTypes.Name, request.UserName),
+            {
+                new Claim(ClaimTypes.Name, user.Id.ToString()+"|"+user.UserName),
                 new Claim(ClaimTypes.Role, string.Join(";",roles))                
             };
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Tokens:Key"]));

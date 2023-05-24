@@ -21,8 +21,7 @@ namespace eVoucher.Admin.Controllers
         {
             return View();
         }
-        [HttpPost]
-        [Consumes("multipart/form-data")]
+        [HttpPost]        
         public async Task<IActionResult> Create([FromForm] GameCreateRequest request)
         {
             if (!ModelState.IsValid)

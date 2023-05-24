@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Requests\CampaignRequests\**" />
-    <EmbeddedResource Remove="Requests\CampaignRequests\**" />
-    <None Remove="Requests\CampaignRequests\**" />
+    <Compile Remove="Requests\CampaignRequest\**" />
+    <EmbeddedResource Remove="Requests\CampaignRequest\**" />
+    <None Remove="Requests\CampaignRequest\**" />
   </ItemGroup>
 
   <ItemGroup>

@@ -10,7 +10,7 @@ namespace eVoucher_BUS.Requests.CampaignRequests
 {
     public class CampaignCreateRequest
     {
-        public int PartnerID { get; set; }
+        public int PartnerAppUserId { get; set; }
         public string Name { get; set; }
         public string? Slogan { get; set; }
         public string? MetaKeyword { get; set; }

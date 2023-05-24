@@ -74,6 +74,8 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<UserService>();
             services.AddTransient<ICustomerRepository,CustomerRepository>();
             services.AddTransient<CustomerService>();
+            services.AddTransient<ICampaignRepository, CampaignRepository>();
+            services.AddTransient<ICampaignService, CampaignService>();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
