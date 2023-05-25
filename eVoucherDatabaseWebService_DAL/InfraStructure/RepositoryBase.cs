@@ -87,7 +87,7 @@ namespace eVoucher_DAL.InfraStructure
             return _context.Set<T>().Where(predicate).AsQueryable();
         }
 
-        public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> filter, out int total, int index = 0, int size = 50, string[] includes = null)
+        public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> filter, out int total, int index = 0, int size = 10, string[] includes = null)
         {
             int skipCount = index * size;
             IQueryable<T> _resetSet;

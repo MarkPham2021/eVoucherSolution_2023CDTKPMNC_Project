@@ -20,7 +20,7 @@ namespace eVoucherDatabaseWebService.Controllers
         // POST api/campaign/create
         [HttpPost("create")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult<APIResult<string>>> Create([FromForm] CampaignCreateRequest request)
+        public async Task<ActionResult<APIResult<string>>> Create([FromForm] CampaignCreateRequestforBackend request)
         {
             var result = await _campaignService.CreateCampaign(request);
             if (!result.IsSucceeded)

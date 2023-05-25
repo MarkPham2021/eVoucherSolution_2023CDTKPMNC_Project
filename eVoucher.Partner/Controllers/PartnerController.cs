@@ -41,12 +41,7 @@ namespace eVoucher.Partner.Controllers
             if (!ModelState.IsValid)
                 return View(request);
             var result = await _partnerapiclient.Register(request);
-            if (!result.IsSucceeded)
-            {
-                ViewData["result"] = "unsuccess";
-            }
-            else
-                ViewData["result"] = "success";
+            ViewData["result"] = result.Message;
             return View(request);
         }
     }

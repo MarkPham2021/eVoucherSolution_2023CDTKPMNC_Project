@@ -7,7 +7,7 @@
     <h3 class="text-center font-weight-light my-4">Create new campaign</h3>
 </div>
 <div class="card-body bg-success">
-    <form asp-action="Create" method="post" asp-controller="Campaign" enctype="multipart/form-data">
+    <form asp-action="Create" method="post" asp-controller ="Campaign" enctype="multipart/form-data">
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="form-floating mb-3 mb-md-0">
@@ -27,31 +27,19 @@
             <div class="col-md-5">
                 <div class="form-floating mb-3">
                     <input class="form-control" asp-for="MetaKeyword" type="text" />
-                    <label>Meta keyword</label>
+                    <label >Meta keyword</label>
                 </div>
             </div>
             <div class="col-md-7">
                 <div class="form-floating mb-3">
                     <input class="form-control" asp-for="MetaDescription" type="text" />
-                    <label>Meta description</label>
+                    <label >Meta description</label>
                 </div>
             </div>
         </div>
+        
         <div class="row mb-3 ">
-            <div class="col-md-7">
-                <label class="form-check-label text-white">Choose games for campaign</label>
-                <fieldset class="form-check form-check-inline">
-                    @for (int i = 0; i < ViewBag.games.Count; i++)
-                    {
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" asp-for="Games[i].IsSelected" type="checkbox" />
-                            <input class="form-check-input" asp-for="Games[i].Id" type="number" value="@ViewBag.games[i].Id" hidden />
-                            <label class="form-check-label text-white">@ViewBag.games[i].Name</label>
-                        </div>
-                    }
-                </fieldset>
-            </div>
-            <div class="col-md-5">
+            <div class="col-md-3">
                 <label class="form-check-label text-white">Check flag for campaign show priority</label>
                 <fieldset class="form-check form-check-inline ">
                     <div class="form-check form-check-inline">
@@ -63,41 +51,39 @@
                         <label class="form-check-label text-white">Hot Flag</label>
                     </div>
                 </fieldset>
-            </div>            
-        </div>
-        <div class="row mb-3 ">            
-            <div class="col-md-4">
+            </div>
+            <div class="col-md-3">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="BeginningDate" type="datetime-local" />
+                    <input class="form-control" asp-for="BeginningDate" type="datetime-local"/>
                     <label for="Password">Begin date</label>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-floating mb-3 mb-md-0">
                     <input class="form-control" asp-for="EndingDate" type="datetime-local" />
-                    <label>End date</label>
+                    <label >End date</label>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <div class="form-floating mb-3 mb-md-0">
                     <input class="form-control" asp-for="ImageFile" type="file" />
                 </div>
             </div>
-        </div>
-
+        </div>        
+        
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="CreatedBy" type="text" hidden="true" value="@User.Identity.Name" />
+                    <input class="form-control" asp-for="CreatedBy" type="text" hidden="true" value="@User.Identity.Name" />                    
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="CreatedTime" name="CreatedTime" type="datetime"
-                           value="@DateTime.Now" hidden="true" />
+                    <input class="form-control" asp-for="CreatedTime" name="CreatedTime" type="datetime" 
+                    value="@DateTime.Now" hidden="true" />
                 </div>
             </div>
-
+            
         </div>
         <div class="mt-4 mb-0">
             <div class="d-grid"><button class="btn btn-info btn-block" type="submit">Create Campaign</button></div>

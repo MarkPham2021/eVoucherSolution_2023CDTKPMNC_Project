@@ -15,17 +15,18 @@ namespace eVoucherDatabaseWebService.Controllers
     [ApiController]
     public class GameController : Controller
     {
-        private GameService _gameService;
-        public GameController(GameService gameService)
+        private IGameService _gameService;
+        public GameController(IGameService gameService)
         {
             _gameService = gameService;
         }
 
         // GET: api/<GameController>
         [HttpGet]
-        public ActionResult<List<Game>> GetAllGames()
+        public async Task<ActionResult<List<Game>>> GetAllGames()
         {
-            return Ok(_gameService.GetAllGames());
+            var games = await _gameService.GetAllGamesAsync();
+            return Ok(games);
         }
 
         // GET api/<GameController>/5

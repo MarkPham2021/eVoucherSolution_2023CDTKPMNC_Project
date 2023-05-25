@@ -12,7 +12,7 @@ namespace eVoucher_BUS.Services
 {
     public interface IGameService
     {
-        List<Game> GetAllGames();
+        Task<List<Game>> GetAllGamesAsync();
         Task<Game?> GetGameById(int id);
         Task<Game> AddGame(GameCreateRequest request);
         Task<Game?> UpdateGame(Game game);
@@ -58,9 +58,10 @@ namespace eVoucher_BUS.Services
             return _game;
         }
 
-        public List<Game> GetAllGames()
+        public async Task<List<Game>> GetAllGamesAsync()
         {
-            return _gameRepository.GetAll().ToList();
+            return await _gameRepository.GetAllAsync();
+            
         }
         public async Task<Game?> GetGameById(int id)
         {

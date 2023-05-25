@@ -1,9 +1,13 @@
-﻿using eVoucher_BUS.Requests.Common;
-using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace eVoucher_BUS.Requests.CampaignRequests
 {
-    public class CampaignCreateRequest
+    public class CampaignCreateRequestforBackend
     {
         public int PartnerAppUserId { get; set; }
         public string Name { get; set; }
@@ -14,7 +18,7 @@ namespace eVoucher_BUS.Requests.CampaignRequests
         public DateTime EndingDate { get; set; }
         public bool HomeFlag { get; set; }
         public bool HotFlag { get; set; }
-        public List<SelectItem> Games { get; set; }
+        public string Games { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public IFormFile? ImageFile { get; set; }
