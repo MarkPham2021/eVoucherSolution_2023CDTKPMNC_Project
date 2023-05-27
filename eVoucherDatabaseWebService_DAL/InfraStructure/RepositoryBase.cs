@@ -4,7 +4,7 @@ namespace eVoucher_DAL.InfraStructure
 {
     public abstract class RepositoryBase<T> : IRepository<T> where T : class
     {
-        private eVoucherDbContext _context;
+        protected eVoucherDbContext _context;
         private DbSet<T> _dbSet;
 
         public RepositoryBase(eVoucherDbContext context)

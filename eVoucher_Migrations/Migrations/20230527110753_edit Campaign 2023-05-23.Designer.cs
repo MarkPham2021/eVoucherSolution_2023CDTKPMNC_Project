@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eVoucher_DAL;
 
@@ -11,9 +12,11 @@ using eVoucher_DAL;
 namespace eVoucher_Migrations.Migrations
 {
     [DbContext(typeof(eVoucherDbContext))]
-    partial class eVoucherDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230527110753_edit Campaign 2023-05-23")]
+    partial class editCampaign20230523
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

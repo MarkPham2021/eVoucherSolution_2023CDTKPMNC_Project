@@ -201,32 +201,7 @@ namespace eVoucher_BUS.Services
         }
         public async Task<List<CampaignVM>> GetAllCampaignVMs() 
         {
-            var includes = new string[] { "c => c.Partner", "c=>c.CampaignImages" };
-            var data = await _campaignRepository.GetMulti(x=>x.Status==ActiveStatus.Active, includes);
-            
-            var result = new List<CampaignVM>();
-            foreach (var vm in data)
-            {
-                CampaignVM item = new CampaignVM()
-                {
-                    Id = vm.Id,
-                    Name = vm.Name,
-                    PartnerId = vm.Partner.Id,
-                    PartnerName = vm.Partner.Name,
-                    PartnerCategoryName = vm.Partner.Partnercategory.Name,
-                    Slogan = vm.Slogan,
-                    MetaKeyword = vm.MetaKeyword,
-                    MetaDescription = vm.MetaDescription,
-                    BeginningDate = vm.BeginningDate,
-                    EndingDate = vm.EndingDate,
-                    HomeFlag = vm.HomeFlag,
-                    HotFlag = vm.HotFlag,
-                    CreatedBy = vm.CreatedBy,
-                    CreatedTime = vm.CreatedTime,
-                    ImagePath = vm.CampaignImages[0].ImagePath                    
-                };
-                result.Add(item);
-            }
+            var result = await _campaignRepository.GetAllCampaignVMs();            
             return result;
         }
         private async Task<string> SaveFile(IFormFile file)

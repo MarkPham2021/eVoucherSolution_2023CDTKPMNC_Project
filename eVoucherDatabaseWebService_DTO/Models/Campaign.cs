@@ -24,5 +24,6 @@ namespace eVoucher_DTO.Models
         public Partner Partner { get; set; }
         public List<CampaignGame>? CampaignGames { set; get; }
         public List<CampaignImage>? CampaignImages { set; get; }
+        public List<VoucherType>? VoucherTypes { set; get; }
     }
 }
