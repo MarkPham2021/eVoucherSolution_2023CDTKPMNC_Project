@@ -1,6 +1,6 @@
-﻿using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.StaffRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucherDatabaseWebService.Controllers
@@ -20,9 +20,8 @@ namespace eVoucherDatabaseWebService.Controllers
         [HttpPost]
         public async Task<ActionResult<Staff?>> Register([FromBody] StaffRegisterRequest request)
         {
-            
             var result = await _staffService.RegisterStaff(request);
-            if(result==null)
+            if (result == null)
             {
                 return BadRequest(null);
             }

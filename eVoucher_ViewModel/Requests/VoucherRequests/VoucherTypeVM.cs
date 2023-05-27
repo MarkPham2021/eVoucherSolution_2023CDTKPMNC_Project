@@ -1,11 +1,4 @@
-﻿using eVoucher_DTO.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace eVoucher_BUS.Requests.VoucherRequests
+﻿namespace eVoucher_ViewModel.Requests.VoucherRequests
 {
     public class VoucherTypeVM
     {

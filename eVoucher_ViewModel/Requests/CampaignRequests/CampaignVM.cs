@@ -1,7 +1,6 @@
-﻿using eVoucher_BUS.Requests.VoucherRequests;
-using Microsoft.AspNetCore.Http;
+﻿using eVoucher_ViewModel.Requests.VoucherRequests;
 
-namespace eVoucher_BUS.Requests.CampaignRequests
+namespace eVoucher_ViewModel.Requests.CampaignRequests
 {
     public class CampaignVM
     {
@@ -17,7 +16,7 @@ namespace eVoucher_BUS.Requests.CampaignRequests
         public DateTime EndingDate { get; set; }
         public bool HomeFlag { get; set; }
         public bool HotFlag { get; set; }
-        public List<VoucherTypeVM> VoucherTypes { get; set; }
+        public List<VoucherTypeVM>? VoucherTypes { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string? ImagePath { get; set; }

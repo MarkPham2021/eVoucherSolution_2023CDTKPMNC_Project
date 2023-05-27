@@ -1,5 +1,5 @@
 ﻿using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.StaffRequests;
+using eVoucher_ViewModel.Requests.StaffRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

@@ -1,8 +1,7 @@
-﻿using eVoucher_BUS.Requests.CampaignRequests;
-using eVoucher_BUS.Response;
-using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.Services;
+using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucherDatabaseWebService.Controllers
@@ -13,10 +12,12 @@ namespace eVoucherDatabaseWebService.Controllers
     public class CampaignController : ControllerBase
     {
         private ICampaignService _campaignService;
+
         public CampaignController(ICampaignService campaignService)
         {
             _campaignService = campaignService;
-        }        
+        }
+
         // POST api/campaign/create
         [HttpPost("create")]
         [Consumes("multipart/form-data")]
@@ -29,14 +30,21 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
+
         [HttpPost("createvouchertype")]
         [Consumes("multipart/form-data")]
-        public async Task<ActionResult<APIResult<string>>> CreateVoucherType([FromForm]CampaignCreateVoucherTypeRequest request)
+        public async Task<ActionResult<APIResult<string>>> CreateVoucherType([FromForm] CampaignCreateVoucherTypeRequest request)
         {
             var apiresult = await _campaignService.CreateCampaignVoucherType(request);
             if (!apiresult.IsSucceeded) { return BadRequest(apiresult); }
             return Ok(apiresult);
         }
-        public async Task<ActionResult<>>
+
+        [HttpGet]
+        public async Task<ActionResult<List<CampaignVM>>> GetAllCampaignVMs()
+        {
+            var CampaignList = await _campaignService.GetAllCampaignVMs();
+            return Ok(CampaignList);
+        }
     }
 }

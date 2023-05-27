@@ -1,6 +1,4 @@
-﻿using eShopSolution.Utilities.Constants;
-using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.UserRequests;
+﻿using eVoucher.ClientAPI_Integration;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -10,6 +8,8 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using eVoucher_ViewModel.Requests.UserRequests;
+using eVoucher_Utility.Constants;
 
 namespace eVoucher.Admin.Controllers
 {

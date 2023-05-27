@@ -1,5 +1,5 @@
-﻿using eVoucher_BUS.Requests.GameRequests;
-using eVoucher_DTO.Models;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.GameRequests;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;

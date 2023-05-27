@@ -1,7 +1,7 @@
-﻿using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.StaffRequests;
 using Microsoft.AspNetCore.Identity;
 
 namespace eVoucher_BUS.Services

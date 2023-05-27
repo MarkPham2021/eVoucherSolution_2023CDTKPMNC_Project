@@ -1,4 +1,4 @@
-﻿using eShopSolution.Utilities.Constants;
+﻿using eVoucher_Utility.Constants;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using System.Net.Http;
@@ -6,7 +6,7 @@ using System.Net.Http.Headers;
 
 namespace eVoucher.ClientAPI_Integration
 {
-    
+
 
     public class BaseAPIClient
     {

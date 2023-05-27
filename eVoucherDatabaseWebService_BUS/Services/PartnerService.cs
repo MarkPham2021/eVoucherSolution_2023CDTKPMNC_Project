@@ -1,8 +1,8 @@
-﻿using eVoucher_BUS.Requests.PartnerRequests;
-using eVoucher_BUS.Response;
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.PartnerRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System;

@@ -1,7 +1,7 @@
-﻿using eVoucher_BUS.Requests.UserRequests;
-using eVoucher_BUS.Response;
-using eVoucher_DTO.Models;
+﻿using eVoucher_DTO.Models;
 using eVoucher_Utility.Exceptions;
+using eVoucher_ViewModel.Requests.UserRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;

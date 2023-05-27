@@ -1,7 +1,6 @@
-﻿using eVoucher_BUS.Requests.CustomerRequests;
-using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.CustomerRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucherDatabaseWebService.Controllers
@@ -21,7 +20,6 @@ namespace eVoucherDatabaseWebService.Controllers
         [HttpPost]
         public async Task<ActionResult<Customer?>> Register([FromBody] CustomerRegisterRequest request)
         {
-
             var result = await _customerService.RegisterCustomer(request);
             if (result == null)
             {

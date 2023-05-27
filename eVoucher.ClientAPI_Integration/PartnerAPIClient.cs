@@ -1,6 +1,6 @@
-﻿using eVoucher_BUS.Requests.PartnerRequests;
-using eVoucher_BUS.Response;
-using eVoucher_DTO.Models;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.PartnerRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;

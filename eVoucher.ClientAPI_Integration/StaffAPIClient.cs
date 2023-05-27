@@ -1,5 +1,5 @@
-﻿using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_DTO.Models;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.StaffRequests;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 

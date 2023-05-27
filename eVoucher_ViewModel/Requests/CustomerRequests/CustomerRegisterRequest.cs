@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucher_BUS.Requests.CustomerRequests
+namespace eVoucher_ViewModel.Requests.CustomerRequests
 {
-    public class CustomerUpdateRequest
+    public class CustomerRegisterRequest
     {
         public string Name { get; set; }
         public Sex Gender { get; set; }
@@ -21,8 +21,6 @@ namespace eVoucher_BUS.Requests.CustomerRequests
         public string Address { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
-        public string UpdatedBy { get; set; }
-        public DateTime UpdatedTime { get; set; } = DateTime.Now;
         public int UserTypeId { get; set; }
     }
 }

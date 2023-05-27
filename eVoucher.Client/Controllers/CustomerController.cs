@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.CustomerRequests;
-using eVoucher_BUS.Requests.UserRequests;
+using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Requests.UserRequests;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 

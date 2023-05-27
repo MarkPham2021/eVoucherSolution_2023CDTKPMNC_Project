@@ -1,4 +1,5 @@
 ﻿using eVoucher_DAL.InfraStructure;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace eVoucher_DAL.Repositories
     public class CampaignRepository : RepositoryBase<Campaign>, ICampaignRepository
     {
         public CampaignRepository(eVoucherDbContext context) : base(context) { }
+        //public async Task<List<CampaignVM>>
     }
 }

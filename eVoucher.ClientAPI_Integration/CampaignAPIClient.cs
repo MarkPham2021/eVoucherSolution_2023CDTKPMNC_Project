@@ -1,6 +1,6 @@
-﻿using eVoucher_BUS.Requests.CampaignRequests;
-using eVoucher_BUS.Response;
-using eVoucher_DTO.Models;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
@@ -17,13 +17,13 @@ namespace eVoucher.ClientAPI_Integration
             _configuration = configuration;
         }
 
-        public async Task<List<Campaign>?> GetAllCampaignVMsAsync(string token)
+        public async Task<List<CampaignVM>?> GetAllCampaignVMsAsync(string token)
         {
             var uri = BASE_REQUEST;
             //uri: ROOTPATH/campaign
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
-            var campaigns = JsonConvert.DeserializeObject<List<Campaign>>(response);
+            var campaigns = JsonConvert.DeserializeObject<List<CampaignVM>>(response);
             return campaigns;
         }
 

@@ -1,6 +1,6 @@
-﻿using eShopSolution.Utilities.Constants;
-using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.UserRequests;
+﻿using eVoucher.ClientAPI_Integration;
+using eVoucher_Utility.Constants;
+using eVoucher_ViewModel.Requests.UserRequests;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;

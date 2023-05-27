@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace eShopSolution.Utilities.Constants
+namespace eVoucher_Utility.Constants
 {
     public class SystemConstants
     {
-        public const string MainConnectionString = "DefaultConnection";        
+        public const string MainConnectionString = "DefaultConnection";
 
         public class AppSettings
-        {            
+        {
             public const string Token = "Token";
             public const string BaseAddress = "BaseAddress";
         }
@@ -18,6 +18,6 @@ namespace eShopSolution.Utilities.Constants
         {
             public const int NumberOfFeaturedCampaigns = 4;
             public const int NumberOfLatestCampaigns = 6;
-        }        
+        }
     }
 }

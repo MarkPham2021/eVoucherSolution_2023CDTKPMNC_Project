@@ -1,7 +1,7 @@
-﻿using eVoucher_BUS.Requests.GameRequests;
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.GameRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;

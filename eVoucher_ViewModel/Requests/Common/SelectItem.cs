@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eVoucher_BUS.Requests.Common
+namespace eVoucher_ViewModel.Requests.Common
 {
     public class SelectItem
     {

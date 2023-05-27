@@ -1,11 +1,6 @@
 ﻿using eVoucher_Utility.Enums;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace eVoucher_BUS.Requests.StaffRequests
+namespace eVoucher_ViewModel.Requests.StaffRequests
 {
     public class StaffUpdateRequest
     {

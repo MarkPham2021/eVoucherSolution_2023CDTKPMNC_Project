@@ -1,5 +1,5 @@
 ﻿using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.GameRequests;
+using eVoucher_ViewModel.Requests.GameRequests;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucher.Admin.Controllers

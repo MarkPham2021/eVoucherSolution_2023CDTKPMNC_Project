@@ -21,8 +21,8 @@ namespace eVoucher_DTO.Models
         [Required]
         public bool HotFlag { get; set; }
         [ForeignKey("PartnerID")]
-        public virtual Partner Partner { get; set; }
-        public virtual IEnumerable<CampaignGame>? CampaignGames { set; get; }
+        public Partner Partner { get; set; }
+        public List<CampaignGame>? CampaignGames { set; get; }
         public List<CampaignImage>? CampaignImages { set; get; }
     }
 }

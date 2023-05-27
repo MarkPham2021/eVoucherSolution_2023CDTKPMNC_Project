@@ -1,7 +1,7 @@
-﻿using eVoucher_BUS.Requests.PartnerRequests;
-using eVoucher_BUS.Response;
-using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.PartnerRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -10,17 +10,17 @@ namespace eVoucherDatabaseWebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-
     public class PartnerController : ControllerBase
     {
         private IPartnerService _partnerService;
         private IPartnerCategoryService _partnerCategoryService;
+
         public PartnerController(IPartnerService partnerService, IPartnerCategoryService partnerCategoryService)
         {
             _partnerService = partnerService;
             _partnerCategoryService = partnerCategoryService;
         }
-        
+
         // GET: api/<PartnerController>
         [HttpGet("getallpartnercategories")]
         public async Task<ActionResult<List<PartnerCategory>>> GetAllPartnerCategories()
@@ -43,7 +43,7 @@ namespace eVoucherDatabaseWebService.Controllers
         public async Task<ActionResult<APIResult<string>>> Register([FromForm] PartnerCreateRequest request)
         {
             var result = await _partnerService.RegisterPartner(request);
-            if(result==null)
+            if (result == null)
             {
                 return BadRequest(result);
             }

@@ -1,7 +1,7 @@
-﻿using eVoucher_BUS.Requests.Common;
+﻿using eVoucher_ViewModel.Requests.Common;
 using Microsoft.AspNetCore.Http;
 
-namespace eVoucher_BUS.Requests.CampaignRequests
+namespace eVoucher_ViewModel.Requests.CampaignRequests
 {
     public class CampaignCreateRequest
     {

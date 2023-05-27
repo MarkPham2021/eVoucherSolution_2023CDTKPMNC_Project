@@ -7,15 +7,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Requests\CampaignRequest\**" />
-    <EmbeddedResource Remove="Requests\CampaignRequest\**" />
-    <None Remove="Requests\CampaignRequest\**" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\eVoucherDatabaseWebService_DAL\eVoucher_DAL.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_DTO\eVoucher_DTO.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
+    <ProjectReference Include="..\eVoucher_ViewModel\eVoucher_ViewModel.csproj" />
   </ItemGroup>
 
   <ItemGroup>

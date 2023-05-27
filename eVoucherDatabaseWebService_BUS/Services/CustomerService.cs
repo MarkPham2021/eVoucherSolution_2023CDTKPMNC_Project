@@ -1,14 +1,8 @@
-﻿using eVoucher_BUS.Requests.CustomerRequests;
-using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.CustomerRequests;
 using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eVoucher_BUS.Services
 {
@@ -26,17 +20,20 @@ namespace eVoucher_BUS.Services
 
         Task<Customer> DeleteCustomer(Customer customer);
     }
+
     public class CustomerService : ICustomerService
     {
         private ICustomerRepository _customerRepository;
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
+
         public CustomerService(ICustomerRepository customerRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
         {
             _customerRepository = customerRepository;
             _userManager = userManager;
             _roleManager = roleManager;
         }
+
         public Task<Customer> DeleteCustomer(int id)
         {
             throw new NotImplementedException();

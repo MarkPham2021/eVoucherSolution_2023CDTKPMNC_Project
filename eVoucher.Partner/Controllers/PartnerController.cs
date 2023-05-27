@@ -1,6 +1,6 @@
 ﻿using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.Requests.PartnerRequests;
 using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.PartnerRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;

@@ -1,7 +1,5 @@
-﻿using eVoucher_BUS.Requests.CustomerRequests;
-using eVoucher_BUS.Requests.StaffRequests;
-using eVoucher_DTO.Models;
-using Microsoft.AspNetCore.Http;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.CustomerRequests;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
@@ -11,6 +9,7 @@ namespace eVoucher.ClientAPI_Integration
     {
         private const string BASE_REQUEST = "customer";
         private readonly IConfiguration _configuration;
+
         public CustomerAPIClient(IConfiguration configuration) : base(configuration)
         {
             _configuration = configuration;

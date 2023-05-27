@@ -1,5 +1,5 @@
-﻿using eVoucher_BUS.Requests.UserRequests;
-using eVoucher_BUS.Response;
+﻿using eVoucher_ViewModel.Requests.UserRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 
