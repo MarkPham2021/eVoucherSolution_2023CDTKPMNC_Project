@@ -29,5 +29,14 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
+        [HttpPost("createvouchertype")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResult<string>>> CreateVoucherType([FromForm]CampaignCreateVoucherTypeRequest request)
+        {
+            var apiresult = await _campaignService.CreateCampaignVoucherType(request);
+            if (!apiresult.IsSucceeded) { return BadRequest(apiresult); }
+            return Ok(apiresult);
+        }
+        public async Task<ActionResult<>>
     }
 }

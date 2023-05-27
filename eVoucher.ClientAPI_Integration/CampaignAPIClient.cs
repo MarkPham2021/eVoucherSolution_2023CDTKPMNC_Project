@@ -1,7 +1,7 @@
 ﻿using eVoucher_BUS.Requests.CampaignRequests;
-using eVoucher_BUS.Requests.Common;
 using eVoucher_BUS.Response;
 using eVoucher_DTO.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
 
@@ -10,12 +10,14 @@ namespace eVoucher.ClientAPI_Integration
     public class CampaignAPIClient : BaseAPIClient
     {
         private const string BASE_REQUEST = "campaign";
+        private readonly IConfiguration _configuration;
 
-        public CampaignAPIClient() : base()
+        public CampaignAPIClient(IConfiguration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
-        public async Task<List<Campaign>?> GetAllCampaignsAsync(string token)
+        public async Task<List<Campaign>?> GetAllCampaignVMsAsync(string token)
         {
             var uri = BASE_REQUEST;
             //uri: ROOTPATH/campaign
@@ -29,7 +31,7 @@ namespace eVoucher.ClientAPI_Integration
         {
             var uri = BASE_REQUEST + "/create";
 
-            var requestContent = new MultipartFormDataContent();            
+            var requestContent = new MultipartFormDataContent();
             if (request.ImageFile != null)
             {
                 byte[] data;
@@ -46,7 +48,7 @@ namespace eVoucher.ClientAPI_Integration
             requestContent.Add(new StringContent(request.MetaKeyword), "MetaKeyword");
             requestContent.Add(new StringContent(request.MetaDescription), "MetaDescription");
             requestContent.Add(new StringContent(request.HomeFlag.ToString()), "HomeFlag");
-            requestContent.Add(new StringContent(request.HotFlag.ToString()), "HotFlag");                      
+            requestContent.Add(new StringContent(request.HotFlag.ToString()), "HotFlag");
             requestContent.Add(new StringContent(request.BeginningDate.ToString()), "BeginningDate");
             requestContent.Add(new StringContent(request.EndingDate.ToString()), "EndingDate");
             requestContent.Add(new StringContent(request.CreatedBy), "CreatedBy");
@@ -61,6 +63,7 @@ namespace eVoucher.ClientAPI_Integration
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
         }
+
         public async Task<APIResult<string>> Create(CampaignCreateRequest request, string token)
         {
             var uri = BASE_REQUEST + "/create";

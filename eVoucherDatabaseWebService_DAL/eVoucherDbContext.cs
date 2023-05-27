@@ -45,10 +45,10 @@ namespace eVoucher_DAL
 
             modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<int>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
-            modelBuilder.Entity<VoucherType>()
-                .HasMany(e => e.Vouchers)
-                .WithOne(e => e.VoucherType)
-                .OnDelete(DeleteBehavior.NoAction);
+            //modelBuilder.Entity<Customer>()
+            //    .HasMany(e => e.GamePlayResult)
+            //    .WithOne(e => e.CustomerId)
+            //    .OnDelete(DeleteBehavior.NoAction);
             //base.OnModelCreating(builder);
         }
     }

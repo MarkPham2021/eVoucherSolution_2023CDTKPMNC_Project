@@ -18,7 +18,7 @@ namespace eVoucher_BUS.Services
     public class FileStorageService : IFileStorageService
     {
         private readonly string _userContentFolder;
-        private const string USER_CONTENT_FOLDER_NAME = "eVoucher_images";
+        private const string USER_CONTENT_FOLDER_NAME = "wwwroot/eVoucher_images";
 
         public FileStorageService(IHostingEnvironment webHostEnvironment)
         {

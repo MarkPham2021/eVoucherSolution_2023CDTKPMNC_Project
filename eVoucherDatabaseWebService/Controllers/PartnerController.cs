@@ -11,7 +11,7 @@ namespace eVoucherDatabaseWebService.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class PartnerController : Controller
+    public class PartnerController : ControllerBase
     {
         private IPartnerService _partnerService;
         private IPartnerCategoryService _partnerCategoryService;

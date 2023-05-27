@@ -74,17 +74,17 @@ namespace eVoucher_DAL.InfraStructure
             var objects = await _dbSet.ToListAsync();
             return objects;
         }
-        public IEnumerable<T> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null)
+        public async Task<List<T>> GetMulti(Expression<Func<T, bool>> predicate, string[] includes = null)
         {
             if (includes != null && includes.Count() > 0)
             {
                 var query = _context.Set<T>().Include(includes.First());
                 foreach (var include in includes.Skip(1))
                     query = query.Include(include);
-                return query.Where(predicate).AsQueryable();
+                return await query.Where(predicate).AsQueryable().ToListAsync();
             }
 
-            return _context.Set<T>().Where(predicate).AsQueryable();
+            return await _context.Set<T>().Where(predicate).AsQueryable().ToListAsync();
         }
 
         public IEnumerable<T> GetMultiPaging(Expression<Func<T, bool>> filter, out int total, int index = 0, int size = 10, string[] includes = null)

@@ -8,7 +8,8 @@ namespace eVoucher_Utility.Enums
 {
     public enum VoucherStatus
     {
+        UnUsed,
         IsUsed,
-        UnSused
+        Expired
     }
 }

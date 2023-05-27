@@ -13,7 +13,8 @@ namespace eVoucherDatabaseWebService.Controllers
 
     [Route("api/[controller]")]
     [ApiController]
-    public class GameController : Controller
+    [Authorize]
+    public class GameController : ControllerBase
     {
         private IGameService _gameService;
         public GameController(IGameService gameService)
@@ -42,8 +43,7 @@ namespace eVoucherDatabaseWebService.Controllers
         }
 
         // POST api/<GameController>
-        [HttpPost]
-        [Authorize]
+        [HttpPost]        
         public async Task<ActionResult<Game>> Post([FromBody] GameCreateRequest request)
         {
             if (!ModelState.IsValid)

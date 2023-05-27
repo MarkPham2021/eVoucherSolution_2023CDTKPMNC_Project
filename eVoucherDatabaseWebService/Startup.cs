@@ -28,9 +28,9 @@ namespace eVoucherDatabaseWebService
             }
 
             app.UseHttpsRedirection();
-
-            app.UseRouting();
+            app.UseStaticFiles();
             app.UseAuthentication();
+            app.UseRouting();            
             app.UseAuthorization();
 
             app.UseSwagger();
@@ -77,6 +77,7 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<ICampaignRepository, CampaignRepository>();
             services.AddTransient<ICampaignService, CampaignService>();
             services.AddTransient<ICampaignGameRepository, CampaignGameRepository>();
+            services.AddTransient<IVoucherTypeRepository, VoucherTypeRepository>();
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();

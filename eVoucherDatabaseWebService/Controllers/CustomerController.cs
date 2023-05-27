@@ -8,7 +8,7 @@ namespace eVoucherDatabaseWebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CustomerController : Controller
+    public class CustomerController : ControllerBase
     {
         private CustomerService _customerService;
 

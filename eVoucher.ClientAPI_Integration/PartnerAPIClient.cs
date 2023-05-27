@@ -1,44 +1,44 @@
-﻿using Azure.Core;
-using eVoucher_BUS.Requests.PartnerRequests;
-using eVoucher_BUS.Requests.StaffRequests;
+﻿using eVoucher_BUS.Requests.PartnerRequests;
 using eVoucher_BUS.Response;
 using eVoucher_DTO.Models;
+using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Http.Json;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eVoucher.ClientAPI_Integration
 {
     public class PartnerAPIClient : BaseAPIClient
     {
-        const string BASE_REQUEST = "partner";
-        public PartnerAPIClient():base() { }
+        private const string BASE_REQUEST = "partner";
+        private readonly IConfiguration _configuration;
+
+        public PartnerAPIClient(IConfiguration configuration) : base(configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<List<PartnerCategory>?> GetAllPartnerCategoriesAsync()
         {
             var uri = BASE_REQUEST + "/getallpartnercategories";
             //uri: ROOTPATH/partner/getallpartnercategories
-            var response = await _httpClient.GetStringAsync(uri);            
+            var response = await _httpClient.GetStringAsync(uri);
             var categories = JsonConvert.DeserializeObject<List<PartnerCategory>>(response);
             return categories;
         }
+
         public async Task<List<Partner>?> GetAllPartnersAsync()
         {
-            var uri = BASE_REQUEST ;
+            var uri = BASE_REQUEST;
             //uri: ROOTPATH/partner
             var response = await _httpClient.GetStringAsync(uri);
             var partners = JsonConvert.DeserializeObject<List<Partner>>(response);
             return partners;
         }
+
         public async Task<APIResult<string>> Register(PartnerCreateRequest request)
         {
-            var uri = BASE_REQUEST +"/register";
-            
+            var uri = BASE_REQUEST + "/register";
+
             var requestContent = new MultipartFormDataContent();
 
             if (request.ImageFile != null)
@@ -49,8 +49,8 @@ namespace eVoucher.ClientAPI_Integration
                     data = br.ReadBytes((int)request.ImageFile.OpenReadStream().Length);
                 }
                 ByteArrayContent bytes = new ByteArrayContent(data);
-                requestContent.Add(bytes, "ImageFile",$"{request.Name}thumbnailImage{request.ImageFile.FileName}");
-            }            
+                requestContent.Add(bytes, "ImageFile", $"{request.Name}thumbnailImage{request.ImageFile.FileName}");
+            }
             requestContent.Add(new StringContent(request.Name), "Name");
             requestContent.Add(new StringContent(request.Address), "Address");
             requestContent.Add(new StringContent(request.PartnerCategoryID.ToString()), "PartnerCategoryID");
@@ -70,6 +70,5 @@ namespace eVoucher.ClientAPI_Integration
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
         }
-
     }
 }

@@ -19,5 +19,6 @@ namespace eVoucher_DTO.Models
 
         [ForeignKey("UserID")]
         public AppUser AppUser { set; get; }
+        public List<GamePlayResult>? GamePlayResults { get; set; }
     }
 }

@@ -39,7 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="eVoucher_images\" />
+    <Folder Include="wwwroot\eVoucher_images\" />
   </ItemGroup>
 
 </Project>

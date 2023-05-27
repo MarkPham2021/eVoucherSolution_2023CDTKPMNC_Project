@@ -1,22 +1,20 @@
-﻿using eVoucher_BUS.Requests.GameRequests;
-using eVoucher_BUS.Requests.StaffRequests;
+﻿using eVoucher_BUS.Requests.StaffRequests;
 using eVoucher_DTO.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eVoucher.ClientAPI_Integration
 {
     public class StaffAPIClient : BaseAPIClient
     {
-        const string BASE_REQUEST = "staff";
-        
-        public StaffAPIClient() : base() { }
+        private const string BASE_REQUEST = "staff";
+        private readonly IConfiguration _configuration;
+
+        public StaffAPIClient(IConfiguration configuration) : base(configuration)
+        {
+            _configuration = configuration;
+        }
+
         public async Task<Staff?> Register(StaffRegisterRequest request)
         {
             var uri = BASE_REQUEST;

@@ -10,12 +10,16 @@ namespace eVoucher_DTO.Models
     {
         [Key]
         public int Id { get; set; }
+        [ForeignKey("CustomerID")]
+        public Customer Customer { get; set; }
         [ForeignKey("CampaignGameID")]
-        public virtual CampaignGame CampaignGame { get; set; }
-        public int Result { get; set; }
+        public CampaignGame CampaignGame { get; set; }
+        public int GotNumberResult { get; set; }
         public bool IsGotVoucher { get; set; }
+        [ForeignKey("VoucherTypeID")]
+        public VoucherType? VoucherType { get; set; }
         public string? Description { get; set; }
-        public virtual IEnumerable<Voucher>? Vouchers { set; get; }
+        public  Voucher? Voucher { set; get; }
 
     }
 }

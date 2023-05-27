@@ -1,5 +1,6 @@
 ﻿using eVoucher.ClientAPI_Integration;
 using eVoucher_BUS.Requests.CampaignRequests;
+using eVoucher_BUS.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -16,9 +17,11 @@ namespace eVoucher.Partner.Controllers
             _campaignAPIClient = campaignAPIClient;
             _gameAPIClient = gameAPIClient;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var token = HttpContext.Session.GetString("Token");
+            var data = _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            return View(data);
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -47,7 +50,13 @@ namespace eVoucher.Partner.Controllers
             }
             else
                 ViewData["result"] = "success";
-            return View("Create0");
+            return RedirectToAction("Index");
+        }
+        [HttpGet]
+        public async Task<IActionResult> CreateVoucherType(int campaignid)
+        {
+            
+            return View();
         }
 
     }

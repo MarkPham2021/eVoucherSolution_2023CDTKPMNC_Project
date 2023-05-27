@@ -11,9 +11,7 @@ namespace eVoucher_DTO.Models
     {
         public int Id { get; set; }
         [ForeignKey("GamePlayResultID")]
-        public virtual GamePlayResult GamePlayResult { get; set; }
-        [ForeignKey("VoucherTypeID")]
-        public VoucherType VoucherType { get; set; }
+        public GamePlayResult GamePlayResult { get; set; }        
         [Required]
         public DateTime DateGet { get; set; }
         [Required]

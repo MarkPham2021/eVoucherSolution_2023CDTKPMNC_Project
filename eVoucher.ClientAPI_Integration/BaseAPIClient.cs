@@ -12,10 +12,12 @@ namespace eVoucher.ClientAPI_Integration
     {
         protected const string BASE_URL = "https://localhost:7233/api/";
         protected HttpClient _httpClient;
-        public BaseAPIClient()
+        private readonly IConfiguration _configuration;
+        public BaseAPIClient(IConfiguration configuration)
         {
+            _configuration = configuration;
             _httpClient = _= new HttpClient();
-            _httpClient.BaseAddress = new Uri(BASE_URL);            
+            _httpClient.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress] + "/api/");            
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }

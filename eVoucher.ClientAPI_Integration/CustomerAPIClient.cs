@@ -10,9 +10,10 @@ namespace eVoucher.ClientAPI_Integration
     public class CustomerAPIClient : BaseAPIClient
     {
         private const string BASE_REQUEST = "customer";
-       
-        public CustomerAPIClient() : base()
+        private readonly IConfiguration _configuration;
+        public CustomerAPIClient(IConfiguration configuration) : base(configuration)
         {
+            _configuration = configuration;
         }
 
         public async Task<Customer?> Register(CustomerRegisterRequest request)
