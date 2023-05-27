@@ -1,4 +1,5 @@
 ﻿using eVoucher.ClientAPI_Integration;
+using eVoucher_BUS.FrontendServices;
 using eVoucher_ViewModel.Requests.CampaignRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,19 +9,25 @@ namespace eVoucher.Partner.Controllers
     [Authorize]
     public class CampaignController : BaseController
     {
-        private CampaignAPIClient _campaignAPIClient;
-        private GameAPIClient _gameAPIClient;
+        private IFrCampaignService _frCampaignService;
+        
 
-        public CampaignController(CampaignAPIClient campaignAPIClient, GameAPIClient gameAPIClient)
+        public CampaignController(IFrCampaignService frCampaignService)
         {
-            _campaignAPIClient = campaignAPIClient;
-            _gameAPIClient = gameAPIClient;
+            _frCampaignService = frCampaignService;
         }
-
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public async Task<IActionResult> Index(string keyword="", int pageIndex = 1, int pageSize = 6)
         {
             var token = HttpContext.Session.GetString("Token");
-            var data = _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            var request = new GetManageCampaignPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            string userinfo = User.Identity.Name;            
+            var data = await _frCampaignService.GetAllCampaignVMsPaging(userinfo, request, token);
             return View(data);
         }
 
@@ -33,7 +40,7 @@ namespace eVoucher.Partner.Controllers
             ViewBag.partnerid = int.Parse(infos[0]);
             //Prepare for game list check box
             var token = HttpContext.Session.GetString("Token");
-            var games = await _gameAPIClient.GetAllGameAsync(token);
+            var games = await _frCampaignService.GetAllGames(token);
             ViewBag.games = games;
 
             return View();
@@ -45,7 +52,7 @@ namespace eVoucher.Partner.Controllers
             if (!ModelState.IsValid)
                 return View(request);
             var token = HttpContext.Session.GetString("Token");
-            var result = await _campaignAPIClient.Create(request, token);
+            var result = await _frCampaignService.CreateCampaign(request, token);
             if (!result.IsSucceeded)
             {
                 ViewData["result"] = "unsuccess";

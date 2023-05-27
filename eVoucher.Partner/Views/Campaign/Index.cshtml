@@ -9,12 +9,12 @@
 <div class="text-start">
     <h6 class="text-danger text-decoration-underline mt-3 mb-2">Ongoing Campaign:</h6>
 </div>
-<div class="container-fluid">
+<div class="row mb-3">
     @foreach (var item in Model.Items)
     {
         <div class="col-md-4">
             <div class="card">
-                <img class="card-img-top" src="@item.ImagePath/100px180/?text=Image cap" alt="Card image cap">
+                <img class="card-img-top" src="@item.ImagePath" width="350" height="260">
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Slogan</p>
@@ -25,8 +25,8 @@
                     
                 </ul>
                 <div class="card-body">
-                    @Html.ActionLink("View detail", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("View vouchertype", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("View detail", "ViewDetail", new { id = item.Id }) |
+                    @Html.ActionLink("View vouchertype", "ViewVoucherType", new { id = item.Id }) |
                     @Html.ActionLink("Edit Campaign", "Edit", new { id = item.Id })
                 </div>
             </div>

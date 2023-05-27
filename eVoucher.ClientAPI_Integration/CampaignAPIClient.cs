@@ -1,5 +1,4 @@
-﻿using eVoucher_DTO.Models;
-using eVoucher_ViewModel.Requests.CampaignRequests;
+﻿using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;

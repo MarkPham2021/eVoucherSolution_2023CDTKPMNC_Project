@@ -1,4 +1,5 @@
-﻿using eVoucher_ViewModel.Requests.VoucherRequests;
+﻿using eVoucher_ViewModel.Requests.GameRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 
 namespace eVoucher_ViewModel.Requests.CampaignRequests
 {
@@ -7,7 +8,7 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public int Id { get; set; }
         public string Name { get; set; }
         public int PartnerId { get; set; }
-        public string PartnerName { get; set; }
+        public string PartnerName { get; set; }       
         public string PartnerCategoryName { get; set; }
         public string? Slogan { get; set; }
         public string? MetaKeyword { get; set; }
@@ -20,5 +21,6 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; } = DateTime.Now;
         public string? ImagePath { get; set; }
+        public List<CampaignGameVM>? campaignGames { get; set; }
     }
 }

@@ -1,4 +1,5 @@
 using eVoucher.ClientAPI_Integration;
+using eVoucher_BUS.FrontendServices;
 using eVoucher_DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
@@ -26,6 +27,7 @@ builder.Services.AddTransient<StaffAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<PartnerAPIClient>();
 builder.Services.AddTransient<CampaignAPIClient>();
+builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

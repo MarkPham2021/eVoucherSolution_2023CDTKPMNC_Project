@@ -106,7 +106,7 @@ namespace eVoucher_BUS.Services
                     {
                         Campaign = campaign,
                         Game = game,
-                        Name = game.Name + campaign.Name,
+                        Name = game.Name,
                         CreatedTime = DateTime.Now,
                         CreatedBy = request.CreatedBy,
                         IsDeleted = false,

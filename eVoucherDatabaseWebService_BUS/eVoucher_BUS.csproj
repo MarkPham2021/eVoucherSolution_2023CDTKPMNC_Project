@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eVoucher.ClientAPI_Integration\eVoucher.ClientAPI_Integration.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_DAL\eVoucher_DAL.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_DTO\eVoucher_DTO.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
