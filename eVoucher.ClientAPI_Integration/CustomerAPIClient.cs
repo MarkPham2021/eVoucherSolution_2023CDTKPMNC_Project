@@ -7,7 +7,7 @@ namespace eVoucher.ClientAPI_Integration
 {
     public class CustomerAPIClient : BaseAPIClient
     {
-        private const string BASE_REQUEST = "customer";
+        private const string BASE_REQUEST = "Customer";
         private readonly IConfiguration _configuration;
 
         public CustomerAPIClient(IConfiguration configuration) : base(configuration)
@@ -17,7 +17,7 @@ namespace eVoucher.ClientAPI_Integration
 
         public async Task<Customer?> Register(CustomerRegisterRequest request)
         {
-            var uri = BASE_REQUEST;
+            var uri = BASE_REQUEST + "/Register";
             var response = await _httpClient.PostAsJsonAsync<CustomerRegisterRequest>(uri, request);
             var savedcustomerstring = await response.Content.ReadAsStringAsync();
             var savedcustomer = JsonConvert.DeserializeObject<Customer>(savedcustomerstring);
