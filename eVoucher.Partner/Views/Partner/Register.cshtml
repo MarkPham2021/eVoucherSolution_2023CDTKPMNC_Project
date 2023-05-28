@@ -34,13 +34,13 @@
             </div>
             <div class="col-md-3">
                 <div class="form-floating mb-3">
-                    <input class="form-control" asp-for="PhoneNumber" type="tel" />
+                    <input class="form-control" asp-for="PhoneNumber" type="tel" required />
                     <label for="PhoneNumber">Phone number</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3">
-                    <input class="form-control" asp-for="Email" type="email" />
+                    <input class="form-control" asp-for="Email" type="email" required />
                     <label for="Email">Email address</label>
                 </div>
             </div>
@@ -49,19 +49,19 @@
         <div class="row mb-3">
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="UserName" type="text" />
+                    <input class="form-control" asp-for="UserName" type="text" required />
                     <label for="UserName">UserName</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="Password" type="password" />
+                    <input class="form-control" asp-for="Password" type="password" required />
                     <label for="Password">Password</label>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="ConfirmPassword" type="password" />
+                    <input class="form-control" asp-for="ConfirmPassword" type="password" required />
                     <label for="ConfirmPassword">Confirm Password</label>
                 </div>
             </div>
@@ -75,7 +75,7 @@
         <div class="row mb-3">
             <div class="col-md-5">
                 <div class="form-floating mb-3 mb-md-0">
-                    <input class="form-control" asp-for="CreatedBy" name="CreatedBy" type="text" hidden="true" value="Cuongpm" />
+                    <input class="form-control" asp-for="CreatedBy" name="CreatedBy" type="text" hidden="true" value="Self" />
                     <label for="CreatedBy" hidden>Create by</label>
                 </div>
             </div>
