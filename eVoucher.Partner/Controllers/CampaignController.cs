@@ -17,7 +17,7 @@ namespace eVoucher.Partner.Controllers
             _frCampaignService = frCampaignService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword="", int pageIndex = 1, int pageSize = 6)
+        public async Task<IActionResult> Index(string keyword="", int pageIndex = 1, int pageSize = 3)
         {
             var token = HttpContext.Session.GetString("Token");
             var request = new GetManageCampaignPagingRequest()
