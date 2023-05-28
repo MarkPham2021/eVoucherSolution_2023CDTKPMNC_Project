@@ -17,7 +17,7 @@ namespace eVoucher.ClientAPI_Integration
 
         public async Task<Customer?> Register(CustomerRegisterRequest request)
         {
-            var uri = BASE_REQUEST + "/Register";
+            var uri = BASE_REQUEST;
             var response = await _httpClient.PostAsJsonAsync<CustomerRegisterRequest>(uri, request);
             var savedcustomerstring = await response.Content.ReadAsStringAsync();
             var savedcustomer = JsonConvert.DeserializeObject<Customer>(savedcustomerstring);

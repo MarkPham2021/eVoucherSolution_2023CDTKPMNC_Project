@@ -15,7 +15,7 @@ namespace eVoucher.ClientAPI_Integration
             _configuration = configuration;
         }
 
-        public async Task<APIResult<string>> Login(LoginRequest request)
+        public async Task<APIResult<string>?> Login(LoginRequest request)
         {
             var uri = BASE_REQUEST;
             var response = await _httpClient.PostAsJsonAsync<LoginRequest>(uri, request);

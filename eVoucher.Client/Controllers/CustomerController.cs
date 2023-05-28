@@ -33,7 +33,7 @@ namespace eVoucher.Client.Controllers
         // GET: /<controller>/
         public IActionResult Index()
         {
-            return View("SignUp");
+            return View();
         }
 
         public IActionResult SignUp()
@@ -55,9 +55,15 @@ namespace eVoucher.Client.Controllers
 
             if (result != null)
             {
-                //need logged in
-                //HttpContext.Session.SetString("user", JsonConvert.SerializeObject(result));
+                var login = new LoginRequest()
+                {
+                    UserName = request.UserName,
+                    Password = request.Password,
+                    UserTypeId = request.UserTypeId,
+                    Rememberme = false
+                };
 
+                await CustomerLogin(login);
                 return RedirectToAction("Index", "Home");
             }
 
@@ -71,7 +77,7 @@ namespace eVoucher.Client.Controllers
         {
             var result = await _loginAPIClient.Login(request);
 
-            if (result.IsSucceeded)
+            if (result !=null && result.IsSucceeded)
             {
                 //HttpContext.Session.SetString("LoginToken", result.ResultObj);
 
