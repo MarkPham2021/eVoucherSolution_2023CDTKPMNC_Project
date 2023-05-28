@@ -1,0 +1,92 @@
+﻿@model eVoucher_ViewModel.Requests.CampaignRequests.CampaignCreateVoucherTypeRequest
+@{
+    ViewData["title"] = "Create new vouchertype";
+}
+
+<div class="card-header bg-info">
+    <h3 class="text-center font-weight-light my-4">Create new Voucher Type</h3>
+</div>
+<div class="card-body bg-success">
+    <form asp-action="CreateVoucherType" method="post" asp-controller="Campaign" enctype="multipart/form-data">
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="Name" type="text" required />
+                    <input class="form-control" asp-for="CampaignId" type="number" value="@ViewBag.campaignid" hidden />
+                    <label>Name</label>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="DiscountRate" type="number" required />
+                    <label>Distcount Rate</label>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="Promotion" type="text"  />
+                    <label>Promotion</label>
+                </div>
+            </div>            
+        </div>
+        <div class="row mb-3">
+            <div class="col-md-2">
+                <div class="form-floating mb-2">
+                    <input class="form-control" asp-for="NumberofLuckyNumbers" type="number" />
+                    <label>Number of lucky numbers</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" asp-for="IsgetLuckyNumbersRandom" type="checkbox" />                    
+                    <label class="form-check-label text-white">Auto get lucky number randomly</label>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-floating mb-3">
+                    <input class="form-control" asp-for="LuckyNumberstr" type="text" />
+                    <label>Input lucky numbers (separate by space)</label>
+                </div>
+            </div>
+        </div>        
+        <div class="row mb-3 ">            
+            <div class="col-md-2">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="MaxAmount" type="number" required />
+                    <input class="form-control" asp-for="RemainAmount" type="number" hidden value="10" />
+                    <label>Max amount vouchers</label>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="ExpiringDate" type="datetime-local" required />                    
+                    <label>Expired date</label>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="ImageFile" type="file" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row mb-3">
+            <div class="col-md-5">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="CreatedBy" type="text" hidden="true" value="@User.Identity.Name" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3 mb-md-0">
+                    <input class="form-control" asp-for="CreatedTime" name="CreatedTime" type="datetime"
+                           value="@DateTime.Now" hidden="true" />
+                </div>
+            </div>
+
+        </div>
+        <div class="mt-4 mb-0">
+            <div class="d-grid"><button class="btn btn-info btn-block" type="submit">Create Voucher Type</button></div>
+        </div>
+    </form>
+    Status: <p>@ViewData["result"]</p>
+</div>

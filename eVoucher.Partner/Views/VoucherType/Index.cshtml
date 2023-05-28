@@ -1,0 +1,43 @@
+﻿@using eVoucher_ViewModel.Requests.VoucherRequests;
+@using eVoucher_ViewModel.Response;
+@model PageResult<VoucherTypeVM>
+@{
+    ViewData["Title"] = "VoucherType of Campaign";
+    var campaignid = Context.Request.RouteValues["id"];
+}
+
+
+<div class="row container-fluid my-2 text-start">
+    <a class="btn btn-warning btn-lg">VoucherTypes of Campaigns:</a>
+</div>
+<div class="row mb-3">
+    @foreach (var item in Model.Items)
+    {
+        <div class="col-md-4">
+            <div class="card">
+                <img class="card-img-top" src="@item.ImagePath" width="300" height="235">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Name</h5>
+                    <p class="card-text">Discount rate: @item.DiscountRate</p>
+                    <p class="card-text">@item.Promotion</p>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Expired date: @item.ExpiringDate</li>
+                    <li class="list-group-item">Maxamount: @item.MaxAmount/RemainAmount: @item.RemainAmount</li>
+
+                </ul>
+                <div class="card-body">
+                    @Html.ActionLink("View detail", "ViewDetail", new { id = item.Id }) |
+                    @Html.ActionLink("Edit", "EditVoucherType", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "DeleteVoucherType", new { id = item.Id })
+                </div>
+            </div>
+        </div>
+    }    
+</div>
+@await Component.InvokeAsync("Pager", Model)
+<div class="row container-fluid my-2 align-content-end">
+    @Html.ActionLink("Create new VoucherType", "CreateVoucherType", new { id = campaignid })
+
+</div>
+

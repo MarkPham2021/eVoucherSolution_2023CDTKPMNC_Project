@@ -13,6 +13,7 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public int NumberofLuckyNumbers { get; set; }
         public int MaxAmount { get; set; }
         public int RemainAmount { get; set; }
+        public DateTime ExpiringDate { get; set; }
         public IFormFile ImageFile { get; set; }
         public string CreatedBy { get; set; }
         public DateTime CreatedTime { get; set; }

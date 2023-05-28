@@ -1,4 +1,5 @@
-﻿using eVoucher_DAL.Repositories;
+﻿using Abp.Extensions;
+using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CampaignRequests;
@@ -120,6 +121,10 @@ namespace eVoucher_BUS.Services
         public async Task<APIResult<string>> CreateCampaignVoucherType(CampaignCreateVoucherTypeRequest request)
         {
             APIResult<string> apiresult;
+            if(string.IsNullOrEmpty(request.LuckyNumberstr))
+            {
+                request.LuckyNumberstr = "";
+            }
             var vouchertype = new VoucherType()
             {
                 Name = request.Name,                
@@ -129,6 +134,7 @@ namespace eVoucher_BUS.Services
                 LuckyNumbers = request.LuckyNumberstr,
                 MaxAmount = request.MaxAmount,
                 RemainAmount = request.RemainAmount,
+                ExpiringDate = request.ExpiringDate,
                 IsDeleted = false,
                 Status = ActiveStatus.Active,
                 CreatedBy = request.CreatedBy,

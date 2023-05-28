@@ -1,8 +1,12 @@
-﻿using eVoucher.ClientAPI_Integration;
-using eVoucher_BUS.FrontendServices;
+﻿using eVoucher_BUS.FrontendServices;
 using eVoucher_ViewModel.Requests.CampaignRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
+using System.Drawing.Printing;
+using Newtonsoft.Json;
+using Castle.MicroKernel.Internal;
+using Microsoft.IdentityModel.Tokens;
 
 namespace eVoucher.Partner.Controllers
 {
@@ -10,14 +14,14 @@ namespace eVoucher.Partner.Controllers
     public class CampaignController : BaseController
     {
         private IFrCampaignService _frCampaignService;
-        
 
         public CampaignController(IFrCampaignService frCampaignService)
         {
             _frCampaignService = frCampaignService;
         }
+
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword="", int pageIndex = 1, int pageSize = 3)
+        public async Task<IActionResult> Index(string keyword = "", int pageIndex = 1, int pageSize = 3)
         {
             var token = HttpContext.Session.GetString("Token");
             var request = new GetManageCampaignPagingRequest()
@@ -26,7 +30,7 @@ namespace eVoucher.Partner.Controllers
                 PageIndex = pageIndex,
                 PageSize = pageSize
             };
-            string userinfo = User.Identity.Name;            
+            string userinfo = User.Identity.Name;
             var data = await _frCampaignService.GetAllCampaignVMsPaging(userinfo, request, token);
             return View(data);
         }
@@ -61,10 +65,60 @@ namespace eVoucher.Partner.Controllers
                 ViewData["result"] = "success";
             return RedirectToAction("Index");
         }
-
+        [HttpGet]
+        public async Task<IActionResult> ViewVoucherType(string keyword ="", int pageIndex = 1, int pageSize = 3)
+        {
+            var request = new GetManageCampaignPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            var id = HttpContext.Request.RouteValues["id"].ToString();
+            var token = HttpContext.Session.GetString("Token");
+            ViewData["campaignid"] = id;
+            int campaignid;
+            bool t = int.TryParse(id, out campaignid);
+            var data = await _frCampaignService.GetVoucherTypesOfCampaignPaging(campaignid, request, token);
+            
+            return View(data);            
+        }
         [HttpGet]
         public async Task<IActionResult> CreateVoucherType(int campaignid)
         {
+            var id = HttpContext.Request.RouteValues["id"];
+            ViewBag.campaignid = id;
+
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateVoucherType([FromForm] CampaignCreateVoucherTypeRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+            if (!request.IsgetLuckyNumbersRandom)
+            {
+                var luckynums = request.LuckyNumberstr.Split(" ");
+                var luckynumslist = new List<int>();
+                foreach(var s in luckynums)
+                {
+                    luckynumslist.Add(int.Parse(s));
+                }
+                request.LuckyNumberstr = JsonConvert.SerializeObject(luckynumslist);
+            }
+            request.RemainAmount = request.MaxAmount;
+            if (string.IsNullOrEmpty(request.LuckyNumberstr))
+            {
+                request.LuckyNumberstr = "";
+            }
+            var token = HttpContext.Session.GetString("Token");
+            var response = await _frCampaignService.CreateVoucherType(request,token);
+            if(response.IsSucceeded)
+            {
+                return RedirectToAction("ViewVoucherType", new { id = request.CampaignId });
+            }
+            ViewData["result"] = response.Message;
             return View();
         }
     }

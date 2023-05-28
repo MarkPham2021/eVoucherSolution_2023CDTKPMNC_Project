@@ -100,5 +100,41 @@ namespace eVoucher.ClientAPI_Integration
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
         }
+        public async Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token)
+        {
+            var uri = BASE_REQUEST + "/createvouchertype";           
+            var requestContent = new MultipartFormDataContent();
+            if (request.ImageFile != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ImageFile.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ImageFile.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ImageFile", $"{request.Name}thumbnailImage{request.ImageFile.FileName}");
+            }
+            requestContent.Add(new StringContent(request.Name), "Name");            
+            requestContent.Add(new StringContent(request.DiscountRate.ToString()), "DiscountRate");
+            requestContent.Add(new StringContent(request.CampaignId.ToString()), "CampaignId");
+            requestContent.Add(new StringContent(request.Promotion), "Promotion");
+            requestContent.Add(new StringContent(request.MaxAmount.ToString()), "MaxAmount");
+            requestContent.Add(new StringContent(request.RemainAmount.ToString()), "RemainAmount");
+            requestContent.Add(new StringContent(request.IsgetLuckyNumbersRandom.ToString()), "IsgetLuckyNumbersRandom");
+            requestContent.Add(new StringContent(request.NumberofLuckyNumbers.ToString()), "NumberofLuckyNumbers");
+            requestContent.Add(new StringContent(request.LuckyNumberstr), "LuckyNumberstr");
+            requestContent.Add(new StringContent(request.ExpiringDate.ToString()), "ExpiringDate");
+            requestContent.Add(new StringContent(request.CreatedBy), "CreatedBy");
+            requestContent.Add(new StringContent(request.CreatedTime.ToString()), "CreatedTime");
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
+            var response = await _httpClient.PostAsync(uri, requestContent);
+
+            var responsestring = await response.Content.ReadAsStringAsync();
+            var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
+            return apiresult;
+        }
     }
 }

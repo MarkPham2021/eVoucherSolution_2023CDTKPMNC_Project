@@ -4,8 +4,10 @@ using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
+using System.Drawing.Drawing2D;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace eVoucher_BUS.FrontendServices
@@ -13,8 +15,10 @@ namespace eVoucher_BUS.FrontendServices
     public interface IFrCampaignService
     {
         Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request,string token);
+        Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, GetManageCampaignPagingRequest request, string token);
         Task<List<Game>> GetAllGames(string token);
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request,string token);
+        Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
 
     }
 
@@ -72,5 +76,43 @@ namespace eVoucher_BUS.FrontendServices
             };
             return pageresult;
         }
+
+        public async Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, 
+            GetManageCampaignPagingRequest request, string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            var filterdata = from vm in data
+                             where (vm.Id == campaignid) 
+                             select vm;
+            var campaigns = filterdata.ToList();
+            var vouchertypes = new List<VoucherTypeVM>();
+            string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            if (campaigns.Count > 0) {
+                vouchertypes = campaigns[0].VoucherTypes;                
+                foreach (var item in vouchertypes)
+                {
+                    item.ImagePath = BaseAdress + item.ImagePath;
+                }
+            }
+            if(string.IsNullOrEmpty(request.Keyword)) { request.Keyword = ""; }
+            var vouchertypesfilter = vouchertypes.Where(v=>v.Name.ToLower().Contains(request.Keyword.ToLower())||
+            v.Promotion.ToLower().Contains(request.Keyword.ToLower()));
+            var pagedata = vouchertypesfilter.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+            var pageresult = new PageResult<VoucherTypeVM>()
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                TotalItems = vouchertypes.Count(),
+                Items = pagedata
+            };
+            return pageresult;
+        }
+        public async Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token)
+        {
+            return await _campaignAPIClient.CreateVoucherType(request, token);
+        }
+
     }
 }
