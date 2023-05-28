@@ -10,7 +10,7 @@ namespace eVoucher.ClientAPI_Integration
 
     public class BaseAPIClient
     {
-        protected const string BASE_URL = "https://localhost:7233/api/";
+        //protected const string BASE_URL = "https://localhost:7233/api/";
         protected HttpClient _httpClient;
         private readonly IConfiguration _configuration;
         public BaseAPIClient(IConfiguration configuration)
