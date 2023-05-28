@@ -6,8 +6,8 @@
 }
 
 
-<div class="text-start">
-    <h6 class="text-danger text-decoration-underline mt-3 mb-2">Ongoing Campaign:</h6>
+<div class="row container-fluid my-2 text-start">
+        <a class="btn btn-warning btn-lg">Ongoing Campaigns:</a>
 </div>
 <div class="row mb-3">
     @foreach (var item in Model.Items)
@@ -33,5 +33,9 @@
         </div>
     }
     
+</div>
+@await Component.InvokeAsync("Pager", Model)
+<div class="row container-fluid my-2 align-content-end">
+    <a class="btn btn-primary btn-lg" asp-controller="Campaign" asp-action="Create">Create new Campaign</a>
 </div>
 
