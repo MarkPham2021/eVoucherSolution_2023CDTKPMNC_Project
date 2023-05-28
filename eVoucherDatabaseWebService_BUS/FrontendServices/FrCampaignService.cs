@@ -2,6 +2,7 @@
 using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
+using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
@@ -51,7 +52,8 @@ namespace eVoucher_BUS.FrontendServices
             var filterdata = from vm in data 
                              where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) || 
                              vm.MetaKeyword.ToLower().Contains(request.Keyword.ToLower()) ||
-                             vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == user.ToLower())
+                             vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == user.ToLower()) &&
+                             (vm.Status == ActiveStatus.Active)
                              select vm;
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)

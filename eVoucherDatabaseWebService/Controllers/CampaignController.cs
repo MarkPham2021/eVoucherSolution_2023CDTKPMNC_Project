@@ -41,6 +41,7 @@ namespace eVoucherDatabaseWebService.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<CampaignVM>>> GetAllCampaignVMs()
         {
             var CampaignList = await _campaignService.GetAllCampaignVMs();

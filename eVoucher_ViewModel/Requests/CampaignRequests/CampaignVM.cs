@@ -1,4 +1,5 @@
-﻿using eVoucher_ViewModel.Requests.GameRequests;
+﻿using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.GameRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 
 namespace eVoucher_ViewModel.Requests.CampaignRequests
@@ -19,7 +20,9 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public bool HotFlag { get; set; }
         public List<VoucherTypeVM>? VoucherTypes { get; set; }
         public string CreatedBy { get; set; }
-        public DateTime CreatedTime { get; set; } = DateTime.Now;
+        public DateTime CreatedTime { get; set; }
+        public bool IsDeleted { get; set; }
+        public ActiveStatus Status { get; set; }
         public string? ImagePath { get; set; }
         public List<CampaignGameVM>? campaignGames { get; set; }
     }

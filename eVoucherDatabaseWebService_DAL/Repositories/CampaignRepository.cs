@@ -46,6 +46,8 @@ namespace eVoucher_DAL.Repositories
                     HotFlag = vm.HotFlag,
                     CreatedBy = vm.CreatedBy,
                     CreatedTime = vm.CreatedTime,
+                    Status = vm.Status,
+                    IsDeleted = vm.IsDeleted,
                     ImagePath = vm.CampaignImages[0].ImagePath,
                     campaignGames = new List<CampaignGameVM>(),
                     VoucherTypes = new List<VoucherTypeVM>()
