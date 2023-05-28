@@ -1,4 +1,5 @@
 using eVoucher.ClientAPI_Integration;
+using eVoucher_BUS.FrontendServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,7 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.LoginPath = "/Customer/Login2";
+        options.LoginPath = "/Customer/Login";
         options.AccessDeniedPath = "/Login/Forbidden/";
     });
 builder.Services.AddControllersWithViews();
@@ -18,6 +19,11 @@ builder.Services.AddSession(options =>
 
 builder.Services.AddTransient<CustomerAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
+builder.Services.AddTransient<BaseAPIClient>();
+builder.Services.AddTransient<GameAPIClient>();
+builder.Services.AddTransient<LoginAPIClient>();
+builder.Services.AddTransient<CampaignAPIClient>();
+builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 
@@ -33,7 +39,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseRouting();
-
+app.UseSession();
 app.UseAuthorization();
 
 app.MapControllerRoute(

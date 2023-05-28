@@ -6,8 +6,6 @@ using System.Net.Http.Headers;
 
 namespace eVoucher.ClientAPI_Integration
 {
-
-
     public class BaseAPIClient
     {
         //protected const string BASE_URL = "https://localhost:7233/api/";
@@ -17,7 +15,8 @@ namespace eVoucher.ClientAPI_Integration
         {
             _configuration = configuration;
             _httpClient = _= new HttpClient();
-            _httpClient.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress] + "/api/");            
+            _httpClient.BaseAddress = new Uri(_configuration[SystemConstants.AppSettings.BaseAddress] + "/api/");
+            //_httpClient.BaseAddress = new Uri(BASE_URL);
             _httpClient.DefaultRequestHeaders.Accept.Clear();
             _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
