@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eVoucher.Client", "..\eVouc
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eVoucher.Partner", "..\eVoucher.Partner\eVoucher.Partner.csproj", "{B2727EF0-A7AD-48C5-B8C7-A0277B83D241}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "eVoucher_ViewModel", "..\eVoucher_ViewModel\eVoucher_ViewModel.csproj", "{81DA8AA4-E10D-4120-8CD9-8BF3EA1133D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "eVoucher_ViewModel", "..\eVoucher_ViewModel\eVoucher_ViewModel.csproj", "{81DA8AA4-E10D-4120-8CD9-8BF3EA1133D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
