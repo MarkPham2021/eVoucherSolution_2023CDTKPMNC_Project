@@ -9,9 +9,7 @@ namespace eVoucher_DTO.Models
     public class GamePlayResult
     {
         [Key]
-        public int Id { get; set; }
-        [ForeignKey("CustomerID")]
-        public Customer Customer { get; set; }
+        public int Id { get; set; }        
         [ForeignKey("CampaignGameID")]
         public CampaignGame CampaignGame { get; set; }
         public int GotNumberResult { get; set; }

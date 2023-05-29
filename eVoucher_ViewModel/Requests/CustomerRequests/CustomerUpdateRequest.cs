@@ -5,8 +5,8 @@ namespace eVoucher_ViewModel.Requests.CustomerRequests
 {
     public class CustomerUpdateRequest
     {
-        AppUser AppUser { get; set; }
-        Customer Customer { get; set; }
+        public AppUser AppUser { get; set; }
+        public Customer Customer { get; set; }
         public string Password { get; set; }
     }
 }

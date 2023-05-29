@@ -84,18 +84,8 @@ namespace eVoucher_BUS.Services
                     }
                 };
             }
-            var registerResult = await _campaignRepository.Add(campaign);
-            APIResult<string> apiresult;
-            if (registerResult != null)
-            {
-                apiresult = new APIResult<string>(true,
-                $"Created campaign {campaign.Name} successfully", registerResult.Id.ToString());
-            }
-            else
-            {
-                apiresult = new APIResult<string>(false, $"Create campaign {campaign.Name} fail",
-                "Please check data and try again");
-            }             
+            campaign.CampaignGames = new List<CampaignGame>();
+                         
             //process to assign campaigngame
             var selectitems = JsonConvert.DeserializeObject<List<SelectItem>>(request.Games);            
             foreach(var item in selectitems)
@@ -113,12 +103,25 @@ namespace eVoucher_BUS.Services
                         IsDeleted = false,
                         Status = ActiveStatus.Active
                     };
-                    var assigngameresult = await _campaignGameRepository.Add(campaigngame);
+                    campaign.CampaignGames.Add(campaigngame);
+                    //var assigngameresult = await _campaignGameRepository.Add(campaigngame);
                     //add to game.campaignchosencount
                     game.CampaignChosenCount += 1;
                     var updategame = await _gameRepository.Update(game);
                 }
-            }            
+            }
+            var registerResult = await _campaignRepository.Add(campaign);
+            APIResult<string> apiresult;
+            if (registerResult != null)
+            {
+                apiresult = new APIResult<string>(true,
+                $"Created campaign {campaign.Name} successfully", registerResult.Id.ToString());
+            }
+            else
+            {
+                apiresult = new APIResult<string>(false, $"Create campaign {campaign.Name} fail",
+                "Please check data and try again");
+            }
             return apiresult;
         }
         public async Task<APIResult<string>> CreateCampaignVoucherType(CampaignCreateVoucherTypeRequest request)
@@ -149,10 +152,10 @@ namespace eVoucher_BUS.Services
                 var rand =new Random();
                 for (int i = 1; i <= request.NumberofLuckyNumbers; i++)
                 {
-                    int luckynumber = rand.Next(1, 100*request.NumberofLuckyNumbers);
+                    int luckynumber = rand.Next(1, 1000);
                     while (luckynumberlist.Contains(luckynumber))
                     {
-                        luckynumber = rand.Next(1, 100 * request.NumberofLuckyNumbers);
+                        luckynumber = rand.Next(1, 1000);
                     }
                     luckynumberlist.Add(luckynumber);
                 }

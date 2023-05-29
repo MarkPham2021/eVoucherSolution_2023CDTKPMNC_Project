@@ -477,7 +477,7 @@ namespace eVoucher_Migrations.Migrations
                     b.Property<int>("CampaignGameID")
                         .HasColumnType("int");
 
-                    b.Property<int>("CustomerID")
+                    b.Property<int?>("CustomerId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -498,7 +498,7 @@ namespace eVoucher_Migrations.Migrations
 
                     b.HasIndex("CampaignGameID");
 
-                    b.HasIndex("CustomerID");
+                    b.HasIndex("CustomerId");
 
                     b.HasIndex("VoucherTypeID");
 
@@ -746,7 +746,7 @@ namespace eVoucher_Migrations.Migrations
 
                     b.Property<string>("LuckyNumbers")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("varchar(max)");
 
                     b.Property<int>("MaxAmount")
                         .HasColumnType("int");
@@ -757,7 +757,7 @@ namespace eVoucher_Migrations.Migrations
                         .HasColumnType("nvarchar(250)");
 
                     b.Property<string>("Promotion")
-                        .HasColumnType("nvarchar");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("RemainAmount")
                         .HasColumnType("int");
@@ -881,19 +881,15 @@ namespace eVoucher_Migrations.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("eVoucher_DTO.Models.Customer", "Customer")
+                    b.HasOne("eVoucher_DTO.Models.Customer", null)
                         .WithMany("GamePlayResults")
-                        .HasForeignKey("CustomerID")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CustomerId");
 
                     b.HasOne("eVoucher_DTO.Models.VoucherType", "VoucherType")
                         .WithMany()
                         .HasForeignKey("VoucherTypeID");
 
                     b.Navigation("CampaignGame");
-
-                    b.Navigation("Customer");
 
                     b.Navigation("VoucherType");
                 });

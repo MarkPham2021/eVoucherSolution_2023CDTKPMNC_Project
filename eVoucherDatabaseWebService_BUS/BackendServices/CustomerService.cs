@@ -2,7 +2,9 @@
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Identity;
+using Newtonsoft.Json;
 
 namespace eVoucher_BUS.Services
 {
@@ -19,19 +21,38 @@ namespace eVoucher_BUS.Services
         Task<Customer> DeleteCustomer(int id);
 
         Task<Customer> DeleteCustomer(Customer customer);
+        Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request);
     }
 
     public class CustomerService : ICustomerService
     {
         private ICustomerRepository _customerRepository;
+        private ICampaignRepository _campaignRepository;
+        private IVoucherTypeRepository _voucherTypeRepository;
+        private IVoucherTypeImageRepository _voucherTypeImageRepository;
+        private IVoucherRepository _voucherRepository;
+        private ICampaignGameRepository _campaignGameRepository;
+        private IGamePlayResultRepository _gamePlayResultRepository;
+        private IGameRepository _gameRepository;
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
 
-        public CustomerService(ICustomerRepository customerRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)
+        public CustomerService(ICustomerRepository customerRepository, IVoucherTypeRepository voucherTypeRepository,
+            IVoucherRepository voucherRepository, IGamePlayResultRepository gamePlayResultRepository, 
+            IGameRepository gameRepository, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager,
+            ICampaignGameRepository campaignGameRepository, ICampaignRepository campaignRepository, 
+            IVoucherTypeImageRepository voucherTypeImageRepository)
         {
-            _customerRepository = customerRepository;
+            _customerRepository = customerRepository;            
+            _voucherTypeRepository = voucherTypeRepository;
+            _voucherRepository = voucherRepository;
+            _gamePlayResultRepository = gamePlayResultRepository;
+            _gameRepository = gameRepository;
             _userManager = userManager;
             _roleManager = roleManager;
+            _campaignGameRepository = campaignGameRepository;
+            _campaignRepository = campaignRepository;
+            _voucherTypeImageRepository = voucherTypeImageRepository;
         }
 
         public Task<Customer> DeleteCustomer(int id)
@@ -84,31 +105,135 @@ namespace eVoucher_BUS.Services
 
         public async Task<Customer?> UpdateCustomer(CustomerUpdateRequest request)
         {
-            var user = new AppUser()
-            {
-                UserName = request.UserName,
-                Email = request.Email,
-                PhoneNumber = request.PhoneNumber,
-                UserTypeId = request.UserTypeId
-            };
+            var user = request.AppUser;            
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);            
             var result = await _userManager.UpdateAsync(user);
-            var customer = new Customer()
-            {
-                Name = request.Name,
-                Gender = request.Gender,
-                DOB = request.DOB,
-                Address = request.Address,                
-                IsDeleted = false,
-                Status = ActiveStatus.Active,
-                AppUser = user,
-                UpdatedBy = request.UpdatedBy,
-                UpdatedTime = request.UpdatedTime
-            };
-            var registerResult = await _customerRepository.Add(customer);
-
+            var customer = request.Customer;
+            customer.AppUser = user;
+            var registerResult = await _customerRepository.Update(customer);
             return registerResult;
         }
 
+        public async Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request)
+        {
+            var campaigngame = await _campaignGameRepository.GetSingleByCondition(cpg => cpg.Id == request.CampaignGameId);
+            if (campaigngame == null)
+            {
+                return new APIClaimVoucherResult()
+                {
+                    IsSuccess = false,
+                    IsGotVoucher = false,
+                    Message = "CampaignGameId wrong",
+                    _Voucher = null
+                };
+            }
+            var infos = request.AppUserInfo.Split('|');
+            var appuserid = int.Parse(infos[0]);            
+            var user = await _userManager.FindByIdAsync(infos[0]);
+            if (user == null)
+            {
+                return new APIClaimVoucherResult()
+                {
+                    IsSuccess = false,
+                    IsGotVoucher = false,
+                    Message = "UserInfo wrong",
+                    _Voucher = null
+                };
+            }
+            var campaign =await _campaignRepository.GetSingleByCondition(c =>c.CampaignGames.Contains(campaigngame));
+            var vouchertypes = await _voucherTypeRepository.GetMulti(vt => vt.Campaign.Id == campaign.Id);
+            int numberofvouchertypes = vouchertypes.Count();
+            var customer = await _customerRepository.GetSingleByCondition(c => c.AppUser.Id == appuserid);
+            VoucherType vouchertypeget = new VoucherType();
+            APIClaimVoucherResult apiclaimvoucherresult = new APIClaimVoucherResult();
+            if (numberofvouchertypes <1)
+            {
+                return new APIClaimVoucherResult()
+                {
+                    IsSuccess = false,
+                    IsGotVoucher = false,
+                    Message = "campaign has no vouchertype",
+                    _Voucher = null
+                };
+            }
+            if (numberofvouchertypes > 0)
+            {
+                bool ismatch = false;                
+                for (int i = 0; i < numberofvouchertypes; i++)
+                {
+                    var luckynumbers = JsonConvert.DeserializeObject<List<int>>(vouchertypes[i].LuckyNumbers);
+                    if (luckynumbers.Contains(request.GottenNumber)) 
+                    {
+                        vouchertypeget = vouchertypes[i];
+                        ismatch = true;
+                        break;
+                    }
+                }                
+                if (!ismatch) 
+                {
+                    vouchertypeget = vouchertypes[numberofvouchertypes - 1];
+                    var vouchertypegetimage = await _voucherTypeImageRepository.GetSingleByCondition(img => img.VoucherType.Id == vouchertypeget.Id);
+                    apiclaimvoucherresult = new APIClaimVoucherResult()
+                    {
+                        IsSuccess = true,
+                        IsGotVoucher = true,
+                        Message = "you got the allgotten voucher",
+                        _Voucher = new eVoucher_ViewModel.Requests.VoucherRequests.VoucherTypeVM()
+                        {
+                            Id = vouchertypeget.Id,
+                            Name = vouchertypeget.Name,
+                            CampaignId = campaign.Id,
+                            CampaignName = campaign.Name,
+                            DiscountRate = vouchertypeget.DiscountRate,
+                            Promotion = vouchertypeget.Promotion,
+                            ImagePath = vouchertypegetimage.ImagePath,
+                            ExpiringDate = vouchertypeget.ExpiringDate
+                        }
+                    };
+
+                }
+                else
+                {
+                    var vouchertypegetimage = await _voucherTypeImageRepository.GetSingleByCondition(img => img.VoucherType.Id == vouchertypeget.Id);
+                    apiclaimvoucherresult = new APIClaimVoucherResult()
+                    {
+                        IsSuccess = true,
+                        IsGotVoucher = true,
+                        Message = "you win a voucher",
+                        _Voucher = new eVoucher_ViewModel.Requests.VoucherRequests.VoucherTypeVM()
+                        {
+                            Id = vouchertypeget.Id,
+                            Name = vouchertypeget.Name,
+                            CampaignId = campaign.Id,
+                            CampaignName = campaign.Name,
+                            DiscountRate = vouchertypeget.DiscountRate,
+                            Promotion = vouchertypeget.Promotion,
+                            ImagePath = vouchertypegetimage.ImagePath,
+                            ExpiringDate = vouchertypeget.ExpiringDate
+                        }
+                    };
+                }
+                
+            }
+            customer.GamePlayResults = new List<GamePlayResult>();            
+            var gameplayresult = new GamePlayResult()
+            { 
+                CampaignGame = campaigngame,
+                GotNumberResult = request.GottenNumber,
+                IsGotVoucher = true,
+                VoucherType = vouchertypeget,
+                Voucher = new Voucher()
+                {                    
+                    DateGet = DateTime.Now,
+                    VoucherStatus = VoucherStatus.UnUsed
+                }
+            };
+            customer.GamePlayResults.Add(gameplayresult);
+            var updatecustomerresult = await _customerRepository.Update(customer);            
+            var game = await _gameRepository.GetSingleByCondition(g => g.CampaignGames.Contains(campaigngame));            
+            game.PlayedCount += 1;
+            var updategameplaycount = await _gameRepository.Update(game);
+            return apiclaimvoucherresult;
+        }
     }
 }
