@@ -114,6 +114,9 @@ namespace eVoucher_BUS.Services
                         Status = ActiveStatus.Active
                     };
                     var assigngameresult = await _campaignGameRepository.Add(campaigngame);
+                    //add to game.campaignchosencount
+                    game.CampaignChosenCount += 1;
+                    var updategame = await _gameRepository.Update(game);
                 }
             }            
             return apiresult;

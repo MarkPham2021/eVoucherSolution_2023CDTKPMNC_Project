@@ -1,4 +1,5 @@
-﻿@using eVoucher_ViewModel.Requests.VoucherRequests;
+﻿@using System.Globalization;
+@using eVoucher_ViewModel.Requests.VoucherRequests;
 @using eVoucher_ViewModel.Response;
 @model PageResult<VoucherTypeVM>
 @{
@@ -8,7 +9,7 @@
 
 
 <div class="row container-fluid my-2 text-start">
-    <a class="btn btn-warning btn-lg">VoucherTypes of Campaigns:</a>
+    <a class="btn btn-warning btn-lg">VoucherTypes of Campaigns &quot;@ViewData["campaignName"]&quot;:</a>
 </div>
 <div class="row mb-3">
     @foreach (var item in Model.Items)
@@ -22,7 +23,7 @@
                     <p class="card-text">@item.Promotion</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Expired date: @item.ExpiringDate</li>
+                    <li class="list-group-item">Expired date: @item.ExpiringDate.ToShortDateString()</li>
                     <li class="list-group-item">Maxamount: @item.MaxAmount/RemainAmount: @item.RemainAmount</li>
 
                 </ul>
@@ -37,7 +38,7 @@
 </div>
 @await Component.InvokeAsync("Pager", Model)
 <div class="row container-fluid my-2 align-content-end">
-    @Html.ActionLink("Create new VoucherType", "CreateVoucherType", new { id = campaignid })
+    @Html.ActionLink("Create new VoucherType", "Create", new { id = campaignid })
 
 </div>
 

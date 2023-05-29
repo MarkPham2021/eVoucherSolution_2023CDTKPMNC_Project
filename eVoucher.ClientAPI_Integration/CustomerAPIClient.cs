@@ -1,7 +1,9 @@
 ﻿using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using System.Net.Http.Headers;
 
 namespace eVoucher.ClientAPI_Integration
 {
@@ -22,6 +24,16 @@ namespace eVoucher.ClientAPI_Integration
             var savedcustomerstring = await response.Content.ReadAsStringAsync();
             var savedcustomer = JsonConvert.DeserializeObject<Customer>(savedcustomerstring);
             return savedcustomer;
+        }
+        public async Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request, string token)
+        {
+            var uri = BASE_REQUEST +"claimvoucher";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.PostAsJsonAsync<CustomerPlayGameForVoucherRequest>(uri, request);
+            var apiclaimvoucherresultstring = await response.Content.ReadAsStringAsync();
+            var apiclaimvoucherresult = JsonConvert.DeserializeObject<APIClaimVoucherResult>(apiclaimvoucherresultstring);
+            return apiclaimvoucherresult;
+
         }
     }
 }

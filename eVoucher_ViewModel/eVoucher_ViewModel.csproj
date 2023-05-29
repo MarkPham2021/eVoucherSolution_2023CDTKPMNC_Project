@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\eVoucherDatabaseWebService_DTO\eVoucher_DTO.csproj" />
     <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
   </ItemGroup>
 

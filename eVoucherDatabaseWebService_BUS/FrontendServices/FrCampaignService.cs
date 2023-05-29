@@ -15,7 +15,9 @@ namespace eVoucher_BUS.FrontendServices
     public interface IFrCampaignService
     {
         Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request,string token);
-        Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, GetManageCampaignPagingRequest request, string token);
+        Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, 
+            GetManageCampaignPagingRequest request, string token);
+        Task<CampaignVM?> GetCampaignVMById(int campaignid, string token);
         Task<List<Game>> GetAllGames(string token);
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request,string token);
         Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
@@ -45,6 +47,16 @@ namespace eVoucher_BUS.FrontendServices
             return await _gameAPIClient.GetAllGameAsync(token);
         }
 
+        public async Task<CampaignVM?> GetCampaignVMById(int campaignid, string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            if (data == null)
+            {
+                return null;
+            }
+            var campaignvm = data.FirstOrDefault(c=>c.Id== campaignid);
+            return campaignvm;
+        }
         public async Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, 
             string token)
         {
@@ -91,6 +103,7 @@ namespace eVoucher_BUS.FrontendServices
                 vouchertypes = campaigns[0].VoucherTypes;                
                 foreach (var item in vouchertypes)
                 {
+                    item.CampaignName = campaigns[0].Name;
                     item.ImagePath = BaseAdress + item.ImagePath;
                 }
             }

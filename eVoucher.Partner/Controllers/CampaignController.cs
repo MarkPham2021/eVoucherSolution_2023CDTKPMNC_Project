@@ -65,6 +65,10 @@ namespace eVoucher.Partner.Controllers
                 ViewData["result"] = "success";
             return RedirectToAction("Index");
         }
+        /* 03 method:[httpget] ViewVoucherType + [httpget]CreateVoucherType + [httpost]CreateVoucherType 
+         * have been move to VoucherTypeController successfully for the function search for work
+         * then the 2 view: ViewVoucherType and CreateVoucherType will no use but remain in folder view Campaign 
+         * for later reference
         [HttpGet]
         public async Task<IActionResult> ViewVoucherType(string keyword ="", int pageIndex = 1, int pageSize = 3)
         {
@@ -121,5 +125,6 @@ namespace eVoucher.Partner.Controllers
             ViewData["result"] = response.Message;
             return View();
         }
+        */
     }
 }

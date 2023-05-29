@@ -14,19 +14,19 @@
     {
         <div class="col-md-4">
             <div class="card">
-                <img class="card-img-top" src="@item.ImagePath" width="350" height="260">
+                <img class="card-img-top" src="@item.ImagePath" width="320" height="260">
                 <div class="card-body">
                     <h5 class="card-title">@item.Name</h5>
                     <p class="card-text">@item.Slogan</p>
                 </div>
                 <ul class="list-group list-group-flush">
-                    <li class="list-group-item">Begin date: @item.BeginningDate -> End date: @item.EndingDate</li>
-                    <li class="list-group-item">Dapibus ac facilisis in</li>
+                    <li class="list-group-item">Begin date: @item.BeginningDate.ToShortDateString() -> End date: @item.EndingDate.ToShortDateString()</li>
+                    <li class="list-group-item">@item.MetaDescription</li>
                     
                 </ul>
                 <div class="card-body">
                     @Html.ActionLink("View detail", "ViewDetail", new { id = item.Id }) |
-                    @Html.ActionLink("View vouchertype", "ViewVoucherType", new { id = item.Id }) |
+                    @Html.ActionLink("View vouchertype", "Index","VoucherType", new { id = item.Id }) |
                     @Html.ActionLink("Edit Campaign", "Edit", new { id = item.Id })
                 </div>
             </div>

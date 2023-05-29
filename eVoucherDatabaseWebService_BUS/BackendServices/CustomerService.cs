@@ -82,9 +82,33 @@ namespace eVoucher_BUS.Services
             return registerResult;
         }
 
-        public Task<Customer?> UpdateCustomer(CustomerUpdateRequest request)
+        public async Task<Customer?> UpdateCustomer(CustomerUpdateRequest request)
         {
-            throw new NotImplementedException();
+            var user = new AppUser()
+            {
+                UserName = request.UserName,
+                Email = request.Email,
+                PhoneNumber = request.PhoneNumber,
+                UserTypeId = request.UserTypeId
+            };
+            user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);            
+            var result = await _userManager.UpdateAsync(user);
+            var customer = new Customer()
+            {
+                Name = request.Name,
+                Gender = request.Gender,
+                DOB = request.DOB,
+                Address = request.Address,                
+                IsDeleted = false,
+                Status = ActiveStatus.Active,
+                AppUser = user,
+                UpdatedBy = request.UpdatedBy,
+                UpdatedTime = request.UpdatedTime
+            };
+            var registerResult = await _customerRepository.Add(customer);
+
+            return registerResult;
         }
+
     }
 }
