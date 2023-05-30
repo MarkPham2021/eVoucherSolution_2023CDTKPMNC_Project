@@ -89,6 +89,7 @@ namespace eVoucher.Client.Controllers
                     IsPersistent = false
                 };
                 HttpContext.Session.SetString(SystemConstants.AppSettings.Token, result.ResultObj);
+
                 await HttpContext.SignInAsync(
                             CookieAuthenticationDefaults.AuthenticationScheme,
                             userPrincipal,

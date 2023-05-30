@@ -27,7 +27,7 @@ namespace eVoucher.ClientAPI_Integration
         }
         public async Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request, string token)
         {
-            var uri = BASE_REQUEST +"claimvoucher";
+            var uri = BASE_REQUEST + "/claimvoucher";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.PostAsJsonAsync<CustomerPlayGameForVoucherRequest>(uri, request);
             var apiclaimvoucherresultstring = await response.Content.ReadAsStringAsync();

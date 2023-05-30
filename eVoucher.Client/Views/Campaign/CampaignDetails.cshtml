@@ -1,18 +1,56 @@
-﻿@page
+﻿@model eVoucher_ViewModel.Requests.CampaignRequests.CampaignVM
 @{
+
 }
 <div class="container">
     <div class="row">
         <div class="col col-md-5 col-sm-12">
             <div class="card p-2" style="width: 100%;">
-                <img src="..." class="card-img-top" alt="...">
+                <img src="@Model.ImagePath" class="card-img-top" alt="...">
             </div>
         </div>
         <div class="col col-md-7 col-sm-12">
-            <h5>Campaign name</h5>
-            <p>Campaign description</p>
-            <partial name="_RandomWheelGame" />
-            @*<partial name="_TerisGame" />*@
+            <h5>@Model.Name</h5>
+            <p>@Model.Slogan</p>
+
+            @if (Model.campaignGames != null)
+            {
+                foreach (var game in Model.campaignGames)
+                {
+                    if (game.Name == "Random Wheel")
+                    {
+                        <div id="RandomWheel">
+                            <partial name="_RandomWheelGame" />
+                            @*<partial name="_TerisGame" />*@
+                            <input type="hidden" class="campaignGameId" value="@Model.Id" />
+                        </div>
+
+                    }
+                    if (game.Name == "Teris")
+                    {
+                        <div id="Teris">
+                            <partial name="_TerisGame" />
+                            <input type="hidden" class="campaignGameId" value="@Model.Id" />
+                        </div>
+                    }
+                }
+            }
+        </div>
+    </div>
+    <div id="mpopupBox" class="mpopup">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span class="close">×</span>
+                <h2>Voucher granted</h2>
+            </div>
+            <div class="modal-body">
+                <h5>Congratulation!</h5>
+                <p>You got a voucher: </p>
+            </div>
+            @*<div class="modal-footer">
+                <button type="button" class="btn btn-primary">Receive</button>
+            </div>*@
         </div>
     </div>
     <div class="row mt-3 bg-light py-3">
@@ -30,3 +68,31 @@
     </div>
 </div>
 @*<partial name="_GoogleMap" />*@
+
+<script>
+        // Select modal
+    var mpopup = document.getElementById('mpopupBox');
+
+    // Select trigger link
+    //var mpLink = document.getElementById("mpopupLink");
+
+    // Select close action element
+    var close = document.getElementsByClassName("close")[0];
+
+    //// Open modal once the link is clicked
+    //mpLink.onclick = function () {
+    //    mpopup.style.display = "block";
+    //};
+
+    // Close modal once close element is clicked
+    close.onclick = function () {
+        mpopup.style.display = "none";
+    };
+
+    // Close modal when user clicks outside of the modal box
+    window.onclick = function (event) {
+        if (event.target == mpopup) {
+            mpopup.style.display = "none";
+        }
+    };
+</script>

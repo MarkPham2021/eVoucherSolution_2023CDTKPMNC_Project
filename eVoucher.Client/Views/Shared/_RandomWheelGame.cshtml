@@ -1,5 +1,6 @@
-﻿@page
+﻿
 @{
+
 }
 <style>
     #random_wheel #text {
@@ -56,18 +57,27 @@
         color = d3.scale.category20();//category20c()
         randomNumbers = getRandomNumbers();
     //http://osric.com/bingo-card-generator/?title=HTML+and+CSS+BINGO!&words=padding%2Cfont-family%2Ccolor%2Cfont-weight%2Cfont-size%2Cbackground-color%2Cnesting%2Cbottom%2Csans-serif%2Cperiod%2Cpound+sign%2C%EF%B9%A4body%EF%B9%A5%2C%EF%B9%A4ul%EF%B9%A5%2C%EF%B9%A4h1%EF%B9%A5%2Cmargin%2C%3C++%3E%2C{+}%2C%EF%B9%A4p%EF%B9%A5%2C%EF%B9%A4!DOCTYPE+html%EF%B9%A5%2C%EF%B9%A4head%EF%B9%A5%2Ccolon%2C%EF%B9%A4style%EF%B9%A5%2C.html%2CHTML%2CCSS%2CJavaScript%2Cborder&freespace=true&freespaceValue=Web+Design+Master&freespaceRandom=false&width=5&height=5&number=35#results
-    var data = [
-        { "label": "WIN", "value": 1, "question": "Congratulations! You got a Voucher!" }, // padding
-        { "label": "LOSE", "value": 2, "question": "You lose!" }, //font-family
-        //{ "label": "Win", "value": 3, "question": "What CSS property is used for changing the color of text?" }, //color
-        //{ "label": "Lose", "value": 4, "question": "What CSS property is used for changing the boldness of text?" }, //font-weight
-        //{ "label": "Win", "value": 5, "question": "What CSS property is used for changing the size of text?" }, //font-size
-        //{ "label": "Lose", "value": 6, "question": "What CSS property is used for changing the background color of a box?" }, //background-color
-        //{ "label": "Win", "value": 7, "question": "Which word is used for specifying an HTML tag that is inside another tag?" }, //nesting
-        //{ "label": "Lose", "value": 8, "question": "Which side of the box is the third number in: margin:1px 1px 1px 1px; ?" }, //bottom
-        //{ "label": "Win", "value": 9, "question": "What are the fonts that don't have serifs at the ends of letters called?" }, //sans-serif
-        //{ "label": "Lose", "value": 10, "question": "With CSS selectors, what character prefix should one use to specify a class?" }
-    ];
+    var data = [];
+
+    for (var i = 1; i <= 26; i++)
+    {
+        var row = {
+            "label": "",
+            "value": 1,
+            "question": ""
+        }
+        if (i % 2 != 0) {
+            row.label = "WIN";
+            row.value = 1;
+            row.question = "Congratulations! You got a Voucher!"
+            data.push(row);
+        } else {
+            row.label = "LOSE";
+            row.value = 2,
+                row.question = "You lose! No voucher."
+            data.push(row);
+        }
+    }
     var svg = d3.select('#chart')
         .append("svg")
         .data([data])
@@ -135,14 +145,29 @@
             .each("end", function () {
                 //mark question as seen
                 d3.select(".slice:nth-child(" + (picked + 1) + ") path")
-                    //.attr("fill", "#111");
+                    .attr("fill", "#fff");
                 //populate question
                 d3.select("#question h1")
-                    .text(data[picked].question);
+                    .text(data[picked].question)
+                    .style({
+                        "color": "white",
+                        "border": "1px solid grey",
+                        "background": "rgba(22,135,87, 0.5)",
+                        "padding": "15px",
+                        "border-radius": "15px",
+                    //    "box-shadow": "5px 5px 5px grey"
+                    });
                 oldrotation = rotation;
 
                 /* Get the result value from object "data" */
                 console.log(data[picked].value)
+                var mpopup = document.getElementById('mpopupBox');
+                if (data[picked].value == 1) {
+                    var randomWheel = document.getElementById("RandomWheel");
+                    var campaginGameId = document.getElementsByClassName("campaignGameId")[0].value
+                    getVoucher(campaginGameId)
+                    mpopup.style.display = "block";
+                }
 
                 /* Comment the below line for restrict spin to sngle time */
                 container.on("click", spin);
@@ -166,7 +191,7 @@
         .attr("y", 15)
         .attr("text-anchor", "middle")
         .text("SPIN")
-        .style({ "font-weight": "bold", "font-size": "30px" });
+        .style({ "font-weight": "bold", "font-size": "30px", "color": "red" });
 
 
     function rotTween(to) {
@@ -190,5 +215,16 @@
             }
         }
         return array;
+    }
+
+    function getVoucher(id) {
+        var uri = `Campaign/GetVoucher?CampaignGameId=${id}`
+        $.ajax({
+            url: '@Url.Action("GetVoucher","Campaign")',
+            data: { CampaignGameId: id },
+            success: function (data) {
+                console.log(data)
+            }
+        })
     }
 </script>
