@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using eVoucher_BUS.FrontendServices;
+using eVoucher_Utility.Constants;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -11,16 +12,35 @@ namespace eVoucher.Client.Controllers
 {
     public class CampaignController : Controller
     {
-        private IFrCampaignService _frCampaignService;
+        private readonly IFrCampaignService _frCampaignService;
+        private readonly IConfiguration _configuration;
 
-        public CampaignController(IFrCampaignService frCampaignService)
+        public CampaignController(IFrCampaignService frCampaignService,
+                                    IConfiguration configuration)
         {
             _frCampaignService = frCampaignService;
+            _configuration = configuration;
         }
         // GET: /<controller>/
-        public IActionResult Index()
+        [Route("{Id}")]
+        public async Task<IActionResult> CampaignDetails(int Id)
         {
-            return View("CampaignDetails");
+            var token = HttpContext.Session.GetString("Token");
+            var campaign = await _frCampaignService.GetCampaignVMById(Id, token);
+
+            if (campaign != null)
+            {
+                campaign.ImagePath = _configuration[SystemConstants.AppSettings.BaseAddress] + campaign.ImagePath;
+                return View("CampaignDetails", campaign);
+            }
+
+            return NotFound("Your campaign not found!");
+        }
+
+        [HttpGet]
+        public int GetVoucher(int CampaignGameId)
+        {
+            return CampaignGameId;
         }
     }
 }
