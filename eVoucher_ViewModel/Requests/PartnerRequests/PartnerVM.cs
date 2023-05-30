@@ -9,8 +9,7 @@ namespace eVoucher_ViewModel.Requests.PartnerRequests
 {
     public class PartnerVM
     {
-        public Partner Partner { get; set; }
-        public AppUser AppUser { get; set; }
+        public Partner Partner { get; set; }        
         public string PartnerCategoryName { get; set; }
     }
 }

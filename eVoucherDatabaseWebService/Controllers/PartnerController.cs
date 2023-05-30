@@ -2,6 +2,7 @@
 using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.PartnerRequests;
 using eVoucher_ViewModel.Response;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -32,14 +33,15 @@ namespace eVoucherDatabaseWebService.Controllers
 
         // GET api/<PartnerController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<ActionResult<PartnerVM?>> Get(int id)
         {
-            return "value";
+            return await _partnerService.GetPartnerById(id);
         }
 
         // POST api/partner
         [HttpPost("register")]
         [Consumes("multipart/form-data")]
+        [AllowAnonymous]
         public async Task<ActionResult<APIResult<string>>> Register([FromForm] PartnerCreateRequest request)
         {
             var result = await _partnerService.RegisterPartner(request);

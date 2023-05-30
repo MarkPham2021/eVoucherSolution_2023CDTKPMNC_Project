@@ -1,30 +1,37 @@
-﻿using eVoucher_BUS.FrontendServices;
+﻿/*
+using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
-using eVoucher_ViewModel.Requests.Common;
 using eVoucher_ViewModel.Requests.PartnerRequests;
 using eVoucher_ViewModel.Requests.UserRequests;
-using eVoucher_ViewModel.Response;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.IdentityModel.Logging;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
+using eVoucher_ViewModel.Requests.Common;
 
 namespace eVoucher.Partner.Controllers
 {
-    [Authorize]
-    public class PartnerController : BaseController
+    public class PartnerController : Controller
     {
-        private IFrPartnerService _partnerService;
-        private ICommonService _commonService;
+        private PartnerAPIClient _partnerapiclient;
+        private LoginAPIClient _loginapiclient;
+        private GoogleDistanceMatrixAPICLient _googleapiclient;
         private IConfiguration _configuration;
 
-        public PartnerController(IFrPartnerService frPartnerService, ICommonService commonService,
+        public PartnerController(PartnerAPIClient partnerapiclient, LoginAPIClient loginapiclient, 
+            GoogleDistanceMatrixAPICLient googleDistanceMatrixAPICLient,
             IConfiguration configuration)
         {
-            _partnerService = frPartnerService;
-            _commonService = commonService;
+            _partnerapiclient = partnerapiclient;
+            _loginapiclient = loginapiclient;
+            _googleapiclient = googleDistanceMatrixAPICLient;
             _configuration = configuration;
         }
 
@@ -34,10 +41,9 @@ namespace eVoucher.Partner.Controllers
         }
 
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult> Register()
         {
-            var categories = await _partnerService.GetPartnerCategoriesAsync();
+            var categories = await _partnerapiclient.GetAllPartnerCategoriesAsync();
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)
             {
@@ -46,8 +52,8 @@ namespace eVoucher.Partner.Controllers
             ViewBag.Categories = selectlistpartnercategory;
             return View();
         }
-
         [HttpGet]
+
         public async Task<ActionResult> GetDistance(string destinations, string origins)
         {
             var request = new GetGoogleDistanceMatrixRequest()
@@ -55,7 +61,8 @@ namespace eVoucher.Partner.Controllers
                 destinations = destinations,
                 origins = origins
             };
-            TextValueObject response = await _commonService.GetDistanceMatrix(request);
+            var response = await _googleapiclient.GetDistanceMatrix(request);
+
             ViewData["result"] = response.text + $"\tvalue: {response.value}";
             return View();
         }
@@ -66,7 +73,7 @@ namespace eVoucher.Partner.Controllers
         {
             if (!ModelState.IsValid)
                 return View(request);
-            var result = await _partnerService.Register(request);
+            var result = await _partnerapiclient.Register(request);
             if (result != null)
             {
                 var login = new LoginRequest()
@@ -83,14 +90,13 @@ namespace eVoucher.Partner.Controllers
             ViewData["result"] = result.Message;
             return View(request);
         }
-
-        private async Task<IActionResult> Login(LoginRequest request)
+        public async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)
                 return View(ModelState);
 
-            var result = await _partnerService.Login(request);
-            var userPrincipal = _commonService.ValidateToken(result.ResultObj);
+            var result = await _loginapiclient.Login(request);            
+            var userPrincipal = this.ValidateToken(result.ResultObj);
             var authProperties = new AuthenticationProperties
             {
                 ExpiresUtc = DateTimeOffset.UtcNow.AddMinutes(10),
@@ -104,5 +110,22 @@ namespace eVoucher.Partner.Controllers
 
             return RedirectToAction("Index", "Home");
         }
+        private ClaimsPrincipal ValidateToken(string jwtToken)
+        {
+            IdentityModelEventSource.ShowPII = true;
+            SecurityToken validatedToken;
+            var jwtTokentrim = jwtToken.Trim(' ', '\n');
+            int n = jwtToken.Length;
+            TokenValidationParameters validationParameters = new TokenValidationParameters();
+
+            validationParameters.ValidateLifetime = true;
+            validationParameters.ValidAudience = _configuration["Tokens:Issuer"];
+            validationParameters.ValidIssuer = _configuration["Tokens:Issuer"];
+            validationParameters.IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Tokens:Key"]));
+            ClaimsPrincipal principal = new JwtSecurityTokenHandler().ValidateToken(jwtTokentrim,
+                validationParameters, out validatedToken);
+            return principal;
+        }
     }
 }
+*/

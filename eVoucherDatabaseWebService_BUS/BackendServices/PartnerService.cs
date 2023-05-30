@@ -18,7 +18,7 @@ namespace eVoucher_BUS.Services
     {
         List<Partner> GetAllPartners();
 
-        Task<Partner?> GetPartnerById(int id);
+        Task<PartnerVM?> GetPartnerById(int id);
 
         Task<APIResult<string>> RegisterPartner(PartnerCreateRequest request);
 
@@ -62,9 +62,10 @@ namespace eVoucher_BUS.Services
             throw new NotImplementedException();
         }
 
-        public Task<Partner?> GetPartnerById(int id)
+        public async Task<PartnerVM?> GetPartnerById(int id)
         {
-            throw new NotImplementedException();
+            var partner = await _partnerRepository.GetPartnerWithAppUserByCondition(p=>p.Id == id);
+            return partner;
         }
 
         public async Task<APIResult<string>> RegisterPartner(PartnerCreateRequest request)

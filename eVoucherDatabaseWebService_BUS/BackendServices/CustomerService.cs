@@ -10,7 +10,7 @@ namespace eVoucher_BUS.Services
 {
     public interface ICustomerService
     {
-        List<Customer> GetAllCustomers();
+        Task<List<Customer>?> GetAllCustomersFullInfo();
 
         Task<Customer?> GetCustomerById(int id);
 
@@ -22,6 +22,8 @@ namespace eVoucher_BUS.Services
 
         Task<Customer> DeleteCustomer(Customer customer);
         Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request);
+        Task<Customer> GetCustomerFullInfoById(int id);
+        Task<Customer> GetCustomerFullInfoByUserInfo(string userinfo);
     }
 
     public class CustomerService : ICustomerService
@@ -65,9 +67,9 @@ namespace eVoucher_BUS.Services
             throw new NotImplementedException();
         }
 
-        public List<Customer> GetAllCustomers()
+        public async Task<List<Customer>?> GetAllCustomersFullInfo()
         {
-            throw new NotImplementedException();
+            return await _customerRepository.GetAllCustomersFullInfo();
         }
 
         public Task<Customer?> GetCustomerById(int id)
@@ -96,7 +98,7 @@ namespace eVoucher_BUS.Services
                 CreatedTime = request.CreatedTime,
                 IsDeleted = false,
                 Status = ActiveStatus.Active,
-                AppUser = user
+                AppUsers = user
             };
             var registerResult = await _customerRepository.Add(customer);
 
@@ -109,7 +111,7 @@ namespace eVoucher_BUS.Services
             user.PasswordHash = _userManager.PasswordHasher.HashPassword(user, request.Password);            
             var result = await _userManager.UpdateAsync(user);
             var customer = request.Customer;
-            customer.AppUser = user;
+            customer.AppUsers = user;
             var registerResult = await _customerRepository.Update(customer);
             return registerResult;
         }
@@ -143,7 +145,7 @@ namespace eVoucher_BUS.Services
             var campaign =await _campaignRepository.GetSingleByCondition(c =>c.CampaignGames.Contains(campaigngame));
             var vouchertypes = await _voucherTypeRepository.GetMulti(vt => vt.Campaign.Id == campaign.Id);
             int numberofvouchertypes = vouchertypes.Count();
-            var customer = await _customerRepository.GetSingleByCondition(c => c.AppUser.Id == appuserid);
+            var customer = await _customerRepository.GetSingleByCondition(c => c.AppUsers.Id == appuserid);
             VoucherType vouchertypeget = new VoucherType();
             APIClaimVoucherResult apiclaimvoucherresult = new APIClaimVoucherResult();
             if (numberofvouchertypes <1)
@@ -234,6 +236,16 @@ namespace eVoucher_BUS.Services
             game.PlayedCount += 1;
             var updategameplaycount = await _gameRepository.Update(game);
             return apiclaimvoucherresult;
+        }
+
+        public async Task<Customer> GetCustomerFullInfoById(int id)
+        {
+            return await _customerRepository.GetCustomerFullInfoById(id);
+        }
+
+        public async Task<Customer> GetCustomerFullInfoByUserInfo(string userinfo)
+        {
+            return await _customerRepository.GetCustomerFullInfoByUserInfo(userinfo);
         }
     }
 }
