@@ -459,13 +459,33 @@
                 checkCompleteRows();
             } else {
                 stop();
-                console.log("game over");
+                if (score > 2) {
+                    showVoucherPopup();
+                }
             }
         } else {
             y += 1;
         }
     }
 
+    function showVoucherPopup() {
+        var mpopup = document.getElementById('mpopupBox');
+        var randomWheel = document.getElementById("RandomWheel");
+        var campaginGameId = document.getElementsByClassName("campaignGameId")[0].value
+        getVoucher(campaginGameId)
+        mpopup.style.display = "block";
+    }
+
+    function getVoucher(id) {
+        var uri = `Campaign/GetVoucher?CampaignGameId=${id}`
+        $.ajax({
+            url: '@Url.Action("GetVoucher","Campaign")',
+            data: { CampaignGameId: id },
+            success: function (data) {
+                console.log(data)
+            }
+        })
+    }
     function draw() {
         // If game is not over position the current block and render
         if (!isGameOver()) {
