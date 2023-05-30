@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace eVoucher_Migrations.Migrations
 {
     /// <inheritdoc />
-    public partial class addcolumnUserTypeIdforAppUser : Migration
+    public partial class rebuildDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -381,8 +381,8 @@ namespace eVoucher_Migrations.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CampaignID = table.Column<int>(type: "int", nullable: false),
                     DiscountRate = table.Column<int>(type: "int", nullable: false),
-                    Presents = table.Column<int>(type: "int", nullable: false),
-                    Promotion = table.Column<string>(type: "nvarchar", nullable: true),
+                    Promotion = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LuckyNumbers = table.Column<string>(type: "varchar(max)", nullable: false),
                     ExpiringDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     MaxAmount = table.Column<int>(type: "int", nullable: false),
                     RemainAmount = table.Column<int>(type: "int", nullable: false),
@@ -412,10 +412,12 @@ namespace eVoucher_Migrations.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CampaignGameID = table.Column<int>(type: "int", nullable: false),
-                    Result = table.Column<int>(type: "int", nullable: false),
+                    GotNumberResult = table.Column<int>(type: "int", nullable: false),
                     IsGotVoucher = table.Column<bool>(type: "bit", nullable: false),
+                    VoucherTypeID = table.Column<int>(type: "int", nullable: true),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    AppUserId = table.Column<int>(type: "int", nullable: true)
+                    AppUserId = table.Column<int>(type: "int", nullable: true),
+                    CustomerId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -431,6 +433,16 @@ namespace eVoucher_Migrations.Migrations
                         principalTable: "CampaignGames",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_GamePlayResults_Customers_CustomerId",
+                        column: x => x.CustomerId,
+                        principalTable: "Customers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_GamePlayResults_VoucherTypes_VoucherTypeID",
+                        column: x => x.VoucherTypeID,
+                        principalTable: "VoucherTypes",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -465,9 +477,9 @@ namespace eVoucher_Migrations.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     GamePlayResultID = table.Column<int>(type: "int", nullable: false),
-                    VoucherTypeID = table.Column<int>(type: "int", nullable: false),
                     DateGet = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    VoucherStatus = table.Column<int>(type: "int", nullable: false)
+                    VoucherStatus = table.Column<int>(type: "int", nullable: false),
+                    VoucherTypeId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -479,8 +491,8 @@ namespace eVoucher_Migrations.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Vouchers_VoucherTypes_VoucherTypeID",
-                        column: x => x.VoucherTypeID,
+                        name: "FK_Vouchers_VoucherTypes_VoucherTypeId",
+                        column: x => x.VoucherTypeId,
                         principalTable: "VoucherTypes",
                         principalColumn: "Id");
                 });
@@ -521,6 +533,16 @@ namespace eVoucher_Migrations.Migrations
                 column: "CampaignGameID");
 
             migrationBuilder.CreateIndex(
+                name: "IX_GamePlayResults_CustomerId",
+                table: "GamePlayResults",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GamePlayResults_VoucherTypeID",
+                table: "GamePlayResults",
+                column: "VoucherTypeID");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_PartnerImages_PartnerID",
                 table: "PartnerImages",
                 column: "PartnerID");
@@ -543,12 +565,13 @@ namespace eVoucher_Migrations.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Vouchers_GamePlayResultID",
                 table: "Vouchers",
-                column: "GamePlayResultID");
+                column: "GamePlayResultID",
+                unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vouchers_VoucherTypeID",
+                name: "IX_Vouchers_VoucherTypeId",
                 table: "Vouchers",
-                column: "VoucherTypeID");
+                column: "VoucherTypeId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_VoucherTypeImages_VoucherTypeID",
@@ -586,9 +609,6 @@ namespace eVoucher_Migrations.Migrations
                 name: "CampaignImages");
 
             migrationBuilder.DropTable(
-                name: "Customers");
-
-            migrationBuilder.DropTable(
                 name: "PartnerImages");
 
             migrationBuilder.DropTable(
@@ -604,16 +624,19 @@ namespace eVoucher_Migrations.Migrations
                 name: "GamePlayResults");
 
             migrationBuilder.DropTable(
-                name: "VoucherTypes");
-
-            migrationBuilder.DropTable(
                 name: "CampaignGames");
 
             migrationBuilder.DropTable(
-                name: "Campaigns");
+                name: "Customers");
+
+            migrationBuilder.DropTable(
+                name: "VoucherTypes");
 
             migrationBuilder.DropTable(
                 name: "Games");
+
+            migrationBuilder.DropTable(
+                name: "Campaigns");
 
             migrationBuilder.DropTable(
                 name: "Partners");

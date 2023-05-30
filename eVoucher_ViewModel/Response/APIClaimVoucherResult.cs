@@ -13,6 +13,6 @@ namespace eVoucher_ViewModel.Response
         public bool IsSuccess { get; set; }
         public bool IsGotVoucher { get; set; }
         public string Message { get; set; }
-        public VoucherType? _Voucher { get; set; }
+        public VoucherTypeVM _Voucher { get; set; }
     }
 }
