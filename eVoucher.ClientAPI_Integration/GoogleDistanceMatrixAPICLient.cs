@@ -16,7 +16,7 @@ namespace eVoucher.ClientAPI_Integration
     public class GoogleDistanceMatrixAPICLient
     {
         const string BASE_URL = "https://maps.googleapis.com/maps/api/distancematrix/json";
-        const string GOOGLEKEY = "AIzaSyCVoYSMkFNbyU31-aDYJnNsoF5ky36Ydvk";
+        const string GOOGLEKEY = "mygoogleapikey";
         private HttpClient _httpClient;
         public GoogleDistanceMatrixAPICLient() 
         {

@@ -46,8 +46,22 @@ namespace eVoucherDatabaseWebService.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<List<Customer>?>> GetAllCustomersFullInfo()
         {
-            var data = _customerService.GetAllCustomersFullInfo();
+            var data = await _customerService.GetAllCustomersFullInfo();
             return Ok(data);
+        }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Customer?>> GetById(int id)
+        {
+            var customer = await _customerService.GetCustomerFullInfoById(id);
+            return Ok(customer);
+        }
+        [HttpGet("userinfo=",Name = "userinfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Customer?>> GetById(string userinfo)
+        {
+            var customer = await _customerService.GetCustomerFullInfoByUserInfo(userinfo);
+            return Ok(customer);
         }
     }
 }
