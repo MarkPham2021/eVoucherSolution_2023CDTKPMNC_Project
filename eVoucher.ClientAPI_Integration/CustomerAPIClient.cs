@@ -35,11 +35,27 @@ namespace eVoucher.ClientAPI_Integration
             return apiclaimvoucherresult;
 
         }
+        public async Task<List<Customer>?> GetAllCustomersFullInfo(string token)
+        {
+            var uri = BASE_REQUEST;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if(response == null)
+            {
+                return null;
+            }    
+            List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(response);
+            return customers;
+        }
         public async Task<Customer?> GetSingleCustomerAllInfoByUserInfo(string userinfo, string token)
         {
             var uri = BASE_REQUEST + $"?userinfo={userinfo}";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
             Customer customer = JsonConvert.DeserializeObject<Customer>(response);
             return customer;
         }
@@ -48,6 +64,10 @@ namespace eVoucher.ClientAPI_Integration
             var uri = BASE_REQUEST + $"/{id}";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
             Customer customer = JsonConvert.DeserializeObject<Customer>(response);
             return customer;
         }

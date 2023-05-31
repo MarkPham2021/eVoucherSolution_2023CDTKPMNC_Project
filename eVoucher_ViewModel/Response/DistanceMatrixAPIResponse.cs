@@ -17,7 +17,7 @@ namespace eVoucher_ViewModel.Response
     }
     public class TextValueObject
     {
-        public string text { get; set; }
+        public string text { get; set; }    //value in stringformat
         public int value { get; set; }
     }
     public class DistanceMatrixElement

@@ -23,7 +23,9 @@ builder.Services.AddTransient<BaseAPIClient>();
 builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<CampaignAPIClient>();
+builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
 builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
+builder.Services.AddTransient<IFrCustomerService, FrCustomerService>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 

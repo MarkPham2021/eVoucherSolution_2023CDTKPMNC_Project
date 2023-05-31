@@ -11,6 +11,9 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public int PartnerId { get; set; }
         public string PartnerName { get; set; }       
         public string PartnerCategoryName { get; set; }
+        public string PartnerPhoneNumber { get; set; }
+        public string PartnerAddress { get; set; }
+        public string? PartnerImagePath { get; set; }
         public string? Slogan { get; set; }
         public string? MetaKeyword { get; set; }
         public string? MetaDescription { get; set; }

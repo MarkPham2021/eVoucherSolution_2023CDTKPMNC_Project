@@ -19,8 +19,12 @@ namespace eVoucher_DAL.Repositories
         public async Task<List<CampaignVM>> GetAllCampaignVMs()
         {
             var data = _context.Campaigns
+                .Include(c=>c.Partner)
+                .ThenInclude(Partner => Partner.AppUser)
                 .Include(c => c.Partner)
-                .ThenInclude(Partner => Partner.Partnercategory)                
+                .ThenInclude(Partner => Partner.Partnercategory)
+                .Include(c => c.Partner)
+                .ThenInclude(Partner => Partner.PartnerImages)
                 .Include(c => c.CampaignGames)
                 .ThenInclude(CampaignGame => CampaignGame.Game)
                 .Include(c => c.CampaignImages)
@@ -37,6 +41,8 @@ namespace eVoucher_DAL.Repositories
                     PartnerId = vm.Partner.Id,
                     PartnerName = vm.Partner.Name,                    
                     PartnerCategoryName = vm.Partner.Partnercategory.Name,
+                    PartnerPhoneNumber = vm.Partner.AppUser.PhoneNumber,
+                    PartnerAddress = vm.Partner.Address,
                     Slogan = vm.Slogan,
                     MetaKeyword = vm.MetaKeyword,
                     MetaDescription = vm.MetaDescription,
@@ -49,6 +55,7 @@ namespace eVoucher_DAL.Repositories
                     Status = vm.Status,
                     IsDeleted = vm.IsDeleted,
                     ImagePath = vm.CampaignImages[0].ImagePath,
+                    PartnerImagePath = vm.Partner.PartnerImages[0].ImagePath,
                     campaignGames = new List<CampaignGameVM>(),
                     VoucherTypes = new List<VoucherTypeVM>()
                 };
