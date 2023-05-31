@@ -234,6 +234,8 @@ namespace eVoucher_BUS.Services
             var updatecustomerresult = await _customerRepository.Update(customer);            
             var game = await _gameRepository.GetSingleByCondition(g => g.CampaignGames.Contains(campaigngame));            
             game.PlayedCount += 1;
+            vouchertypeget.RemainAmount -= 1;
+            var update_remain_amout_of_voucher = await _voucherTypeRepository.Update(vouchertypeget);
             var updategameplaycount = await _gameRepository.Update(game);
             return apiclaimvoucherresult;
         }

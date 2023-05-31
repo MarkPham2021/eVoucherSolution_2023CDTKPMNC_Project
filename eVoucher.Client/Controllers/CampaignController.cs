@@ -45,6 +45,7 @@ namespace eVoucher.Client.Controllers
         [HttpGet]
         public IActionResult GetVoucher(int CampaignGameId)
         {
+            
             var request = new CustomerPlayGameForVoucherRequest()
             {
                 AppUserInfo = User.Identity.Name,
@@ -56,7 +57,6 @@ namespace eVoucher.Client.Controllers
             var response = _customerAPIClient.ClaimVoucher(request, token);
             response.Wait();
             var voucher = response.Result;
-
             return Json(voucher);
         }
     }
