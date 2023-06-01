@@ -42,5 +42,9 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
+        //--API
+        //Get Customer by Id
+        //Get PartnerInfo by CampaignId
+        //Get customer's voucher
     }
 }

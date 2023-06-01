@@ -6,7 +6,7 @@
 
 <div class="container">
     <partial name="_Banner" />
-</div>w
+</div>
 <div class="container">
     <div class="ag-format-container">
         <div class="ag-courses_box">
@@ -15,9 +15,11 @@
             {
             <div class="ag-courses_item">
                 <a asp-controller="Campaign" asp-action="CampaignDetails" asp-route-id="@campaign.Id" class="ag-courses-item_link">
-                    <div class="ag-courses-item_bg"></div>
+                    <div class="ag-courses-item_bg">
+                        asasasas
+                    </div>
                     <div class="img_container">
-                        <img src="@campaign.ImagePath" class="campaign_img" />
+                        <img src="@campaign.ImagePath" class="campaign_img card-img-top" />
                     </div>
                     <div class="ag-courses-item_title">
                         <h5>
