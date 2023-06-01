@@ -33,7 +33,7 @@ namespace eVoucher.Partner.Controllers
             return View(data);
         }
         [HttpGet]
-        public async Task<IActionResult> Create(int campaignid)
+        public IActionResult Create()       //int campaignid
         {
             var id = HttpContext.Request.RouteValues["id"];
             ViewBag.campaignid = id;

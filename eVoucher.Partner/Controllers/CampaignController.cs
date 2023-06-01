@@ -2,11 +2,6 @@
 using eVoucher_ViewModel.Requests.CampaignRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-using System.Drawing.Printing;
-using Newtonsoft.Json;
-using Castle.MicroKernel.Internal;
-using Microsoft.IdentityModel.Tokens;
 
 namespace eVoucher.Partner.Controllers
 {
@@ -65,9 +60,10 @@ namespace eVoucher.Partner.Controllers
                 ViewData["result"] = "success";
             return RedirectToAction("Index");
         }
-        /* 03 method:[httpget] ViewVoucherType + [httpget]CreateVoucherType + [httpost]CreateVoucherType 
+
+        /* 03 method:[httpget] ViewVoucherType + [httpget]CreateVoucherType + [httpost]CreateVoucherType
          * have been move to VoucherTypeController successfully for the function search for work
-         * then the 2 view: ViewVoucherType and CreateVoucherType will no use but remain in folder view Campaign 
+         * then the 2 view: ViewVoucherType and CreateVoucherType will no use but remain in folder view Campaign
          * for later reference
         [HttpGet]
         public async Task<IActionResult> ViewVoucherType(string keyword ="", int pageIndex = 1, int pageSize = 3)
@@ -84,8 +80,8 @@ namespace eVoucher.Partner.Controllers
             int campaignid;
             bool t = int.TryParse(id, out campaignid);
             var data = await _frCampaignService.GetVoucherTypesOfCampaignPaging(campaignid, request, token);
-            
-            return View(data);            
+
+            return View(data);
         }
         [HttpGet]
         public async Task<IActionResult> CreateVoucherType(int campaignid)

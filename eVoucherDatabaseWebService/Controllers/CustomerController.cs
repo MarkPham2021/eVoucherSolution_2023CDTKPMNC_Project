@@ -1,6 +1,7 @@
 ﻿using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -42,9 +43,49 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
-        //--API
-        //Get Customer by Id
-        //Get PartnerInfo by CampaignId
-        //Get customer's voucher
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<Customer>?>> GetAllCustomersFullInfo()
+        {
+            var data = await _customerService.GetAllCustomersFullInfo();
+            return Ok(data);
+        }
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Customer?>> GetById(int id)
+        {
+            var customer = await _customerService.GetCustomerFullInfoById(id);
+            return Ok(customer);
+        }
+        [HttpGet("userinfo=",Name = "userinfo")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Customer?>> GetById(string userinfo)
+        {
+            var customer = await _customerService.GetCustomerFullInfoByUserInfo(userinfo);
+            return Ok(customer);
+        }
+        [HttpGet("GetAllVouchersOfCustomerByUserInfo/{userinfo}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VoucherVM>?>> GetAllVouchersOfCustomerByUserInfo(string userinfo)
+        {
+            var vouchervms = await _customerService.GetAllVouchersOfCustomerByUserInfo(userinfo);
+            return Ok(vouchervms);
+        }
+        
+        [HttpGet("GetAllVoucherVMsOfCustomerByCustomerId/{customerid}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VoucherVM>?>> GetAllVoucherVMsOfCustomerByCustomerId(int customerid)
+        {
+            var vouchervms = await _customerService.GetAllVouchersOfCustomerByCustomerId(customerid);
+            return Ok(vouchervms);
+        }
+        
+        [HttpGet("GetVoucherVMById/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<VoucherVM?>> GetVoucherVMById(int id)
+        {
+            var vouchervm = await _customerService.GetVoucherVMById(id);
+            return Ok(vouchervm);
+        }
     }
 }

@@ -55,6 +55,16 @@ namespace eVoucher_BUS.FrontendServices
                 return null;
             }
             var campaignvm = data.FirstOrDefault(c=>c.Id== campaignid);
+            string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            if(campaignvm != null)
+            {
+                campaignvm.ImagePath = BaseAdress + campaignvm.ImagePath;
+                campaignvm.PartnerImagePath = BaseAdress + campaignvm.PartnerImagePath;
+                foreach (var item in campaignvm.VoucherTypes)
+                {
+                    item.ImagePath = BaseAdress + item.ImagePath;
+                }
+            }
             return campaignvm;
         }
         public async Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, 

@@ -10,11 +10,56 @@ namespace eVoucher_DAL.Repositories
 {
     public interface ICustomerRepository : IRepository<Customer>
     {
+        Task<Customer?> GetCustomerFullInfoById(int id);
+        Task<Customer?> GetCustomerFullInfoByUserInfo(string userinfo);
+        Task<List<Customer>?> GetAllCustomersFullInfo();
     }
     public class CustomerRepository : RepositoryBase<Customer>, ICustomerRepository
     {
         public CustomerRepository(eVoucherDbContext context) : base(context)
         {
+        }
+
+        public async Task<List<Customer>?> GetAllCustomersFullInfo()
+        {
+            var data = await _context.Customers
+                .Include(c=>c.AppUsers)                
+                .ToListAsync();
+            return data;
+        }
+
+        public async Task<Customer?> GetCustomerFullInfoById(int id)
+        {
+            Customer customer = await _context.Customers
+                                .SingleAsync(c => c.Id == id);
+
+            await _context.Entry(customer)
+                .Reference(c => c.AppUsers)
+                .LoadAsync();
+
+           await _context.Entry(customer)
+                .Collection(c => c.GamePlayResults)
+                .LoadAsync();           
+            return customer;
+        }
+
+        public async Task<Customer?> GetCustomerFullInfoByUserInfo(string userinfo)
+        {
+            int appuserid =int.Parse(userinfo.Split('|')[0]);
+            string username = userinfo.Split('|')[1];
+            Customer customer = await _context.Customers
+                                .SingleAsync(c => c.AppUsers.Id == appuserid);
+
+            await _context.Entry(customer)
+                .Reference(c => c.AppUsers)
+                .LoadAsync();
+
+            await _context.Entry(customer)
+                .Collection(c => c.GamePlayResults)
+                .LoadAsync();
+            if(customer.AppUsers.UserName == username)
+                return customer;
+            return null;
         }
     }
 }

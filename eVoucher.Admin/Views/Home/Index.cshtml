@@ -2,6 +2,36 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="card-header">
-    <h3 class="text-center font-weight-light my-4">eVoucher Admin Home page</h3>
+<div class="bg-primary bg-opacity-75">
+    <h6 class="text-md-start font-weight-bold my-2 text-warning">Periodical Statistic:</h6>
 </div>
+<form class="d-none d-md-inline-block form-inline me-auto ms-5 ms-md-3 my-2 my-md-0" method="get" asp-action="Index">
+    <div class="input-group">
+        <div class="form-group">
+            <div class="bg-gradient text-black-50">
+                <label class="radio inline">
+                    <input type="radio" name="PeriodicalView" id="PeriodicalView" value="1" checked>
+                    <span > Daily </span>
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="PeriodicalView" id="PeriodicalView" value="2">
+                    <span>Weekly </span>
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="PeriodicalView" id="PeriodicalView" value="3">
+                    <span>Monthly </span>
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="PeriodicalView" id="PeriodicalView" value="4">
+                    <span>Quarterly </span>
+                </label>
+                <label class="radio inline">
+                    <input type="radio" name="PeriodicalView" id="PeriodicalView" value="5">
+                    <span>Annual</span>
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-primary ms-3" type="submit">View</button>
+    </div>
+</form>
+

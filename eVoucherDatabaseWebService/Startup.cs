@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Text.Json.Serialization;
 
 namespace eVoucherDatabaseWebService
 {
@@ -82,7 +83,11 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<IGamePlayResultRepository, GamePlayResultRepository>();
             services.AddTransient<IVoucherTypeImageRepository, VoucherTypeImageRepository>();
 
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                }); 
             services.AddEndpointsApiExplorer();
 
             services.AddSwaggerGen(c =>

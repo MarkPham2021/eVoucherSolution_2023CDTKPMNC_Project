@@ -1,5 +1,6 @@
 ﻿using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -34,6 +35,79 @@ namespace eVoucher.ClientAPI_Integration
             var apiclaimvoucherresult = JsonConvert.DeserializeObject<APIClaimVoucherResult>(apiclaimvoucherresultstring);
             return apiclaimvoucherresult;
 
+        }
+        public async Task<List<Customer>?> GetAllCustomersFullInfo(string token)
+        {
+            var uri = BASE_REQUEST;
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if(response == null)
+            {
+                return null;
+            }    
+            List<Customer> customers = JsonConvert.DeserializeObject<List<Customer>>(response);
+            return customers;
+        }
+        public async Task<Customer?> GetSingleCustomerAllInfoByUserInfo(string userinfo, string token)
+        {
+            var uri = BASE_REQUEST + $"?userinfo={userinfo}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            Customer customer = JsonConvert.DeserializeObject<Customer>(response);
+            return customer;
+        }
+        public async Task<Customer?> GetSingleCustomerAllInfoById(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/{id}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            Customer customer = JsonConvert.DeserializeObject<Customer>(response);
+            return customer;
+        }
+        
+        public async Task<List<VoucherVM>?> GetAllVouchersOfCustomerByUserInfo(string userinfo, string token)
+        {
+            var uri = BASE_REQUEST + $"/GetAllVouchersOfCustomerByUserInfo/{userinfo}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            List<VoucherVM> vouchervms = JsonConvert.DeserializeObject<List<VoucherVM>>(response);
+            return vouchervms;
+        }
+        public async Task<List<VoucherVM>?> GetAllVouchersOfCustomerByCustomerId(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/GetAllVouchersOfCustomerByCustomerId/{id}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            List<VoucherVM> vouchervms = JsonConvert.DeserializeObject<List<VoucherVM>>(response);
+            return vouchervms;
+        }
+        public async Task<VoucherVM?> GetVoucherVMById(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/GetVoucherVMById/{id}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            VoucherVM vouchervm = JsonConvert.DeserializeObject<VoucherVM>(response);
+            return vouchervm;
         }
     }
 }
