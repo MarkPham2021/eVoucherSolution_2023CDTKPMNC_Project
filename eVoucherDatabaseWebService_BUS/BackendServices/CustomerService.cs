@@ -76,9 +76,9 @@ namespace eVoucher_BUS.Services
             return await _customerRepository.GetAllCustomersFullInfo();
         }
 
-        public Task<Customer?> GetCustomerById(int id)
+        public async Task<Customer?> GetCustomerById(int id)
         {
-            throw new NotImplementedException();
+            return await _customerRepository.GetSingleById(id);
         }
 
         public async Task<Customer?> RegisterCustomer(CustomerRegisterRequest request)

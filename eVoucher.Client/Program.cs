@@ -1,6 +1,7 @@
 using eVoucher.ClientAPI_Integration;
 using eVoucher_BUS.FrontendServices;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,7 +12,11 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Customer/Login";
         options.AccessDeniedPath = "/Login/Forbidden/";
     });
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+                    .AddJsonOptions(options =>
+                     {
+                         options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                     });
 builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
@@ -23,9 +28,12 @@ builder.Services.AddTransient<BaseAPIClient>();
 builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<CampaignAPIClient>();
+builder.Services.AddTransient<PartnerAPIClient>();
 builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
+builder.Services.AddTransient<ICommonService, CommonService>();
 builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddTransient<IFrCustomerService, FrCustomerService>();
+builder.Services.AddTransient<IFrPartnerService, FrPartnerService>();
 builder.Services.AddRazorPages();
 var app = builder.Build();
 

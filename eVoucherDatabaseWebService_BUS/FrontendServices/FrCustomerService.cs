@@ -1,6 +1,9 @@
 ﻿using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
+using eVoucher_Utility.Enums;
+using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Requests.Common;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
@@ -23,19 +26,26 @@ namespace eVoucher_BUS.FrontendServices
 
         Task<PageResult<VoucherVM>> GetCustomerVouchersPaging(string user, GetCustomerVouchersRequestPaging request,
             string token);
+        Task<PageResult<CampaignVM>> GetCustomerCampaignVMsPaging(GetCustomerCampaignPagingRequest request,
+            string token);
     }
 
     public class FrCustomerService : IFrCustomerService
     {
         private readonly CustomerAPIClient _customerAPIClient;
         private readonly IFrCampaignService _campaignService;
+        private readonly CampaignAPIClient _campaignAPIClient;
+        private readonly GoogleDistanceMatrixAPICLient _googleDistanceMatrixAPI;
         private IConfiguration _configuration;
 
         public FrCustomerService(CustomerAPIClient customerAPIClient, IFrCampaignService campaignService,
-            IConfiguration configuration)
+            CampaignAPIClient campaignAPIClient, IConfiguration configuration, 
+            GoogleDistanceMatrixAPICLient googleDistanceMatrixAPICLient)
         {
             _customerAPIClient = customerAPIClient;
             _campaignService = campaignService;
+            _campaignAPIClient = campaignAPIClient;
+            _googleDistanceMatrixAPI = googleDistanceMatrixAPICLient;
             _configuration = configuration;
         }
 
@@ -98,6 +108,135 @@ namespace eVoucher_BUS.FrontendServices
                 Items = pagedata
             };
             return pageresult;
+        }
+        public async Task<PageResult<CampaignVM>> GetCustomerCampaignVMsPaging(GetCustomerCampaignPagingRequest request,
+            string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);            
+            //filter by keyword
+            var filterdata = from vm in data
+                             where (vm.Name.ToLower().Contains(request.keyword.ToLower()) ||
+                             vm.MetaKeyword.ToLower().Contains(request.keyword.ToLower()) ||
+                             vm.MetaDescription.ToLower().Contains(request.keyword.ToLower())) &&
+                             (vm.Status == ActiveStatus.Active)
+                             select vm;
+            //filter by filter : nearby/latest
+            //filter by category
+            if (request.categoryId > 0)
+            {
+                var filterbycat = from vm in filterdata
+                                  where vm.PartnerCategoryId == request.categoryId
+                                  select vm;
+                foreach(var c in filterbycat)
+                {
+                    var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
+                    {
+                        destinations = c.PartnerAddress,
+                        origins = request.currentAddress,
+                        key = ""
+                    };
+                    var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
+                    c.DistanceToCustomer = d.value;
+                    c.DistanceToCustomerInChar = d.text;
+                }   
+                //filter by filter : nearby/latest
+                if(request.filter == 2)//filter latest
+                {
+                    var Pagingdata = filterbycat.OrderByDescending(x => x.CreatedTime);
+                    var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+                    string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+                    foreach (var item in pagedata)
+                    {
+                        item.ImagePath = BaseAdress + item.ImagePath;
+                    }
+                    var pageresult = new PageResult<CampaignVM>()
+                    {
+                        PageIndex = request.PageIndex,
+                        PageSize = request.PageSize,
+                        TotalItems = filterdata.Count(),
+                        Items = pagedata
+                    };
+                    return pageresult;
+                }else //if(request.filter == 1)filter nearby
+                {
+                    var Pagingdata = filterbycat.OrderBy(x => x.DistanceToCustomer);
+                    var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+                    string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+                    foreach (var item in pagedata)
+                    {
+                        item.ImagePath = BaseAdress + item.ImagePath;
+                    }
+                    var pageresult = new PageResult<CampaignVM>()
+                    {
+                        PageIndex = request.PageIndex,
+                        PageSize = request.PageSize,
+                        TotalItems = filterdata.Count(),
+                        Items = pagedata
+                    };
+                    return pageresult;
+                }
+            }
+            else
+            {
+                foreach (var c in filterdata)
+                {
+                    var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
+                    {
+                        destinations = c.PartnerAddress,
+                        origins = request.currentAddress,
+                        key = ""
+                    };
+                    var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
+                    c.DistanceToCustomer = d.value;
+                    c.DistanceToCustomerInChar = d.text;
+                }
+                //filter by filter : nearby/latest
+                if (request.filter == 2)//filter latest
+                {
+                    var Pagingdata = filterdata.OrderByDescending(x => x.CreatedTime);
+                    var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+                    string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+                    foreach (var item in pagedata)
+                    {
+                        item.ImagePath = BaseAdress + item.ImagePath;
+                    }
+                    var pageresult = new PageResult<CampaignVM>()
+                    {
+                        PageIndex = request.PageIndex,
+                        PageSize = request.PageSize,
+                        TotalItems = filterdata.Count(),
+                        Items = pagedata
+                    };
+                    return pageresult;
+                }
+                else //if (request.filter == 1) filter nearby
+                {
+                    var Pagingdata = filterdata.OrderBy(x => x.DistanceToCustomer);
+                    var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+                    string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+                    foreach (var item in pagedata)
+                    {
+                        item.ImagePath = BaseAdress + item.ImagePath;
+                    }
+                    var pageresult = new PageResult<CampaignVM>()
+                    {
+                        PageIndex = request.PageIndex,
+                        PageSize = request.PageSize,
+                        TotalItems = filterdata.Count(),
+                        Items = pagedata
+                    };
+                    return pageresult;
+                }
+            }
+            
         }
     }
 }

@@ -50,14 +50,14 @@ namespace eVoucher.ClientAPI_Integration
         }
         public async Task<Customer?> GetSingleCustomerAllInfoByUserInfo(string userinfo, string token)
         {
-            var uri = BASE_REQUEST + $"?userinfo={userinfo}";
+            var uri = BASE_REQUEST + $"/userinfo/{userinfo}";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
             if (response == null)
             {
                 return null;
             }
-            Customer customer = JsonConvert.DeserializeObject<Customer>(response);
+            var customer = JsonConvert.DeserializeObject<Customer>(response);
             return customer;
         }
         public async Task<Customer?> GetSingleCustomerAllInfoById(int id, string token)

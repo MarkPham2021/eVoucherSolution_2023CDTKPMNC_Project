@@ -9,7 +9,8 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public int Id { get; set; }
         public string Name { get; set; }
         public int PartnerId { get; set; }
-        public string PartnerName { get; set; }       
+        public string PartnerName { get; set; }
+        public int PartnerCategoryId { get; set; }
         public string PartnerCategoryName { get; set; }
         public string PartnerPhoneNumber { get; set; }
         public string PartnerAddress { get; set; }
@@ -28,5 +29,7 @@ namespace eVoucher_ViewModel.Requests.CampaignRequests
         public ActiveStatus Status { get; set; }
         public string? ImagePath { get; set; }
         public List<CampaignGameVM>? campaignGames { get; set; }
+        public int? DistanceToCustomer { get; set; } = 0;
+        public string? DistanceToCustomerInChar { get; set; }
     }
 }

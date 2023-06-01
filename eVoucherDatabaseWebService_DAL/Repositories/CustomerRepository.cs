@@ -35,10 +35,6 @@ namespace eVoucher_DAL.Repositories
 
             await _context.Entry(customer)
                 .Reference(c => c.AppUsers)
-                .LoadAsync();
-
-           await _context.Entry(customer)
-                .Collection(c => c.GamePlayResults)
                 .LoadAsync();           
             return customer;
         }
@@ -49,17 +45,14 @@ namespace eVoucher_DAL.Repositories
             string username = userinfo.Split('|')[1];
             Customer customer = await _context.Customers
                                 .SingleAsync(c => c.AppUsers.Id == appuserid);
-
             await _context.Entry(customer)
                 .Reference(c => c.AppUsers)
                 .LoadAsync();
-
-            await _context.Entry(customer)
-                .Collection(c => c.GamePlayResults)
-                .LoadAsync();
             if(customer.AppUsers.UserName == username)
+            {
                 return customer;
-            return null;
+            }
+            return null ;
         }
     }
 }

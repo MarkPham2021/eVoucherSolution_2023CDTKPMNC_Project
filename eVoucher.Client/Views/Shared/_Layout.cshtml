@@ -18,12 +18,12 @@
         <!-- Sidebar Toggle-->
         <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->        
-        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" asp-action="Index" method="get">
             <div class="search-container">
-                <input type="text" name="search" placeholder="Search..." class="search-input text-success">
-                <a href="#" class="search-btn">
+                <input type="text" name="keyword" placeholder="Search..." class="search-input text-success">
+                <button type="submit" class="search-btn">
                     <i class="fas fa-search text-success"></i>
-                </a>
+                </button>
             </div>
         </form>
         <a class="nav-link text-white m-2" asp-controller="Customer" asp-action="Login">Login</a>

@@ -57,7 +57,7 @@ namespace eVoucherDatabaseWebService.Controllers
             var customer = await _customerService.GetCustomerFullInfoById(id);
             return Ok(customer);
         }
-        [HttpGet("userinfo=",Name = "userinfo")]
+        [HttpGet("userinfo/{userinfo}")]
         [AllowAnonymous]
         public async Task<ActionResult<Customer?>> GetById(string userinfo)
         {

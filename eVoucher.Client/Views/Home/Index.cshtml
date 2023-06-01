@@ -1,17 +1,52 @@
-﻿@model List<eVoucher_ViewModel.Requests.CampaignRequests.CampaignVM>
+﻿@using eVoucher_ViewModel.Requests.CampaignRequests;
+@using eVoucher_ViewModel.Response;
+@model PageResult<CampaignVM>
 
 @{
     ViewData["Title"] = "Home Page";
 }
 
-<div class="container">
+
+<!--
+<div class="container" style="height= 100">
     <partial name="_Banner" />
-</div>w
+</div>
+-->
+<div class="container">
+    <form asp-action="Index" method="get">
+        <div class="row my-3">
+            <div class="form-group col-lg-3 col-md-3">
+                <div class="maxl">
+                    <label class="radio inline mx-3">
+                        <input type="radio" name="filter" value="1" checked>
+                        <span class="text-white text-bg-primary text-lg-center fw-bold"> NearBy </span>
+                    </label>
+                    <label class="radio inline mx-3">
+                        <input type="radio" name="filter" value="2">
+                        <span class="text-danger text-bg-warning text-lg-center fw-bold">Latest </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <select name="categoryId" class="form-control" asp-items="@ViewBag.Categories">
+                    <option value="0">--Chọn danh mục--</option>
+                </select>
+            </div>
+            <div class="col-lg-4 col-md-3">
+                <input class="form-control" type="text" value="@ViewBag.currentAddress" name="currentAddress"
+                placeholder="Input your current address"/>
+            </div>
+            <div class="col-md-3 my-2 container">
+                <button type="submit" class="btn btn-success btn-lg float-end">Search</button>
+            </div>
+        </div>
+    </form>
+</div>
 <div class="container">
     <div class="ag-format-container">
         <div class="ag-courses_box">
 
-            @foreach(var campaign in Model)
+            @foreach(var campaign in Model.Items)
             {
             <div class="ag-courses_item">
                 <a asp-controller="Campaign" asp-action="CampaignDetails" asp-route-id="@campaign.Id" class="ag-courses-item_link">
@@ -25,7 +60,8 @@
                         </h5>
                         <p>@campaign.Slogan</p>
                         <p>Store: @campaign.PartnerName</p>
-
+                        <p>Distance: @campaign.DistanceToCustomerInChar</p>
+                        <p>Category: @campaign.PartnerCategoryName</p>
                     </div>
 
                     <div class="ag-courses-item_date-box">
@@ -44,6 +80,7 @@
             </div>
             }
         </div>
+        @await Component.InvokeAsync("Pager", Model)
     </div>
     <a asp-action="Index" asp-controller="Voucher">Voucher</a>
 </div>
