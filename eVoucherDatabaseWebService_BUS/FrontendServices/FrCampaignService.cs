@@ -56,11 +56,14 @@ namespace eVoucher_BUS.FrontendServices
             }
             var campaignvm = data.FirstOrDefault(c=>c.Id== campaignid);
             string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
-            campaignvm.ImagePath = BaseAdress + campaignvm.ImagePath;
-            campaignvm.PartnerImagePath =BaseAdress + campaignvm.PartnerImagePath;
-            foreach (var item in campaignvm.VoucherTypes) 
+            if(campaignvm != null)
             {
-                item.ImagePath = BaseAdress + item.ImagePath;
+                campaignvm.ImagePath = BaseAdress + campaignvm.ImagePath;
+                campaignvm.PartnerImagePath = BaseAdress + campaignvm.PartnerImagePath;
+                foreach (var item in campaignvm.VoucherTypes)
+                {
+                    item.ImagePath = BaseAdress + item.ImagePath;
+                }
             }
             return campaignvm;
         }

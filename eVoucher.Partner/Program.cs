@@ -32,10 +32,12 @@ builder.Services.AddTransient<StaffAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<PartnerAPIClient>();
 builder.Services.AddTransient<CampaignAPIClient>();
+builder.Services.AddTransient<CustomerAPIClient>();
 builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
 builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddTransient<IFrPartnerService, FrPartnerService>();
 builder.Services.AddTransient<ICommonService, CommonService>();
+builder.Services.AddTransient<IFrCustomerService, FrCustomerService>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

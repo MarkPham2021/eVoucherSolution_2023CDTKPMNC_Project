@@ -71,13 +71,21 @@ namespace eVoucherDatabaseWebService.Controllers
             var vouchervms = await _customerService.GetAllVouchersOfCustomerByUserInfo(userinfo);
             return Ok(vouchervms);
         }
-        //GetAllVoucherVMsOfCustomerByCustomerId(int id)
+        
         [HttpGet("GetAllVoucherVMsOfCustomerByCustomerId/{customerid}")]
         [AllowAnonymous]
         public async Task<ActionResult<List<VoucherVM>?>> GetAllVoucherVMsOfCustomerByCustomerId(int customerid)
         {
             var vouchervms = await _customerService.GetAllVouchersOfCustomerByCustomerId(customerid);
             return Ok(vouchervms);
+        }
+        
+        [HttpGet("GetVoucherVMById/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<VoucherVM?>> GetVoucherVMById(int id)
+        {
+            var vouchervm = await _customerService.GetVoucherVMById(id);
+            return Ok(vouchervm);
         }
     }
 }
