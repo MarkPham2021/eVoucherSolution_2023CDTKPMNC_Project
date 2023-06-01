@@ -6,6 +6,6 @@ namespace eVoucher_DTO.Models
     public class AppUser : IdentityUser<int>
     {
         public int UserTypeId { get; set; }
-        public virtual IEnumerable<GamePlayResult>? GamePlayResults { get; set; }        
+        public List<GamePlayResult>? GamePlayResults { get; set; }        
     }
 }

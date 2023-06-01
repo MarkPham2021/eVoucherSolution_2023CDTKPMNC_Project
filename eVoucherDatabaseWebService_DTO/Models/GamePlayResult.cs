@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -18,6 +19,7 @@ namespace eVoucher_DTO.Models
         public VoucherType? VoucherType { get; set; }
         public string? Description { get; set; }
         public  Voucher? Voucher { set; get; }
-
+        [ForeignKey("AppUserId")]
+        public AppUser AppUser { get; set; }
     }
 }

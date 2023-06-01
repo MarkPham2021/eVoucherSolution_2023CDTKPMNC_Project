@@ -2,6 +2,7 @@
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
@@ -24,6 +25,9 @@ namespace eVoucher_BUS.Services
         Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request);
         Task<Customer> GetCustomerFullInfoById(int id);
         Task<Customer> GetCustomerFullInfoByUserInfo(string userinfo);
+        Task<List<VoucherVM>?> GetAllVouchersOfCustomerByUserInfo(string userinfo);
+        Task<List<VoucherVM>?> GetAllVouchersOfCustomerByCustomerId(int id);
+        Task<VoucherVM?> GetVoucherVMById(int id);
     }
 
     public class CustomerService : ICustomerService
@@ -217,7 +221,8 @@ namespace eVoucher_BUS.Services
                 }
                 
             }
-            customer.GamePlayResults = new List<GamePlayResult>();            
+            customer.GamePlayResults = new List<GamePlayResult>();
+            user.GamePlayResults =new List<GamePlayResult>();
             var gameplayresult = new GamePlayResult()
             { 
                 CampaignGame = campaigngame,
@@ -231,7 +236,9 @@ namespace eVoucher_BUS.Services
                 }
             };
             customer.GamePlayResults.Add(gameplayresult);
-            var updatecustomerresult = await _customerRepository.Update(customer);            
+            user.GamePlayResults.Add(gameplayresult);
+            var updatecustomerresult = await _customerRepository.Update(customer);
+            var updateappuserresult = await _userManager.UpdateAsync(user);
             var game = await _gameRepository.GetSingleByCondition(g => g.CampaignGames.Contains(campaigngame));            
             game.PlayedCount += 1;
             vouchertypeget.RemainAmount -= 1;
@@ -248,6 +255,22 @@ namespace eVoucher_BUS.Services
         public async Task<Customer> GetCustomerFullInfoByUserInfo(string userinfo)
         {
             return await _customerRepository.GetCustomerFullInfoByUserInfo(userinfo);
+        }
+
+        public async Task<List<VoucherVM>?> GetAllVouchersOfCustomerByUserInfo(string userinfo)
+        {
+            int userid = int.Parse(userinfo.Split('|')[0]);
+            return await _voucherRepository.GetAllVoucherVMsOfCustomerByAppUserId(userid);
+        }
+
+        public async Task<List<VoucherVM>?> GetAllVouchersOfCustomerByCustomerId(int id)
+        {
+            return await _voucherRepository.GetAllVoucherVMsOfCustomerByCustomerId(id);
+        }
+
+        public Task<VoucherVM?> GetVoucherVMById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

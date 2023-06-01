@@ -1,6 +1,7 @@
 ﻿using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -62,6 +63,21 @@ namespace eVoucherDatabaseWebService.Controllers
         {
             var customer = await _customerService.GetCustomerFullInfoByUserInfo(userinfo);
             return Ok(customer);
+        }
+        [HttpGet("GetAllVouchersOfCustomerByUserInfo/{userinfo}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VoucherVM>?>> GetAllVouchersOfCustomerByUserInfo(string userinfo)
+        {
+            var vouchervms = await _customerService.GetAllVouchersOfCustomerByUserInfo(userinfo);
+            return Ok(vouchervms);
+        }
+        //GetAllVoucherVMsOfCustomerByCustomerId(int id)
+        [HttpGet("GetAllVoucherVMsOfCustomerByCustomerId/{customerid}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<List<VoucherVM>?>> GetAllVoucherVMsOfCustomerByCustomerId(int customerid)
+        {
+            var vouchervms = await _customerService.GetAllVouchersOfCustomerByCustomerId(customerid);
+            return Ok(vouchervms);
         }
     }
 }
