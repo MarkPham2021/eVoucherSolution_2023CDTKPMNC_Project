@@ -1,4 +1,12 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@using Newtonsoft.Json;
+@using eVoucher_Utility.Constants
+@inject IHttpContextAccessor accessor
+@{
+    var token = accessor.HttpContext.Session.GetString(SystemConstants.AppSettings.Token);
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -12,7 +20,7 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body>
-    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-success">
+    <nav class="consb-topnav navbar navbar-expand navbar-dark bg-success">
         <!-- Navbar Brand-->
         <a class="navbar-brand ps-3" asp-controller="Home" asp-action="Index">eVoucher Solution</a>
         <!-- Sidebar Toggle-->
@@ -37,10 +45,48 @@
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" href="#!">Logout</a></li>
+
+        <div class="container">
+            <a class="navbar-brand ps-3" asp-controller="Home" asp-action="Index">eVoucher Solution</a>
+            <!-- Sidebar Toggle-->
+            @if (!string.IsNullOrEmpty(token))
+            {
+                <button class="btn text-white btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+                <!-- Navbar Search-->
+                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                    <div class="search-container">
+                        <input type="text" name="search" placeholder="Search..." class="search-input text-success">
+                        <a href="#" class="search-btn">
+                            <i class="fas fa-search text-success"></i>
+                        </a>
+                    </div>
+                </form>
+            }
+
+            @if (string.IsNullOrEmpty(token))
+            {
+                <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>
+                <a class="nav-link text-white m-2" asp-controller="Customer" asp-action="Login">Login</a>
+                <a class="nav-link text-white m-2" asp-controller="Customer" asp-action="SignUp">Sign Up</a>
+            }
+            else
+            {
+                <!-- Navbar-->
+                <ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            @*<li><a class="dropdown-item" href="#!">Account</a></li>*@
+                            <li><a class="dropdown-item" href="#!">Account Management</a></li>
+                            <li><hr class="dropdown-divider" /></li>
+                            <li><a class="dropdown-item" asp-controller="Customer" asp-action="Logout">Logout</a></li>
+                        </ul>
+                    </li>
                 </ul>
-            </li>
-        </ul>
-    </nav>
+
+            }
+        </div>
+    </nav> 
     <main>
         @RenderBody()
     </main>

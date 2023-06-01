@@ -103,6 +103,12 @@ namespace eVoucher.Client.Controllers
             return View("Login");
         }
 
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear();
+            return View("Login");
+        }
+
         private ClaimsPrincipal ValidateToken(string jwtToken)
         {
             IdentityModelEventSource.ShowPII = true;

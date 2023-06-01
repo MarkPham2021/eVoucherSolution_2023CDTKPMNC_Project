@@ -352,7 +352,7 @@ body {
 .ag-courses-item_link {
     display: block;
     padding: 30px 20px;
-    background-color: gray;
+    background: -webkit-linear-gradient(left, rgb(22,135,87), #00c6ff);
     overflow: hidden;
     position: relative;
 }
