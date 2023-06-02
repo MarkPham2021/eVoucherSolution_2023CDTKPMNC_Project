@@ -21,7 +21,7 @@ builder.Services.AddSession(options =>
 {
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
-
+builder.Services.AddHttpContextAccessor();
 builder.Services.AddTransient<CustomerAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<BaseAPIClient>();

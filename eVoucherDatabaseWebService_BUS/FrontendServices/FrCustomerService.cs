@@ -120,7 +120,7 @@ namespace eVoucher_BUS.FrontendServices
                              vm.MetaDescription.ToLower().Contains(request.keyword.ToLower())) &&
                              (vm.Status == ActiveStatus.Active)
                              select vm;
-            //filter by filter : nearby/latest
+            
             //filter by category
             if (request.categoryId > 0)
             {

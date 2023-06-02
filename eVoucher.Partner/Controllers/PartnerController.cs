@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 namespace eVoucher.Partner.Controllers
 {
     [Authorize]
-    public class PartnerController : BaseController
+    public class PartnerController : Controller
     {
         private IFrPartnerService _partnerService;
         private ICommonService _commonService;
