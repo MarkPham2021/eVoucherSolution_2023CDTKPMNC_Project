@@ -4,6 +4,7 @@ using eVoucher_BUS.FrontendServices;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
 using eVoucher_ViewModel.Requests.CampaignRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Diagnostics;
@@ -11,7 +12,8 @@ using System.Drawing.Drawing2D;
 
 namespace eVoucher.Client.Controllers
 {
-    public class HomeController : BaseController
+    [Authorize]
+    public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IFrCampaignService _frCampaignService;

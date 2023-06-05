@@ -1,0 +1,41 @@
+﻿@using eVoucher_ViewModel.Requests.VoucherRequests;
+@using eVoucher_ViewModel.Response;
+@model PageResult<VoucherVM>
+@{
+    ViewData["Title"] = "Voucher - Index";
+}
+
+
+<div class="row container-fluid my-2 text-start">
+    <a class="btn btn-warning btn-lg">All vouchers gotten:</a>
+</div>
+<div class="row mb-3">
+    @foreach (var item in Model.Items)
+    {
+        <div class="ag-courses_item">
+            <a asp-controller="Voucher" asp-action="VoucherDetail" asp-route-id="@item.Id" class="ag-courses-item_link">
+                <div class="ag-courses-item_bg">
+                    asasasas
+                </div>
+                <div class="img_container">
+                    <img src="@item.VoucherTypeImagePath" class="campaign_img card-img-top" />
+                </div>
+                <div class="ag-courses-item_title">
+                    <h6>
+                        @item.VoucherTypeName
+                    </h6>
+                    <p>@item.Promotion</p>
+                    <p>@item.CampaignName</p>
+                    <p>Store: @item.PartnerName</p>                   
+                    <p>Category: @item.PartnerCategoryName</p>
+                    <p>Date got: @item.DateGot.ToShortDateString()</p>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+@await Component.InvokeAsync("Pager", Model)
+<div class="row container-fluid my-2 align-content-end">
+    <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="Index">Home page</a>
+</div>
+

@@ -18,10 +18,14 @@ namespace eVoucher_ViewModel.Requests.VoucherRequests
         public string PartnerName { get; set; }
         public int PartnerCategoryId { get; set; }
         public string PartnerCategoryName { get; set; }
+        public string PartnerAddress { get; set; }
+        public string PartnerPhoneNumber { get; set; }
         public int CampaignId { get; set; }
         public string CampaignName { get; set; }
+        public string VoucherTypeName { get; set; }
         public int DiscountRate { get; set; }
-        public string Promotion { get; set; }        
+        public string Promotion { get; set; }
+        public DateTime DateGot { get; set; }
 
         public DateTime ExpiringDate { get; set; }
         public VoucherStatus VoucherStatus { get; set; }

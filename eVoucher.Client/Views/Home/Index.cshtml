@@ -18,11 +18,11 @@
             <div class="form-group col-lg-3 col-md-3">
                 <div class="maxl">
                     <label class="radio inline mx-3">
-                        <input type="radio" name="filter" value="1" checked>
+                        <input type="radio" name="filter" value="1">
                         <span class="text-white text-bg-primary text-lg-center fw-bold"> NearBy </span>
                     </label>
                     <label class="radio inline mx-3">
-                        <input type="radio" name="filter" value="2">
+                        <input type="radio" name="filter" value="2" checked>
                         <span class="text-danger text-bg-warning text-lg-center fw-bold">Latest </span>
                     </label>
                 </div>
@@ -83,6 +83,5 @@
             }
         </div>
         @await Component.InvokeAsync("Pager", Model)
-    </div>
-    <a asp-action="Index" asp-controller="Voucher">Voucher</a>
+    </div>    
 </div>

@@ -6,12 +6,14 @@ using eVoucher.ClientAPI_Integration;
 using eVoucher_BUS.FrontendServices;
 using eVoucher_Utility.Constants;
 using eVoucher_ViewModel.Requests.CustomerRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace eVoucher.Client.Controllers
 {
+    [Authorize]
     public class CampaignController : Controller
     {
         private readonly IFrCampaignService _frCampaignService;

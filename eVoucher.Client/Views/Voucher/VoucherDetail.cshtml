@@ -1,0 +1,29 @@
+﻿@model eVoucher_ViewModel.Requests.VoucherRequests.VoucherVM
+@{
+    ViewData["Title"] = "Voucher - Detail";
+}
+<div class="container">
+    <!--Vouchertype image-->
+    <div class="row">
+        <div class="col col-md-12 col-sm-12">
+            <div class="card p-2">
+                <img src="@Model.VoucherTypeImagePath" class="card-img-top" width="360" alt="...">
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col col-md-12 col-sm-12">
+            <p>Campaign: @Model.CampaignName</p>
+            <p>Voucher type: @Model.VoucherTypeName</p>
+            <p>Promotion: @Model.Promotion</p>
+            <h5>Store name: @Model.PartnerName</h5>
+            <p>Address: @Model.PartnerAddress</p>
+            <p>Phone: @Model.PartnerPhoneNumber</p>
+            <p>Category: @Model.PartnerCategoryName</p>
+            <p>Date got: @Model.DateGot.ToShortDateString()</p>
+            <p>Expired date: @Model.ExpiringDate.ToShortDateString()</p>
+        </div>
+    </div>
+            
+</div>
+@*<partial name="_GoogleMap" />*@

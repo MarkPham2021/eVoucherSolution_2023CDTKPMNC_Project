@@ -15,7 +15,7 @@ namespace eVoucher.Client.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "", int pageIndex = 1, int pageSize = 4)
+        public async Task<IActionResult> AllVouchers(string keyword = "", int pageIndex = 1, int pageSize = 8)
         {
             var token = HttpContext.Session.GetString("Token");
             var request = new GetCustomerVouchersRequestPaging()
@@ -26,6 +26,14 @@ namespace eVoucher.Client.Controllers
             };
             string userinfo = User.Identity.Name;
             var data = await _customerService.GetCustomerVouchersPaging(userinfo, request, token);
+            return View(data);
+        }
+        [HttpGet]
+        public async Task<IActionResult> VoucherDetail(int id)
+        {
+            var token = HttpContext.Session.GetString("Token");            
+            string userinfo = User.Identity.Name;
+            var data = await _customerService.GetVoucherVMById(id, token);
             return View(data);
         }
     }

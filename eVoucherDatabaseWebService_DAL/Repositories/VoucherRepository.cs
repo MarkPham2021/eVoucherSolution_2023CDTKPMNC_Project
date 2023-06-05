@@ -31,12 +31,13 @@ namespace eVoucher_DAL.Repositories
                         join cp in _context.Campaigns on cpg.Campaign.Id equals cp.Id
                         join p in _context.Partners on cp.Partner.Id equals p.Id
                         join pcat in _context.PartnerCategories on p.Partnercategory.Id equals pcat.Id
+                        join pp in _context.AppUsers on p.AppUser.Id equals pp.Id
                         join vt in _context.VoucherTypes on gpr.VoucherType.Id equals vt.Id
                         join vtimg in _context.VoucherTypeImages on vt.Id equals vtimg.VoucherType.Id
                         join u in _context.AppUsers on gpr.AppUser.Id equals u.Id
                         join cus in _context.Customers on u.Id equals cus.AppUsers.Id
                         where gpr.AppUser.Id == userid
-                        select new {v,gpr,cpg,cp,p, pcat,vt,vtimg,u,cus };
+                        select new {v,gpr,cpg,cp,p, pcat,pp, vt,vtimg,u,cus };
             vouchervms = await query.Select(x => new VoucherVM()
                         {
                             Id = x.v.Id,
@@ -48,10 +49,14 @@ namespace eVoucher_DAL.Repositories
                             PartnerName = x.p.Name,
                             PartnerCategoryId = x.pcat.Id,
                             PartnerCategoryName = x.pcat.Name,
+                            PartnerAddress = x.p.Address,
+                            PartnerPhoneNumber = x.pp.PhoneNumber,
                             CampaignId = x.cp.Id,
                             CampaignName = x.cp.Name,
+                            VoucherTypeName = x.vt.Name,
                             DiscountRate = x.vt.DiscountRate,
                             Promotion = x.vt.Promotion,
+                            DateGot = x.v.DateGet,
                             ExpiringDate = x.vt.ExpiringDate,
                             VoucherStatus = x.v.VoucherStatus,
                             VoucherTypeImagePath = x.vtimg.ImagePath
@@ -69,12 +74,13 @@ namespace eVoucher_DAL.Repositories
                         join cp in _context.Campaigns on cpg.Campaign.Id equals cp.Id
                         join p in _context.Partners on cp.Partner.Id equals p.Id
                         join pcat in _context.PartnerCategories on p.Partnercategory.Id equals pcat.Id
+                        join pp in _context.AppUsers on p.AppUser.Id equals pp.Id
                         join vt in _context.VoucherTypes on gpr.VoucherType.Id equals vt.Id
                         join vtimg in _context.VoucherTypeImages on vt.Id equals vtimg.VoucherType.Id
                         join u in _context.AppUsers on gpr.AppUser.Id equals u.Id
                         join cus in _context.Customers on u.Id equals cus.AppUsers.Id
                         where cus.Id == id
-                        select new { v, gpr, cpg, cp, p, pcat, vt, vtimg, u, cus };
+                        select new { v, gpr, cpg, cp, p, pcat, vt,pp, vtimg, u, cus };
             vouchervms = await query.Select(x => new VoucherVM()
             {
                 Id = x.v.Id,
@@ -86,10 +92,14 @@ namespace eVoucher_DAL.Repositories
                 PartnerName = x.p.Name,
                 PartnerCategoryId = x.pcat.Id,
                 PartnerCategoryName = x.pcat.Name,
+                PartnerAddress = x.p.Address,
+                PartnerPhoneNumber = x.pp.PhoneNumber,
                 CampaignId = x.cp.Id,
                 CampaignName = x.cp.Name,
+                VoucherTypeName = x.vt.Name,
                 DiscountRate = x.vt.DiscountRate,
                 Promotion = x.vt.Promotion,
+                DateGot = x.v.DateGet,
                 ExpiringDate = x.vt.ExpiringDate,
                 VoucherStatus = x.v.VoucherStatus,
                 VoucherTypeImagePath = x.vtimg.ImagePath
@@ -114,11 +124,12 @@ namespace eVoucher_DAL.Repositories
                         join cp in _context.Campaigns on cpg.Campaign.Id equals cp.Id
                         join p in _context.Partners on cp.Partner.Id equals p.Id
                         join pcat in _context.PartnerCategories on p.Partnercategory.Id equals pcat.Id
+                        join pp in _context.AppUsers on p.AppUser.Id equals pp.Id
                         join vt in _context.VoucherTypes on gpr.VoucherType.Id equals vt.Id
                         join vtimg in _context.VoucherTypeImages on vt.Id equals vtimg.VoucherType.Id
                         join u in _context.AppUsers on gpr.AppUser.Id equals u.Id
                         join cus in _context.Customers on u.Id equals cus.AppUsers.Id
-                        select new { v, gpr, cpg, cp, p, pcat, vt, vtimg, u, cus };
+                        select new { v, gpr, cpg, cp, p, pcat,pp, vt, vtimg, u, cus };
             
             vouchervms = await query.Select(x => new VoucherVM()
             {
@@ -131,10 +142,14 @@ namespace eVoucher_DAL.Repositories
                 PartnerName = x.p.Name,
                 PartnerCategoryId = x.pcat.Id,
                 PartnerCategoryName = x.pcat.Name,
+                PartnerAddress = x.p.Address,
+                PartnerPhoneNumber = x.pp.PhoneNumber,
                 CampaignId = x.cp.Id,
                 CampaignName = x.cp.Name,
+                VoucherTypeName = x.vt.Name,
                 DiscountRate = x.vt.DiscountRate,
                 Promotion = x.vt.Promotion,
+                DateGot = x.v.DateGet,
                 ExpiringDate = x.vt.ExpiringDate,
                 VoucherStatus = x.v.VoucherStatus,
                 VoucherTypeImagePath = x.vtimg.ImagePath

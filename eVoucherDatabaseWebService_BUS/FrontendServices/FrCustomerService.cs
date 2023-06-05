@@ -76,7 +76,14 @@ namespace eVoucher_BUS.FrontendServices
 
         public async Task<VoucherVM?> GetVoucherVMById(int id, string token)
         {
-            return await _customerAPIClient.GetVoucherVMById(id, token);
+            var vm = await _customerAPIClient.GetVoucherVMById(id, token);
+            if (vm == null)
+            {
+                return null;
+            }
+            string hostaddress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            vm.VoucherTypeImagePath = hostaddress + vm.VoucherTypeImagePath;
+            return vm;
         }
 
         public async Task<PageResult<VoucherVM>> GetCustomerVouchersPaging(string user, GetCustomerVouchersRequestPaging request,
@@ -92,8 +99,10 @@ namespace eVoucher_BUS.FrontendServices
                              vm.PartnerCategoryName.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.PartnerName.ToLower().Contains(request.Keyword.ToLower()))
                              select vm;
+            filterdata = filterdata.OrderByDescending(x => x.Id);
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
+                            .OrderByDescending(x => x.Id)
                             .ToList();
             string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
             foreach (var item in pagedata)
@@ -115,9 +124,9 @@ namespace eVoucher_BUS.FrontendServices
             var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);            
             //filter by keyword
             var filterdata = from vm in data
-                             where (vm.Name.ToLower().Contains(request.keyword.ToLower()) ||
+                             where ((vm.Name.ToLower().Contains(request.keyword.ToLower()) ||
                              vm.MetaKeyword.ToLower().Contains(request.keyword.ToLower()) ||
-                             vm.MetaDescription.ToLower().Contains(request.keyword.ToLower())) &&
+                             vm.MetaDescription.ToLower().Contains(request.keyword.ToLower()))) &&
                              (vm.Status == ActiveStatus.Active)
                              select vm;
             
@@ -127,18 +136,7 @@ namespace eVoucher_BUS.FrontendServices
                 var filterbycat = from vm in filterdata
                                   where vm.PartnerCategoryId == request.categoryId
                                   select vm;
-                foreach(var c in filterbycat)
-                {
-                    var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
-                    {
-                        destinations = c.PartnerAddress,
-                        origins = request.currentAddress,
-                        key = ""
-                    };
-                    var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
-                    c.DistanceToCustomer = d.value;
-                    c.DistanceToCustomerInChar = d.text;
-                }   
+                  
                 //filter by filter : nearby/latest
                 if(request.filter == 2)//filter latest
                 {
@@ -161,6 +159,19 @@ namespace eVoucher_BUS.FrontendServices
                     return pageresult;
                 }else //if(request.filter == 1)filter nearby
                 {
+                    //calculate distance from currentAddres of customer to stores's addresses
+                    foreach (var c in filterbycat)
+                    {
+                        var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
+                        {
+                            destinations = c.PartnerAddress,
+                            origins = request.currentAddress,
+                            key = ""
+                        };
+                        var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
+                        c.DistanceToCustomer = d.value;
+                        c.DistanceToCustomerInChar = d.text;
+                    }
                     var Pagingdata = filterbycat.OrderBy(x => x.DistanceToCustomer);
                     var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
@@ -182,18 +193,7 @@ namespace eVoucher_BUS.FrontendServices
             }
             else
             {
-                foreach (var c in filterdata)
-                {
-                    var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
-                    {
-                        destinations = c.PartnerAddress,
-                        origins = request.currentAddress,
-                        key = ""
-                    };
-                    var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
-                    c.DistanceToCustomer = d.value;
-                    c.DistanceToCustomerInChar = d.text;
-                }
+                
                 //filter by filter : nearby/latest
                 if (request.filter == 2)//filter latest
                 {
@@ -217,6 +217,19 @@ namespace eVoucher_BUS.FrontendServices
                 }
                 else //if (request.filter == 1) filter nearby
                 {
+                    //calculate distance from currentAddres of customer to stores's addresses
+                    foreach (var c in filterdata)
+                    {
+                        var getdistanceRequest = new GetGoogleDistanceMatrixRequest()
+                        {
+                            destinations = c.PartnerAddress,
+                            origins = request.currentAddress,
+                            key = ""
+                        };
+                        var d = await _googleDistanceMatrixAPI.GetDistanceMatrix(getdistanceRequest);
+                        c.DistanceToCustomer = d.value;
+                        c.DistanceToCustomerInChar = d.text;
+                    }
                     var Pagingdata = filterdata.OrderBy(x => x.DistanceToCustomer);
                     var pagedata = Pagingdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
