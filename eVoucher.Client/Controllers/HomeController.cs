@@ -21,7 +21,6 @@ namespace eVoucher.Client.Controllers
         private readonly IFrCustomerService _frCustomerService;
         private readonly CampaignAPIClient _campaignAPIClient;
         private readonly IConfiguration _configuration;
-
         public HomeController(ILogger<HomeController> logger,
                               IConfiguration configuration,
                               IFrCampaignService frCampaignService,
@@ -52,7 +51,6 @@ namespace eVoucher.Client.Controllers
                 currentAddress = currentAddress
             };
             string userinfo = User.Identity.Name;
-            //var campaigns = await _frCampaignService.GetAllCampaignVMsPaging(userinfo, request, token);
             var categories = await _frPartnerService.GetPartnerCategoriesAsync();
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)

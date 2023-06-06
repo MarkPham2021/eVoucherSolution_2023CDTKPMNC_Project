@@ -1,6 +1,8 @@
-﻿using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.BackendServices;
+using eVoucher_BUS.Services;
 using eVoucher_DAL;
 using eVoucher_DAL.Repositories;
+using eVoucher_DAL.StatisticQuery;
 using eVoucher_DTO.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -82,7 +84,8 @@ namespace eVoucherDatabaseWebService
             services.AddTransient<IVoucherRepository, VoucherRepository>();
             services.AddTransient<IGamePlayResultRepository, GamePlayResultRepository>();
             services.AddTransient<IVoucherTypeImageRepository, VoucherTypeImageRepository>();
-
+            services.AddTransient<PeriodicalReportQuery>();
+            services.AddTransient<IStatisticService, StatisticService>();
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {

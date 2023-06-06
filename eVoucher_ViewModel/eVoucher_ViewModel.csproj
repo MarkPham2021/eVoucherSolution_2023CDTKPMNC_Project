@@ -15,8 +15,4 @@
     <ProjectReference Include="..\eVoucherDatabaseWebService_Utility\eVoucher_Utility.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="StatisticVM\" />
-  </ItemGroup>
-
 </Project>

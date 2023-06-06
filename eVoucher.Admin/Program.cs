@@ -1,7 +1,9 @@
 using eVoucher.ClientAPI_Integration;
+using eVoucher_BUS.FrontendServices;
 using eVoucher_DAL;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +26,12 @@ builder.Services.AddTransient<BaseAPIClient>();
 builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<StaffAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
+builder.Services.AddTransient<PartnerAPIClient>();
+builder.Services.AddTransient<StatisticAPIClient>();
+builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
+builder.Services.AddTransient<ICommonService, CommonService>();
+builder.Services.AddTransient<IFrPartnerService, FrPartnerService>();
+builder.Services.AddTransient<IFrStatisticService, FrStatisticService>();
 builder.Services.AddRazorPages();
 
 var app = builder.Build();

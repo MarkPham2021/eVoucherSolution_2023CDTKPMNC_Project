@@ -22,9 +22,9 @@ builder.Services.AddSession(options =>
     options.IdleTimeout = TimeSpan.FromMinutes(30);
 });
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<BaseAPIClient>();
 builder.Services.AddTransient<CustomerAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
-builder.Services.AddTransient<BaseAPIClient>();
 builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<CampaignAPIClient>();
@@ -50,9 +50,8 @@ app.UseDefaultFiles();
 app.UseStaticFiles();
 app.UseAuthentication();
 app.UseRouting();
-app.UseSession();
 app.UseAuthorization();
-
+app.UseSession();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
