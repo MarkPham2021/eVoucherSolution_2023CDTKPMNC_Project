@@ -20,10 +20,19 @@ namespace eVoucher_ViewModel.StatisticVM
         public int NumberOfPartners { get; set; }
         public int NumberOfActiveCampaigns { get; set;}
         public int NumberOfCustomers { get; set; }
+        public int NumberOfNewCustomers { get; set; }
+        public int NumberOfDeliveredVouchers { get; set; }
+    }
+    public class CategoryData
+    {
+        public string CategoryName { get; set; }
+        public int NumberOfPartners { get; set; }
+        public int NumberOfActiveCampaigns { get; set; }
         public int NumberOfDeliveredVouchers { get; set; }
     }
     public class PeriodicalReport
     {
         public List<DateData> Data { get; set; }
+        public List<CategoryData> CategoryData { get; set; }
     }
 }

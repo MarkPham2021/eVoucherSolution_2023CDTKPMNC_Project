@@ -10,6 +10,7 @@
                                 Model.Data[l - 2].NumberOfCustomers;
     int changeindeliveredVoucherCount = Model.Data[l - 1].NumberOfDeliveredVouchers - 
                                 Model.Data[l - 2].NumberOfDeliveredVouchers;
+    
     string explain = "";
     if (string.IsNullOrEmpty(ViewBag.CategoryName))
     {
@@ -19,6 +20,7 @@
     {
         explain = $" in category '{ViewBag.CategoryName}'";
     }
+    
 }
 
 <div class="bg-primary bg-opacity-75">
@@ -60,30 +62,32 @@
 <div class="container-fluid">
     <div class="row container-fluid">
         <div class="col col-lg-3 col-md-4 col-sm-12">
-            <div class="card bg-primary text-white mb-4">
-                <div class="card-body">Partners @explain</div>
-                <div class="card-footer d-flex align-items-center justify-content-between">
-                    <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfPartners</div>
-                    <div class="small text-white">
-                        @if (changeinPartnerCount > 0)
-                        {
-                            <i class=" fa-solid fa-arrow-up"></i>
-                            @changeinPartnerCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
-                        }
-                        else if (changeinPartnerCount <0)
-                        {
-                            <i class=" fa-solid fa-arrow-down"></i>
-                            @changeinPartnerCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
-                        }else
-                        {
-                            <p>(Unchange with @Model.Data[l - 2].DateReport)</p>
-                        }
+            <a href="#">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">Partners @explain</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfPartners</div>
+                        <div class="small text-white">
+                            @if (changeinPartnerCount > 0)
+                            {
+                                <i class=" fa-solid fa-arrow-up"></i>
+                                @changeinPartnerCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }
+                            else if (changeinPartnerCount <0)
+                            {
+                                <i class=" fa-solid fa-arrow-down"></i>
+                                @changeinPartnerCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }else
+                            {
+                                <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
+                            }
                         
+                        </div>
                     </div>
                 </div>
-            </div>            
+            </a>
         </div>
         <div class="col col-lg-3 col-md-4 col-sm-12">
             <div class="card bg-warning text-white mb-4">
@@ -95,17 +99,17 @@
                         {
                             <i class=" fa-solid fa-arrow-up"></i>
                             @changeinActiveCampaignCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else if (changeinActiveCampaignCount < 0)
                         {
                             <i class=" fa-solid fa-arrow-down"></i>
                             @changeinActiveCampaignCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else
                         {
-                            <p>(Unchange with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
                         }
 
                     </div>
@@ -122,17 +126,17 @@
                         {
                             <i class=" fa-solid fa-arrow-up"></i>
                             @changeinCustomerCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else if (changeinCustomerCount < 0)
                         {
                             <i class=" fa-solid fa-arrow-down"></i>
                             @changeinCustomerCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else
                         {
-                            <p>(Unchange with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
                         }
 
                     </div>
@@ -149,23 +153,24 @@
                         {
                             <i class=" fa-solid fa-arrow-up"></i>
                             @changeindeliveredVoucherCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else if (changeindeliveredVoucherCount < 0)
                         {
                             <i class=" fa-solid fa-arrow-down"></i>
                             @changeindeliveredVoucherCount
-                            <p>(Compare with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
                         }
                         else
                         {
-                            <p>(Unchange with @Model.Data[l - 2].DateReport)</p>
+                            <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
                         }
 
                     </div>
                 </div>
             </div>
         </div>
+        <!--Bar charts-->
         <div class="row">
             <div class="col col-lg-3 col-md-6 col-sm-12">
                 <div class="card bg-light  mb-1">
@@ -192,105 +197,160 @@
                 </div>
             </div>
         </div>
+        <!--Pie Charts-->
+        <div class="row">
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card-header bg-info fw-bold border-1 rounded-1">Partners in Categories Chart</div>
+                <div class="card bg-white rounded-1 mb-1">
+                    <canvas id="PartnerInCategoriesChart" height="196">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card-header bg-warning bg-opacity-50 fw-bold border-1 rounded-1">Active campaigns in Categories Chart</div>
+                <div class="card bg-white rounded-1 mb-1">
+                    <canvas id="CampaignInCategoriesChart" height="196">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card-header bg-success bg-opacity-50 fw-bold border-1 rounded-1">New customers change</div>
+                <div class="card bg-white rounded-1 mb-1">
+                    <canvas id="CustomerLineChart" height="196">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card-header bg-danger bg-opacity-50 fw-bold border-1 rounded-1">Delivered vouchers in categories</div>
+                <div class="card bg-white rounded-1 mb-1">
+                    <canvas id="DeliveredVoucherInCategoriesChart" height="196">
+                    </canvas>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-<script>
-        const partnerbarchart = document.getElementById('NumberOfPartnerChangeChart');
-        const campaignbarchart = document.getElementById('NumberOfCampaignChangeChart');
-        const customerbarchart = document.getElementById('NumberOfCustomerChangeChart');
-        const voucherbarchart = document.getElementById('NumberOfDeliveredVoucherChangeChart')
-        var partnerCount = [];
-        var campaignCount = [];
-        var customerCount = [];
-        var deliveredVoucherCount = [];
-        var Dates = [];
-        //get data for bar charts
-        @if (Model.Data.Count > 0)
+<script type="text/javascript">
+    const partnerbarchart = document.getElementById('NumberOfPartnerChangeChart');
+    const campaignbarchart = document.getElementById('NumberOfCampaignChangeChart');
+    const customerbarchart = document.getElementById('NumberOfCustomerChangeChart');
+    const voucherbarchart = document.getElementById('NumberOfDeliveredVoucherChangeChart');
+    const partnerpiechart = document.getElementById('PartnerInCategoriesChart');
+    const campaigndoughnutchart = document.getElementById('CampaignInCategoriesChart');
+    const newcustomerlinechart = document.getElementById('CustomerLineChart');
+    const voucherpolarchart = document.getElementById('DeliveredVoucherInCategoriesChart')
+    var partnerCount = [];
+    var campaignCount = [];
+    var customerCount = [];
+    var newcustomerCount = [];
+    var deliveredVoucherCount = [];
+    var Dates = [];
+    var categorynames = [];
+    var partnerincategoryCount =[];
+    var campaignincategoryCount = [];
+    var voucherincategoryCount = [];
+    //get data for bar charts
+    @{
+        
+        if (Model.Data.Count > 0)
         {
             foreach (var item in Model.Data)
             {
                 @:partnerCount.push(@item.NumberOfPartners);
                 @:campaignCount.push(@item.NumberOfActiveCampaigns);
                 @:customerCount.push(@item.NumberOfCustomers);
+                @:newcustomerCount.push(@item.NumberOfNewCustomers);
                 @:deliveredVoucherCount.push(@item.NumberOfDeliveredVouchers);
                 @:Dates.push('@item.DateReport');
             }
+        }        
+    }
+    @if (Model.CategoryData.Count > 0)
+    {
+        @foreach(var x in Model.CategoryData)
+        {
+            @:categorynames.push('@x.CategoryName');
+            @:partnerincategoryCount.push(@x.NumberOfPartners);
+            @:campaignincategoryCount.push(@x.NumberOfActiveCampaigns);
+            @:voucherincategoryCount.push(@x.NumberOfDeliveredVouchers);
         }
+    }
         //partner bar chart
-            var partnerBar = {
-            label: "Dates",
-            data: partnerCount,
-            backgroundColor: [
-                'rgba(21, 6, 209, 0.78)',
-                'rgba(21, 6, 209, 0.81)',
-                'rgba(21, 6, 209, 0.85)',
-                'rgba(21, 6, 209, 0.86)',
-                'rgba(21, 6, 209, 0.90)',
-                'rgba(21, 6, 209, 0.92)',
-                'rgba(21, 6, 209, 0.96)'
-            ],
-            borderColor: [
-                'rgba(255,255,255, 0.8)',
-                'rgba(255,255,255, 0.85)',
-                'rgba(255,255,255, 0.90)',
-                'rgba(255,255,255, 0.92)',
-                'rgba(255,255,255, 0.94)',
-                'rgba(255,255,255, 0.96)',
-                'rgba(255,255,255, 0.98)'
-            ],
-            borderWidth: 1,
-            lineTension: 0,
-        };
+    var partnerBar = 
+    {
+        label: "Number of partner",
+        data: partnerCount,
+        backgroundColor: [
+            'rgba(21, 6, 209, 0.78)',
+            'rgba(21, 6, 209, 0.81)',
+            'rgba(21, 6, 209, 0.85)',
+            'rgba(21, 6, 209, 0.86)',
+            'rgba(21, 6, 209, 0.90)',
+            'rgba(21, 6, 209, 0.92)',
+            'rgba(21, 6, 209, 0.96)'
+        ],
+        borderColor: [
+            'rgba(255,255,255, 0.8)',
+            'rgba(255,255,255, 0.85)',
+            'rgba(255,255,255, 0.90)',
+            'rgba(255,255,255, 0.92)',
+            'rgba(255,255,255, 0.94)',
+            'rgba(255,255,255, 0.96)',
+            'rgba(255,255,255, 0.98)'
+        ],
+        borderWidth: 1,
+        lineTension: 0,
+    };
 
-        var partnerdatasetvalues = {
-            labels: Dates, // x-azis label values
-            datasets: [partnerBar] // y-axis
-        };        
-        barChartOptions = {
-            indexAxis: 'x',
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                x: {
+    var partnerdatasetvalues = {
+        labels: Dates, // x-azis label values
+        datasets: [partnerBar] // y-axis
+    };        
+    var barChartOptions = {
+        indexAxis: 'x',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
                     
-                    gridLines: {
-                        display: false
-                    },
-                    ticks: {
-                        maxTicksLimit: 7
-                    }
+                gridLines: {
+                    display: false
                 },
-                y: {
-                    ticks: {
-                        min: 0,
-                        max: 15000,
-                        maxTicksLimit: 7
-                    },
-                    gridLines: {
-                    display: true
-                    }
+                ticks: {
+                    maxTicksLimit: 7
                 }
             },
-            plugins: {
-                title: {
-                    display: true,
-                    text: 'Change in number of Partners'
+            y: {
+                ticks: {
+                    min: 0,
+                    max: 15000,
+                    maxTicksLimit: 7
+                },
+                gridLines: {
+                display: true
                 }
             }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Change in number of Partners'
+            }
         }
+    }
 
-        var partnerBarChart = new Chart(
-            partnerbarchart.getContext('2d'), {
-            type: 'bar',
-            data: partnerdatasetvalues,
-            options: barChartOptions
-        });
-        //campaign bar chart
+    var partnerBarChart = new Chart(
+        partnerbarchart.getContext('2d'), {
+        type: 'bar',
+        data: partnerdatasetvalues,
+        options: barChartOptions
+    });
+    //campaign bar chart
     
     var campaignBar = {
-        label: "Dates",
+        label: "Number of campaigns",
         data: campaignCount,
         backgroundColor: [
             'rgba(199, 126, 10, 0.78)',
@@ -358,9 +418,9 @@
         options: barChartOptions
     });
 
-    //customer line chart
+    //customer bar chart
     var customerBar = {
-        label: "Dates",
+        label: "Number of customers",
         data: customerCount,
         backgroundColor: [
             'rgba(12, 148, 84, 0.78)',
@@ -429,7 +489,7 @@
     });
     //delivered voucher bar chart
     var deliveredVoucherBar = {
-        label: "Dates",
+        label: "Vouchers delivered",
         data: deliveredVoucherCount,
         backgroundColor: [
             'rgba(219, 18, 11, 0.86)',
@@ -491,5 +551,139 @@
         data: deliveredVoucherdatasetvalues,
         options: barChartOptions
     });
+    //partners in categories piechart
+    pieChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Partners in Categories'
+            }
+        }
+    }
+    var partnerPieChart = new Chart(partnerpiechart, {
+        type: 'pie',
+        data: {
+            labels: categorynames,
+            datasets: [{
+                data: partnerincategoryCount,
+                backgroundColor: [
+                    '#ff0000', '#0000ff',
+                    '#9900cc','#00cc66',
+                    '#ffcc00', '#990099',
+                    '#33ccff','#ffccff',
+                    '#ff3399', '#666699'
+                ],
+            }],
+            options: pieChartOptions
+        }
+    });
+    //active campaigns in categories doughnutchart
+    pieChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Campaigns in Categories'
+            }
+        }
+    }
+    var campaignDoughnutChart = new Chart(campaigndoughnutchart, {
+        type: 'doughnut',
+        data: {
+            labels: categorynames,
+            datasets: [{
+                data: campaignincategoryCount,
+                backgroundColor: [
+                    '#ff0000', '#0000ff',
+                    '#9900cc', '#00cc66',
+                    '#ffcc00', '#990099',
+                    '#33ccff', '#ffccff',
+                    '#ff3399', '#666699'
+                ],
+            }],
+            options: pieChartOptions
+        }
+    });
+    //Vouchers delivered in categories polar chart
+    polarChartOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            title: {
+                display: true,
+                text: 'Vouchers delivered in Categories'
+            }
+        }
+    }
+    var voucherPolarChart = new Chart(voucherpolarchart, {
+        type: 'polarArea',
+        data: {
+            labels: categorynames,
+            datasets: [{
+                data: voucherincategoryCount,
+                backgroundColor: [
+                    '#ff0000', '#0000ff',
+                    '#9900cc', '#00cc66',
+                    '#ffcc00', '#990099',
+                    '#33ccff', '#ffccff',
+                    '#ff3399', '#666699'
+                ],
+            }],
+            options: polarChartOptions
+        }
+    });
+    //new customers line chart
+    var myLineChart = new Chart(newcustomerlinechart, {
+        type: 'line',
+        data: {
+            labels: Dates,
+            datasets: [{
+                label: "New customers",
+                lineTension: 0.3,
+                backgroundColor: "#ff0000",
+                borderColor: "#006600",
+                pointRadius: 5,
+                pointBackgroundColor: "#ff0000",
+                pointBorderColor: "#ffff00",
+                pointHoverRadius: 9,
+                pointHoverBackgroundColor: "#ff66ff",
+                pointHitRadius: 50,
+                pointBorderWidth: 2,
+                data: newcustomerCount,
+            }],
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 5
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 30,
+                        maxTicksLimit: 5
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, .125)",
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
 </script>
+
 

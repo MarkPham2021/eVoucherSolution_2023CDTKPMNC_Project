@@ -13,33 +13,31 @@ using eVoucher_BUS.FrontendServices;
 namespace eVoucher.Admin.Controllers
 {
     [Authorize]
-    public class HomeController : Controller
+    public class PartnerController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        
         private readonly IFrPartnerService _frPartnerService;
         private readonly IFrStatisticService _frStatisticService;
-        public HomeController(ILogger<HomeController> logger,
-            IFrPartnerService frPartnerService,
+        public PartnerController(IFrPartnerService frPartnerService,
             IFrStatisticService frStatisticService)
         {
-            _logger = logger;
             _frPartnerService = frPartnerService;
             _frStatisticService = frStatisticService;
         }
         [HttpGet]
-        public async Task<IActionResult> Index(int periodicaltype =1, int categoryId = 0)
+        public async Task<IActionResult> Index(string keyword ="", int categoryId = 0, int pageIndex = 1, int pageSize = 8)
         {
-            var request = new CreatePeriodicalReportRequest() 
+            var token = HttpContext.Session.GetString("Token");
+            var request = new GetCustomerCampaignPagingRequest()
             {
-                PeriodicalType = periodicaltype,
-                CategoryId = categoryId,
-                NumberOfPeriods = 4,
-                LastPeriod = DateTime.Now
+                keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize,
+                categoryId = categoryId
             };
-            var token = HttpContext.Session.GetString("Token");            
-            string userinfo = User.Identity.Name;            
+            string userinfo = User.Identity.Name;
             var categories = await _frPartnerService.GetPartnerCategoriesAsync();
-            var _category = categories.FirstOrDefault(x=>x.Id==categoryId);
+            var _category = categories.FirstOrDefault(x => x.Id == categoryId);
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)
             {
@@ -53,7 +51,7 @@ namespace eVoucher.Admin.Controllers
             {
                 ViewBag.CategoryName = "";
             }
-            
+
             ViewBag.Categories = selectlistpartnercategory;
             var report = await _frStatisticService.CreatePeriodicalReport(request, token);
             return View(report);

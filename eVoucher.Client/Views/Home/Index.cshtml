@@ -15,7 +15,7 @@
 <div class="container">
     <form asp-action="Index" method="get">
         <div class="row my-3">
-            <div class="form-group col-lg-3 col-md-3">
+            <div class="col col-lg-3 col-md-4">
                 <div class="maxl">
                     <label class="radio inline mx-3">
                         <input type="radio" name="filter" value="1">
@@ -27,22 +27,22 @@
                     </label>
                 </div>
             </div>
-            <div class="col-lg-3 col-md-3">
+            <div class="col col-lg-3 col-md-3">
                 <select name="categoryId" class="form-control" asp-items="@ViewBag.Categories">
                     <option value="0">--Choose Category--</option>
                 </select>
             </div>
-            <div class="col-lg-4 col-md-3">
+            <div class="col-lg-4 col-md-4">
                 <input class="form-control" type="text" value="@ViewBag.currentAddress" name="currentAddress"
                 placeholder="Input your current address"/>
             </div>
-            <div class="col-md-3 my-2 container">
-                <button type="submit" class="btn btn-success btn-lg float-end">View</button>
+            <div class="col-lg-1 col-md-1">
+                <button type="submit" class="btn btn-success form-control float-center">View</button>
             </div>
         </div>
     </form>
 </div>
-<div class="container">
+<div class="container-fluid">
     <div class="ag-format-container">
         <div class="ag-courses_box">
 
