@@ -3,6 +3,7 @@ using eVoucher_ViewModel.Requests.PartnerRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http.Headers;
 
 namespace eVoucher.ClientAPI_Integration
@@ -17,19 +18,21 @@ namespace eVoucher.ClientAPI_Integration
             _configuration = configuration;
         }
 
-        public async Task<List<PartnerCategory>?> GetAllPartnerCategoriesAsync()
+        public async Task<List<PartnerCategory>?> GetAllPartnerCategoriesAsync(string token)
         {
-            var uri = BASE_REQUEST + "/getallpartnercategories";
             //uri: ROOTPATH/partner/getallpartnercategories
+            var uri = BASE_REQUEST + "/getallpartnercategories";            
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
             var categories = JsonConvert.DeserializeObject<List<PartnerCategory>>(response);
             return categories;
         }
 
-        public async Task<List<Partner>?> GetAllPartnersAsync()
+        public async Task<List<Partner>?> GetAllPartnersAsync(string token)
         {
             var uri = BASE_REQUEST;
             //uri: ROOTPATH/partner
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             var response = await _httpClient.GetStringAsync(uri);
             var partners = JsonConvert.DeserializeObject<List<Partner>>(response);
             return partners;
@@ -69,6 +72,24 @@ namespace eVoucher.ClientAPI_Integration
             var responsestring = await response.Content.ReadAsStringAsync();
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
+        }
+        public async Task<PartnerVM> LockPartner(int id, string token)
+        {
+            var uri = BASE_REQUEST +$"/lock/{id}";
+            //uri: ROOTPATH/partner/lock/{id}
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var partnervm = JsonConvert.DeserializeObject<PartnerVM>(response);
+            return partnervm;
+        }
+        public async Task<PartnerVM> UnLockPartner(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/unlock/{id}";
+            //uri: ROOTPATH/partner/unlock/{id}
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var partnervm = JsonConvert.DeserializeObject<PartnerVM>(response);
+            return partnervm;
         }
     }
 }

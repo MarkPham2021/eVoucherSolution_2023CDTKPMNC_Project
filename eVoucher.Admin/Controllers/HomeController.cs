@@ -38,7 +38,7 @@ namespace eVoucher.Admin.Controllers
             };
             var token = HttpContext.Session.GetString("Token");            
             string userinfo = User.Identity.Name;            
-            var categories = await _frPartnerService.GetPartnerCategoriesAsync();
+            var categories = await _frPartnerService.GetPartnerCategoriesAsync(token);
             var _category = categories.FirstOrDefault(x=>x.Id==categoryId);
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)

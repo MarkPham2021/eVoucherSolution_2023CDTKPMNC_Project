@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using eVoucher.ClientAPI_Integration;
+﻿using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
 using eVoucher_Utility.Enums;
@@ -7,28 +6,31 @@ using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
-using System.Drawing.Drawing2D;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace eVoucher_BUS.FrontendServices
 {
     public interface IFrCampaignService
     {
-        Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request,string token);
-        Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, 
-            GetManageCampaignPagingRequest request, string token);
-        Task<CampaignVM?> GetCampaignVMById(int campaignid, string token);
-        Task<List<Game>> GetAllGames(string token);
-        Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request,string token);
-        Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
+        Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, string token);
 
+        Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid,
+            GetManageCampaignPagingRequest request, string token);
+
+        Task<CampaignVM?> GetCampaignVMById(int campaignid, string token);
+
+        Task<List<Game>> GetAllGames(string token);
+
+        Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request, string token);
+
+        Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
     }
 
-    public class FrCampaignService: IFrCampaignService
+    public class FrCampaignService : IFrCampaignService
     {
         private CampaignAPIClient _campaignAPIClient;
         private GameAPIClient _gameAPIClient;
         private IConfiguration _configuration;
+
         public FrCampaignService(CampaignAPIClient campaignAPIClient, GameAPIClient gameAPIClient,
             IConfiguration configuration)
         {
@@ -39,7 +41,7 @@ namespace eVoucher_BUS.FrontendServices
 
         public async Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request, string token)
         {
-            return await _campaignAPIClient.Create(request, token); 
+            return await _campaignAPIClient.Create(request, token);
         }
 
         public async Task<List<Game>> GetAllGames(string token)
@@ -54,9 +56,9 @@ namespace eVoucher_BUS.FrontendServices
             {
                 return null;
             }
-            var campaignvm = data.FirstOrDefault(c=>c.Id== campaignid);
+            var campaignvm = data.FirstOrDefault(c => c.Id == campaignid);
             string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
-            if(campaignvm != null)
+            if (campaignvm != null)
             {
                 campaignvm.ImagePath = BaseAdress + campaignvm.ImagePath;
                 campaignvm.PartnerImagePath = BaseAdress + campaignvm.PartnerImagePath;
@@ -67,16 +69,19 @@ namespace eVoucher_BUS.FrontendServices
             }
             return campaignvm;
         }
-        public async Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, 
+
+        //this function: GetAllCampaignVMsPaging (string user,...) for paging all active campaigns of a partner user
+        //using for Partner app
+        public async Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request,
             string token)
         {
             var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
-            if(string.IsNullOrEmpty(request.Keyword))
+            if (string.IsNullOrEmpty(request.Keyword))
             {
                 request.Keyword = "";
             }
-            var filterdata = from vm in data 
-                             where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) || 
+            var filterdata = from vm in data
+                             where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.MetaKeyword.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == user.ToLower()) &&
                              (vm.Status == ActiveStatus.Active)
@@ -99,26 +104,27 @@ namespace eVoucher_BUS.FrontendServices
             return pageresult;
         }
 
-        public async Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid, 
+        public async Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid,
             GetManageCampaignPagingRequest request, string token)
         {
             var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
             var filterdata = from vm in data
-                             where (vm.Id == campaignid) 
+                             where (vm.Id == campaignid)
                              select vm;
             var campaigns = filterdata.ToList();
             var vouchertypes = new List<VoucherTypeVM>();
             string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
-            if (campaigns.Count > 0) {
-                vouchertypes = campaigns[0].VoucherTypes;                
+            if (campaigns.Count > 0)
+            {
+                vouchertypes = campaigns[0].VoucherTypes;
                 foreach (var item in vouchertypes)
                 {
                     item.CampaignName = campaigns[0].Name;
                     item.ImagePath = BaseAdress + item.ImagePath;
                 }
             }
-            if(string.IsNullOrEmpty(request.Keyword)) { request.Keyword = ""; }
-            var vouchertypesfilter = vouchertypes.Where(v=>v.Name.ToLower().Contains(request.Keyword.ToLower())||
+            if (string.IsNullOrEmpty(request.Keyword)) { request.Keyword = ""; }
+            var vouchertypesfilter = vouchertypes.Where(v => v.Name.ToLower().Contains(request.Keyword.ToLower()) ||
             v.Promotion.ToLower().Contains(request.Keyword.ToLower()));
             var pagedata = vouchertypesfilter.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
@@ -132,10 +138,10 @@ namespace eVoucher_BUS.FrontendServices
             };
             return pageresult;
         }
+
         public async Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token)
         {
             return await _campaignAPIClient.CreateVoucherType(request, token);
         }
-
     }
 }

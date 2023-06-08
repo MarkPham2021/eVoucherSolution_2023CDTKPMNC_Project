@@ -31,8 +31,4 @@
     <ProjectReference Include="..\eVoucher_ViewModel\eVoucher_ViewModel.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Views\Partner\" />
-  </ItemGroup>
-
 </Project>

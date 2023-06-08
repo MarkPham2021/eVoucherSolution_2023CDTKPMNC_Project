@@ -11,15 +11,17 @@
     <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
 </head>
 <body class="sb-nav-fixed">
-    <nav class="sb-topnav navbar navbar-expand text-white bg-primary">
+    <nav class="sb-topnav navbar navbar-expand text-white bg-primary py-2">
         <!-- Navbar Brand-->
-        <a class="navbar-brand ps-3 text-white" asp-controller="Home" asp-action="Index">eVoucher Solution</a>
+        <div class="py-2 my-2">
+            <a class="ps-3 my-2 text-white navbar-brand" asp-controller="Home" asp-action="Index">eVoucher Administration</a>
+        </div>
         <!-- Sidebar Toggle-->
-        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <button class="btn btn-lg btn-light order-1 order-lg-0 mx-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
         <!-- Navbar Search-->
         <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" method="get" asp-action="Index">
             <div class="input-group">
-                <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                <input class="form-control" name="keyword" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                 <button class="btn btn-primary" id="btnNavbarSearch" type="submit"><i class="fas fa-search"></i></button>
             </div>
         </form>
@@ -42,21 +44,19 @@
                 <div class="sb-sidenav-menu">
                     <div class="nav">
                         <div class="sb-sidenav-menu-heading">Core</div>
-                        <a class="nav-link text-warning" href="index.html">
+                        <a class="nav-link text-warning" asp-controller="Home" asp-action="Index">
                             <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
                             Dashboard
                         </a>
                         <div class="sb-sidenav-menu-heading">Manage</div>
-                        <a class="nav-link collapsed text-warning" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
-                            <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+                        <a class="nav-link collapsed text-warning" asp-controller="Partner" asp-action="Index">
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-shop"></i></div>
                             Partners
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>
                         
-                        <a class="nav-link collapsed text-warning" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
-                            <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
+                        <a class="nav-link collapsed text-warning" href="#" >
+                            <div class="sb-nav-link-icon"><i class="fa-solid fa-ranking-star"></i></div>
                             Campaigns
-                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                         </a>                        
                         
                     </div>
@@ -70,9 +70,8 @@
         <div id="layoutSidenav_content">
             <main>
                 <div class="container-fluid px-4">
-                    <h1 class="mt-4">eVoucher Administration</h1>
-                    
-                    <div class="card mb-4">
+                    <h1 class="mt-4">@ViewData["Title"]</h1>
+                    <div class="card mb-3">
                         @RenderBody()
                     </div>
                 </div>
@@ -80,10 +79,9 @@
             <footer class="py-4 bg-primary bg-opacity-100 text-white mt-auto">
                 <div class="container-fluid px-4">
                     <div class="d-flex align-items-center justify-content-between small">
-                        <div >Copyright &copy; eVoucher Administration 2023</div>
+                        <div>Copyright &copy; 20880212 - Phạm Mạnh Cường 20880269 - Huỳnh Thanh Phú </div>
                         <div>
-                            20880212 - Phạm Mạnh Cường 2088 - Huỳnh Thanh Phú
-                            
+                            eVoucher Administration 2023
                         </div>
                     </div>
                 </div>

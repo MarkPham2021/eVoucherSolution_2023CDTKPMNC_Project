@@ -9,6 +9,7 @@ using System.Diagnostics;
 using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 using System.Drawing.Printing;
 using eVoucher_BUS.FrontendServices;
+using eVoucher_ViewModel.Requests.PartnerRequests;
 
 namespace eVoucher.Admin.Controllers
 {
@@ -17,26 +18,25 @@ namespace eVoucher.Admin.Controllers
     {
         
         private readonly IFrPartnerService _frPartnerService;
-        private readonly IFrStatisticService _frStatisticService;
-        public PartnerController(IFrPartnerService frPartnerService,
-            IFrStatisticService frStatisticService)
+       
+        public PartnerController(IFrPartnerService frPartnerService)
         {
             _frPartnerService = frPartnerService;
-            _frStatisticService = frStatisticService;
+            
         }
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword ="", int categoryId = 0, int pageIndex = 1, int pageSize = 8)
+        public async Task<IActionResult> Index(string keyword ="", int categoryId = 0, int pageIndex = 1, int pageSize = 6)
         {
             var token = HttpContext.Session.GetString("Token");
-            var request = new GetCustomerCampaignPagingRequest()
+            var request = new GetAdminPartnersPagingRequest()
             {
-                keyword = keyword,
+                Keyword = keyword,
                 PageIndex = pageIndex,
                 PageSize = pageSize,
-                categoryId = categoryId
+                CategoryId = categoryId
             };
             string userinfo = User.Identity.Name;
-            var categories = await _frPartnerService.GetPartnerCategoriesAsync();
+            var categories = await _frPartnerService.GetPartnerCategoriesAsync(token);
             var _category = categories.FirstOrDefault(x => x.Id == categoryId);
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)
@@ -51,12 +51,24 @@ namespace eVoucher.Admin.Controllers
             {
                 ViewBag.CategoryName = "";
             }
-
             ViewBag.Categories = selectlistpartnercategory;
-            var report = await _frStatisticService.CreatePeriodicalReport(request, token);
-            return View(report);
+            var pageresult = await _frPartnerService.GetAllPartnerPaging(request, token);
+            return View(pageresult);
         }
-
+        [HttpGet("Lock/{id}")]
+        public async Task<IActionResult> Lock(int id)
+        {
+            var token = HttpContext.Session.GetString("Token");
+            var partnervm = await _frPartnerService.LockPartner(id, token);
+            return View(partnervm);
+        }
+        [HttpGet("UnLock/{id}")]
+        public async Task<IActionResult> UnLock(int id)
+        {
+            var token = HttpContext.Session.GetString("Token");
+            var partnervm = await _frPartnerService.UnLockPartner(id, token);
+            return View(partnervm);
+        }
         public IActionResult Privacy()
         {
             return View();

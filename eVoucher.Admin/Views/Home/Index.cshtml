@@ -1,6 +1,6 @@
 ﻿@model eVoucher_ViewModel.StatisticVM.PeriodicalReport
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "DashBoard";
     var l = Model.Data.Count;
     int changeinPartnerCount = Model.Data[l - 1].NumberOfPartners - 
                                 Model.Data[l - 2].NumberOfPartners;
@@ -62,7 +62,7 @@
 <div class="container-fluid">
     <div class="row container-fluid">
         <div class="col col-lg-3 col-md-4 col-sm-12">
-            <a href="#">
+            <a asp-controller="Partner" asp-action="Index">
                 <div class="card bg-primary text-white mb-4">
                     <div class="card-body">Partners @explain</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
@@ -173,25 +173,25 @@
         <!--Bar charts-->
         <div class="row">
             <div class="col col-lg-3 col-md-6 col-sm-12">
-                <div class="card bg-light  mb-1">
+                <div class="card bg-light mx-0 px-0 mb-1">
                     <canvas id="NumberOfPartnerChangeChart" height="260">
                     </canvas>
                 </div>
             </div>
             <div class="col col-lg-3 col-md-6 col-sm-12">
-                <div class="card bg-white text-white mb-1">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
                     <canvas id="NumberOfCampaignChangeChart" height="260">
                     </canvas>
                 </div>
             </div>
             <div class="col col-lg-3 col-md-6 col-sm-12">
-                <div class="card bg-white text-white mb-1">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
                     <canvas id="NumberOfCustomerChangeChart" height="260">
                     </canvas>
                 </div>
             </div>
             <div class="col col-lg-3 col-md-6 col-sm-12">
-                <div class="card bg-white text-white mb-1">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
                     <canvas id="NumberOfDeliveredVoucherChangeChart" height="260">
                     </canvas>
                 </div>

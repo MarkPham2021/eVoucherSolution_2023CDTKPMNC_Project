@@ -1,0 +1,65 @@
+﻿@using eVoucher_DTO.Models;
+@model eVoucher_ViewModel.Response.PageResult<Partner>
+@{
+    ViewData["Title"] = "Partner Index Page";
+    string explain = "";
+    if (string.IsNullOrEmpty(ViewBag.CategoryName))
+    {
+        explain = " in all categories";
+    }
+    else
+    {
+        explain = $" in category '{ViewBag.CategoryName}'";
+    }
+
+}
+<div class="container-fluid">
+    <form asp-controller="Partner" asp-action="Index" method="get">
+        <div class="row my-3">
+            <div class="col-lg-5 col-md-5">
+                <select name="categoryId" class="form-control" asp-items="@ViewBag.Categories">
+                    <option value="0">--Choose category--</option>
+                </select>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <button type="submit" class="form-control btn btn-primary float-start">View</button>
+            </div>
+        </div>
+    </form>
+    <div class="container-fluid">
+        <div class="bg-primary bg-opacity-75">
+            <h6 class="text-md-start font-weight-bold my-2 text-warning">Partner @explain:</h6>
+        </div>
+        <!--Partners-->
+        <div class="row">
+            @foreach (var item in Model.Items)
+            {
+                <div class="col col-lg-4 col-md-6 col-sm-12 my-3 border-2">
+                    <div class="card-header bg-info fw-bold border-1 rounded-1">@item.Name</div>
+                    <div class="card-body bg-white rounded-1 mb-1">
+                        <p>Category: @item.Partnercategory.Name</p>
+                        <p>Address: @item.Address</p>
+                    </div>
+                    <div class="row card-img-bottom container-fluid">
+                        <div class="col-5">
+                            <img src="@item.PartnerImages[0].ImagePath" class="flex-fill" height="180" width="240" />
+                        </div>
+                        <div class="col-7">
+                            <p>Phone: @item.AppUser.PhoneNumber</p>
+                            <p>Email: @item.AppUser.Email</p>
+                            <p>Status: @item.Status</p>
+                            <p>
+                                @Html.ActionLink("Lock", "Lock", new { id = item.Id },new {@class ="text-white fw-bold bg-danger"}) |
+                                @Html.ActionLink("Unlock", "UnLock", new { id = item.Id },new {@class ="text-white fw-bold bg-primary"} )
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            }
+            @await Component.InvokeAsync("Pager", Model)
+        </div>
+    </div>
+</div>
+
+
+

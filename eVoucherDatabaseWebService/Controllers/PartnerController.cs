@@ -31,14 +31,19 @@ namespace eVoucherDatabaseWebService.Controllers
             return Ok(categories);
         }
 
-        // GET api/<PartnerController>/5
+        // GET api/partner/5
         [HttpGet("{id}")]
         public async Task<ActionResult<PartnerVM?>> Get(int id)
         {
             return await _partnerService.GetPartnerById(id);
         }
-
-        // POST api/partner
+        // GET api/partner
+        [HttpGet]
+        public async Task<ActionResult<List<Partner>>> Get()
+        {
+            return await _partnerService.GetAllPartners();
+        }
+        // POST api/partner/register
         [HttpPost("register")]
         [Consumes("multipart/form-data")]
         [AllowAnonymous]
@@ -62,6 +67,20 @@ namespace eVoucherDatabaseWebService.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+        }
+        // GET api/partner/lock/5
+        [HttpGet("lock/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<PartnerVM?>> LockPartner(int id)
+        {
+            return await _partnerService.LockPartner(id);
+        }
+        // GET api/partner/unlock/5
+        [HttpGet("unlock/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<PartnerVM?>> UnLockPartner(int id)
+        {
+            return await _partnerService.UnLockPartner(id);
         }
     }
 }

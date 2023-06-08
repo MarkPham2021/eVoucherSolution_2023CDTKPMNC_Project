@@ -37,7 +37,8 @@ namespace eVoucher.Partner.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> Register()
         {
-            var categories = await _partnerService.GetPartnerCategoriesAsync();
+            string token = "abc";
+            var categories = await _partnerService.GetPartnerCategoriesAsync(token);
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)
             {

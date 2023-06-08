@@ -51,7 +51,7 @@ namespace eVoucher.Client.Controllers
                 currentAddress = currentAddress
             };
             string userinfo = User.Identity.Name;
-            var categories = await _frPartnerService.GetPartnerCategoriesAsync();
+            var categories = await _frPartnerService.GetPartnerCategoriesAsync(token);
             var selectlistpartnercategory = new List<SelectListItem>();
             foreach (PartnerCategory category in categories)
             {

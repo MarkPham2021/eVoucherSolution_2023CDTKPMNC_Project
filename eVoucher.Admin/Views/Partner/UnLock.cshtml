@@ -1,0 +1,40 @@
+﻿@model eVoucher_ViewModel.Requests.PartnerRequests.PartnerVM
+@{
+    ViewData["Title"] = "Partner UnLock Result";
+}
+<div class="container-fluid">
+
+    <div class="container-fluid">
+        <div class="bg-primary bg-opacity-75">
+            <h6 class="text-md-start font-weight-bold my-2 ps-5 text-warning">Partner @Model.Partner.Name has been unlocked</h6>
+        </div>
+        <!--Partner detail-->
+        <div class="row">
+
+            <div class="col col-lg-6 col-md-6 col-sm-12 my-3 border-2">
+                <div class="card-header bg-info fw-bold border-1 rounded-1">@Model.Partner.Name</div>
+                <div class="card-body bg-white rounded-1 mb-1">
+                    <p>Category: @Model.Partner.Partnercategory.Name</p>
+                    <p>Address: @Model.Partner.Address</p>
+                </div>
+                <div class="row card-img-bottom container-fluid">
+                    <div class="col-5">
+                        <img src="@Model.Partner.PartnerImages[0].ImagePath" class="flex-fill" height="180" width="240" />
+                    </div>
+                    <div class="col-7">
+                        <p>Phone: @Model.Partner.AppUser.PhoneNumber</p>
+                        <p>Email: @Model.Partner.AppUser.Email</p>
+                        <p>Status: @Model.Partner.Status</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-4 col-md-5 col-sm-12 my-3 border-2">
+            <a class="form-control bg-primary text-white fw-semibold " asp-action="Index" asp-controller="Partner">Back to Partner Index</a>
+        </div>
+    </div>
+</div>
+
+
+
+

@@ -16,7 +16,7 @@ namespace eVoucher_BUS.Services
 {
     public interface IPartnerService
     {
-        List<Partner> GetAllPartners();
+        Task<List<Partner>> GetAllPartners();
 
         Task<PartnerVM?> GetPartnerById(int id);
 
@@ -27,6 +27,8 @@ namespace eVoucher_BUS.Services
         Task<Partner> DeletePartner(int id);
 
         Task<Partner> DeletePartner(Partner partner);
+        Task<PartnerVM?> LockPartner(int id);
+        Task<PartnerVM?> UnLockPartner(int id);
     }
     public class PartnerService : IPartnerService
     {
@@ -57,9 +59,9 @@ namespace eVoucher_BUS.Services
             throw new NotImplementedException();
         }
 
-        public List<Partner> GetAllPartners()
+        public async Task<List<Partner>> GetAllPartners()
         {
-            throw new NotImplementedException();
+            return await _partnerRepository.GetAllAsync();
         }
 
         public async Task<PartnerVM?> GetPartnerById(int id)
@@ -124,6 +126,16 @@ namespace eVoucher_BUS.Services
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _fileStorageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
+        }
+
+        public async Task<PartnerVM?> LockPartner(int id)
+        {
+            return await _partnerRepository.LockPartner(id);
+        }
+
+        public async Task<PartnerVM?> UnLockPartner(int id)
+        {
+            return await _partnerRepository.UnLockPartner(id);
         }
     }
 }
