@@ -1,4 +1,6 @@
-﻿using eVoucher_ViewModel.Requests.CampaignRequests;
+﻿using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Requests.PartnerRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
@@ -135,6 +137,24 @@ namespace eVoucher.ClientAPI_Integration
             var responsestring = await response.Content.ReadAsStringAsync();
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
+        }
+        public async Task<Campaign?> DropCampaign(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/drop/{id}";
+            //uri: ROOTPATH/campaign/drop/{id}
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var campaign = JsonConvert.DeserializeObject<Campaign>(response);
+            return campaign;
+        }
+        public async Task<Campaign?> UnDropCampaign(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/undrop/{id}";
+            //uri: ROOTPATH/campaign/drop/{id}
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var campaign = JsonConvert.DeserializeObject<Campaign>(response);
+            return campaign;
         }
     }
 }

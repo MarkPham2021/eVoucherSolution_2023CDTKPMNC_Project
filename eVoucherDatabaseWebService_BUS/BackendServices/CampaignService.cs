@@ -23,6 +23,8 @@ namespace eVoucher_BUS.Services
 
         Task<APIResult<string>> DeleteCampaign(int id);
         Task<List<CampaignVM>> GetAllCampaignVMs();
+        Task<Campaign?> DropCampaign(int id);
+        Task<Campaign?> UnDropCampaign(int id);
     }
 
     public class CampaignService : ICampaignService
@@ -222,6 +224,16 @@ namespace eVoucher_BUS.Services
             var fileName = $"{Guid.NewGuid()}{Path.GetExtension(originalFileName)}";
             await _fileStorageService.SaveFileAsync(file.OpenReadStream(), fileName);
             return "/" + USER_CONTENT_FOLDER_NAME + "/" + fileName;
+        }
+
+        public async Task<Campaign?> DropCampaign(int id)
+        {
+            return await _campaignRepository.DropCampaign(id);
+        }
+
+        public async Task<Campaign?> UnDropCampaign(int id)
+        {
+            return await _campaignRepository.UnDropCampaign(id);
         }
     }
 }

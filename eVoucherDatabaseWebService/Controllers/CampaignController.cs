@@ -1,5 +1,8 @@
-﻿using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.FrontendServices;
+using eVoucher_BUS.Services;
+using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Requests.PartnerRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -46,6 +49,20 @@ namespace eVoucherDatabaseWebService.Controllers
         {
             var CampaignList = await _campaignService.GetAllCampaignVMs();
             return Ok(CampaignList);
+        }
+        // GET api/campaign/drop/5
+        [HttpGet("drop/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Campaign?>> LockPartner(int id)
+        {
+            return await _campaignService.DropCampaign(id);
+        }
+        // GET api/campaign/undrop/5
+        [HttpGet("undrop/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Campaign?>> UnLockPartner(int id)
+        {
+            return await _campaignService.UnDropCampaign(id);
         }
     }
 }

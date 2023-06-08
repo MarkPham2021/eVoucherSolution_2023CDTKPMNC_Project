@@ -8,6 +8,8 @@ namespace eVoucher_DAL.Repositories
     public interface ICampaignRepository : IRepository<Campaign>
     {
         Task<List<CampaignVM>> GetAllCampaignVMs();
+        Task<Campaign?> DropCampaign(int id);
+        Task<Campaign?> UnDropCampaign(int id);
     }
 
     public class CampaignRepository : RepositoryBase<Campaign>, ICampaignRepository
@@ -15,6 +17,21 @@ namespace eVoucher_DAL.Repositories
 
 
         public CampaignRepository(eVoucherDbContext context) : base(context) { }
+
+        public async Task<Campaign?> DropCampaign(int id)
+        {
+            var dropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 0 WHERE [Id] = {id}");
+            var campaigns = await _context.Set<Campaign>()
+                .Include(c => c.Partner)
+                .ThenInclude(p => p.Partnercategory)
+                .Include(c => c.CampaignImages)
+                .Where(c => c.Id == id).ToListAsync();
+            if (!campaigns.Any())
+            {
+                return null;
+            }
+            return campaigns[0];
+        }
 
         public async Task<List<CampaignVM>> GetAllCampaignVMs()
         {
@@ -93,6 +110,21 @@ namespace eVoucher_DAL.Repositories
                 campaignvmlist.Add(item);
             }
             return campaignvmlist;
+        }
+
+        public async Task<Campaign?> UnDropCampaign(int id)
+        {
+            var undropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 1 WHERE [Id] = {id}");
+            var campaigns = await _context.Set<Campaign>()
+                .Include(c => c.Partner)
+                .ThenInclude(p => p.Partnercategory)
+                .Include(c => c.CampaignImages)
+                .Where(c => c.Id == id).ToListAsync();
+            if (!campaigns.Any())
+            {
+                return null;
+            }
+            return campaigns[0];
         }
     }
 }

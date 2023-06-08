@@ -1,29 +1,27 @@
-﻿using eVoucher.Admin.Models;
-using eVoucher_BUS.FrontendServices;
+﻿using eVoucher_BUS.FrontendServices;
 using eVoucher_DTO.Models;
+using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Requests.PartnerRequests;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using System.Diagnostics;
 
 namespace eVoucher.Admin.Controllers
 {
-    [Authorize]
-    public class PartnerController : Controller
+    public class CampaignController : Controller
     {
+        private readonly IFrCampaignService _frCampaignService;
         private readonly IFrPartnerService _frPartnerService;
-
-        public PartnerController(IFrPartnerService frPartnerService)
+        public CampaignController(IFrCampaignService frCampaignService, IFrPartnerService frPartnerService)
         {
+            _frCampaignService = frCampaignService;
             _frPartnerService = frPartnerService;
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "", int categoryId = 0, int pageIndex = 1, int pageSize = 6)
+        public async Task<IActionResult> Index(string keyword = "", int categoryId = 0, int pageIndex = 1, int pageSize = 3)
         {
             var token = HttpContext.Session.GetString("Token");
-            var request = new GetAdminPartnersPagingRequest()
+            var request = new GetAdminCampaignsPagingRequest()
             {
                 Keyword = keyword,
                 PageIndex = pageIndex,
@@ -47,35 +45,24 @@ namespace eVoucher.Admin.Controllers
                 ViewBag.CategoryName = "";
             }
             ViewBag.Categories = selectlistpartnercategory;
-            var pageresult = await _frPartnerService.GetAllPartnerPaging(request, token);
+            var pageresult = await _frCampaignService.GetAdminCampaignVMsPaging(request,token);
             return View(pageresult);
         }
 
-        [HttpGet("Lock/{id}")]
-        public async Task<IActionResult> Lock(int id)
+        [HttpGet("drop/{id}")]
+        public async Task<IActionResult> Drop(int id)
         {
             var token = HttpContext.Session.GetString("Token");
-            var partnervm = await _frPartnerService.LockPartner(id, token);
-            return View(partnervm);
+            var campaign = await _frCampaignService.DropCampaign(id, token);
+            return View(campaign);
         }
 
-        [HttpGet("UnLock/{id}")]
-        public async Task<IActionResult> UnLock(int id)
+        [HttpGet("undrop/{id}")]
+        public async Task<IActionResult> UnDrop(int id)
         {
             var token = HttpContext.Session.GetString("Token");
-            var partnervm = await _frPartnerService.UnLockPartner(id, token);
-            return View(partnervm);
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
-
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            var campaign = await _frCampaignService.UnDropCampaign(id, token);
+            return View(campaign);
         }
     }
 }

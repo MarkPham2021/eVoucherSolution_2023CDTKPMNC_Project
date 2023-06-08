@@ -11,6 +11,7 @@ namespace eVoucher_BUS.FrontendServices
 {
     public interface IFrCampaignService
     {
+        //for partner app
         Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, string token);
 
         Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid,
@@ -23,6 +24,13 @@ namespace eVoucher_BUS.FrontendServices
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request, string token);
 
         Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
+
+        //for admin app
+        Task<PageResult<CampaignVM>> GetAdminCampaignVMsPaging(GetAdminCampaignsPagingRequest request, string token);
+
+        Task<Campaign?> DropCampaign(int campaignid, string token);
+
+        Task<Campaign?> UnDropCampaign(int campaignid, string token);
     }
 
     public class FrCampaignService : IFrCampaignService
@@ -142,6 +150,69 @@ namespace eVoucher_BUS.FrontendServices
         public async Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token)
         {
             return await _campaignAPIClient.CreateVoucherType(request, token);
+        }
+
+        //this function: GetAdminCampaignVMsPaging (GetAdminCampaignsPagingRequest request,string token)
+        //for paging all campaigns using for admin app
+        public async Task<PageResult<CampaignVM>> GetAdminCampaignVMsPaging(GetAdminCampaignsPagingRequest request, string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
+
+            var filterdata = from vm in data
+                             where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
+                             vm.MetaKeyword.ToLower().Contains(request.Keyword.ToLower()) ||
+                             vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower()))
+                             select vm;
+            if (request.CategoryId > 0)
+            {
+                filterdata = from vm in filterdata
+                             where vm.PartnerCategoryId == request.CategoryId
+                             select vm;
+            }
+            var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+            string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            foreach (var item in pagedata)
+            {
+                item.ImagePath = BaseAdress + item.ImagePath;
+            }
+            var pageresult = new PageResult<CampaignVM>()
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                TotalItems = filterdata.Count(),
+                Items = pagedata
+            };
+            return pageresult;
+        }
+
+        public async Task<Campaign?> DropCampaign(int campaignid, string token)
+        {
+            var campaign = await _campaignAPIClient.DropCampaign(campaignid, token);
+            if (campaign != null) 
+            { 
+                if(campaign.CampaignImages.Count > 0)
+                {
+                    campaign.CampaignImages[0].ImagePath = _configuration[SystemConstants.AppSettings.BaseAddress] +
+                                                            campaign.CampaignImages[0].ImagePath;
+                }
+            }
+            return campaign;
+        }
+
+        public async Task<Campaign?> UnDropCampaign(int campaignid, string token)
+        {
+            var campaign = await _campaignAPIClient.UnDropCampaign(campaignid, token);
+            if (campaign != null)
+            {
+                if (campaign.CampaignImages.Count > 0)
+                {
+                    campaign.CampaignImages[0].ImagePath = _configuration[SystemConstants.AppSettings.BaseAddress] +
+                                                            campaign.CampaignImages[0].ImagePath;
+                }
+            }
+            return campaign;
         }
     }
 }

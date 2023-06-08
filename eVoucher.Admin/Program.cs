@@ -27,10 +27,12 @@ builder.Services.AddTransient<GameAPIClient>();
 builder.Services.AddTransient<StaffAPIClient>();
 builder.Services.AddTransient<LoginAPIClient>();
 builder.Services.AddTransient<PartnerAPIClient>();
+builder.Services.AddTransient<CampaignAPIClient>();
 builder.Services.AddTransient<StatisticAPIClient>();
 builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
 builder.Services.AddTransient<ICommonService, CommonService>();
 builder.Services.AddTransient<IFrPartnerService, FrPartnerService>();
+builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddTransient<IFrStatisticService, FrStatisticService>();
 builder.Services.AddRazorPages();
 

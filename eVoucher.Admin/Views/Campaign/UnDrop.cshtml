@@ -1,0 +1,33 @@
+﻿@model eVoucher_DTO.Models.Campaign
+@{
+    ViewData["Title"] = "Campaign UnDrop Result";
+}
+<div class="container-fluid">
+
+    <div class="container-fluid">
+        <div class="bg-success bg-opacity-100">
+            <h6 class="text-md-start font-weight-bold my-2 ps-5 text-white">Campaign &ldquo;@Model.Name&rdquo; has been undropped</h6>
+        </div>
+        <!--Campaign detail-->
+        <div class="col col-lg-4 col-md-6 col-sm-12 my-3 border-2">
+            <div class="row card-img-bottom container-fluid">
+                <img src="@Model.CampaignImages[0].ImagePath" class="flex-fill" height="200" width="360" />
+            </div>
+            <div class="card-header bg-info fw-bold border-1 rounded-1">@Model.Name</div>
+            <div class="card-body bg-white rounded-1 mb-1">
+                <p class="fw-bold">@Model.Slogan</p>
+                <p>Begin: @Model.BeginningDate.ToShortDateString() --> End: @Model.EndingDate.ToShortDateString() </p>
+                <p>Vendor: @Model.Partner.Name</p>
+                <p>Category: @Model.Partner.Partnercategory.Name</p>
+                <p>Address: @Model.Partner.Address</p>
+                <p>Status: @Model.Status</p>
+            </div>
+            <div>
+                <p>
+                    @Html.ActionLink("Drop campaign", "Drop", new { id = Model.Id },new {@class ="text-white fw-bold bg-danger text-decoration-none"} )
+                </p>
+            </div>
+        </div>
+        <a class="form-control bg-primary text-white fw-semibold text-decoration-none " asp-action="Index" asp-controller="Campaign">Back to Campaign Index</a>
+    </div>
+</div>
