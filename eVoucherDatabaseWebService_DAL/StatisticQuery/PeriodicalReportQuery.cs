@@ -65,9 +65,12 @@ namespace eVoucher_DAL.StatisticQuery
                 var numberofcustomers = await _context.Customers
                             .Where(x => x.CreatedTime.Date <= p.Date && x.IsDeleted == false && x.Status == ActiveStatus.Active)
                             .CountAsync();
-                var numberofnewcustomers = await _context.Customers
-                            .Where(x => x.CreatedTime.Date == p.Date && x.IsDeleted == false && x.Status == ActiveStatus.Active)
-                            .CountAsync();
+                var numberofnewcustomers = 0;                
+                var daysinoneperiod = (periods[1] - periods[0]).Days;
+                var dateprevious = p.AddDays(-daysinoneperiod);
+                numberofnewcustomers = await _context.Customers
+                        .Where(x => x.CreatedTime.Date <= p.Date && x.CreatedTime.Date >= dateprevious && x.IsDeleted == false && x.Status == ActiveStatus.Active)
+                        .CountAsync();
                 int numberofpartners = 0;
                 int numberofactivecampaigns = 0;
                 int numberofdeliveredvouchers = 0;
