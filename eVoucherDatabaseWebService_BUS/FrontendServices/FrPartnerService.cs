@@ -49,13 +49,14 @@ namespace eVoucher_BUS.FrontendServices
                              where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.AppUser.Email.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.AppUser.PhoneNumber.Contains(request.Keyword))
-                             select vm;
+                             select vm;            
             if (request.CategoryId > 0)
             {
                 filterdata = from vm in filterdata
                              where vm.Partnercategory.Id == request.CategoryId
                              select vm;
             }
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .ToList();

@@ -33,6 +33,18 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
+        // PUT api/campaign/edit
+        [HttpPut("edit")]
+        [Consumes("multipart/form-data")]
+        public async Task<ActionResult<APIResult<string>>> Edit([FromForm] CampaignEditRequestforBackEnd request)
+        {
+            var result = await _campaignService.EditCampaign(request);
+            if (!result.IsSucceeded)
+            {
+                return BadRequest(result);
+            }
+            return Ok(result);
+        }
 
         [HttpPost("createvouchertype")]
         [Consumes("multipart/form-data")]
@@ -51,16 +63,14 @@ namespace eVoucherDatabaseWebService.Controllers
             return Ok(CampaignList);
         }
         // GET api/campaign/drop/5
-        [HttpGet("drop/{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Campaign?>> LockPartner(int id)
+        [HttpGet("drop/{id}")]        
+        public async Task<ActionResult<Campaign?>> DropCampaign(int id)
         {
             return await _campaignService.DropCampaign(id);
         }
         // GET api/campaign/undrop/5
-        [HttpGet("undrop/{id}")]
-        [AllowAnonymous]
-        public async Task<ActionResult<Campaign?>> UnLockPartner(int id)
+        [HttpGet("undrop/{id}")]        
+        public async Task<ActionResult<Campaign?>> UnDropCampaign(int id)
         {
             return await _campaignService.UnDropCampaign(id);
         }

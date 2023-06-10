@@ -1,4 +1,4 @@
-﻿using Abp.Extensions;
+﻿
 using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
@@ -8,6 +8,7 @@ using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.IO;
 
 namespace eVoucher_BUS.Services
 {
@@ -18,9 +19,8 @@ namespace eVoucher_BUS.Services
         Task<Campaign?> GetCampaignById(int id);        
 
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequestforBackend request);
+        Task<APIResult<string>> EditCampaign(CampaignEditRequestforBackEnd request);
         Task<APIResult<string>> CreateCampaignVoucherType(CampaignCreateVoucherTypeRequest request);
-        Task<APIResult<string>> UpdateCampaign(CampaignEditRequest request);
-
         Task<APIResult<string>> DeleteCampaign(int id);
         Task<List<CampaignVM>> GetAllCampaignVMs();
         Task<Campaign?> DropCampaign(int id);
@@ -208,11 +208,6 @@ namespace eVoucher_BUS.Services
         {
             throw new NotImplementedException();
         }
-
-        public Task<APIResult<string>> UpdateCampaign(CampaignEditRequest request)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<List<CampaignVM>> GetAllCampaignVMs() 
         {
             var result = await _campaignRepository.GetAllCampaignVMs();            
@@ -234,6 +229,100 @@ namespace eVoucher_BUS.Services
         public async Task<Campaign?> UnDropCampaign(int id)
         {
             return await _campaignRepository.UnDropCampaign(id);
+        }
+
+        public async Task<APIResult<string>> EditCampaign(CampaignEditRequestforBackEnd request)
+        {
+            //declare campaign and assign value for properties
+
+            var campaign = await _campaignRepository.GetSingleById(request.Id);
+            campaign.Name = request.Name;
+            campaign.Slogan = request.Slogan;
+            campaign.MetaKeyword = request.MetaKeyword;
+            campaign.MetaDescription = request.MetaDescription;
+            campaign.HomeFlag = request.HomeFlag;
+            campaign.HotFlag = request.HotFlag;
+            campaign.BeginningDate = request.BeginningDate;
+            campaign.EndingDate = request.EndingDate;
+            campaign.UpdatedBy = request.UpdatedBy;
+            campaign.UpdatedTime = request.UpdatedTime;            
+            //add image
+            if (request.ImageFile != null)
+            {
+                if (campaign.CampaignImages == null)
+                {
+                    campaign.CampaignImages = new List<CampaignImage>();
+                }
+                if (campaign.CampaignImages.Count>0)
+                {
+                    if (File.Exists(campaign.CampaignImages[0].ImagePath))
+                    {
+                        File.Delete(campaign.CampaignImages[0].ImagePath);
+                    }
+                    campaign.CampaignImages.Clear();
+                }
+                
+                var image = new CampaignImage()
+                {
+                    Caption = $"{campaign.Name}_Thumbnail_image",
+                    DateCreated = DateTime.Now,
+                    FileSize = request.ImageFile.Length,
+                    ImagePath = await this.SaveFile(request.ImageFile),
+                    IsDefault = true,
+                    SortOrder = 1
+                };
+                campaign.CampaignImages.Add(image);
+            }
+            if(campaign.CampaignGames == null)
+            {
+                campaign.CampaignGames = new List<CampaignGame>();
+            }
+            if(campaign.CampaignGames.Count>0)
+            {
+                foreach(var g in campaign.CampaignGames)
+                {
+                    _campaignGameRepository.Delete(g);
+                }
+                campaign.CampaignGames.Clear();
+            }
+            
+            //process to assign campaigngame
+            var selectitems = JsonConvert.DeserializeObject<List<SelectItem>>(request.Games);
+            foreach (var item in selectitems)
+            {
+                if (item.IsSelected)
+                {
+                    var game = await _gameRepository.GetSingleById(item.Id);
+                    var campaigngame = new CampaignGame()
+                    {
+                        Campaign = campaign,
+                        Game = game,
+                        Name = game.Name,
+                        CreatedTime = DateTime.Now,
+                        CreatedBy = request.UpdatedBy,
+                        IsDeleted = false,
+                        Status = ActiveStatus.Active
+                    };
+                    campaign.CampaignGames.Add(campaigngame);
+                    //var assigngameresult = await _campaignGameRepository.Add(campaigngame);
+                    //add to game.campaignchosencount
+                    game.CampaignChosenCount += 1;
+                    var updategame = await _gameRepository.Update(game);
+                }
+            }
+            var editResult = await _campaignRepository.Update(campaign);
+            APIResult<string> apiresult;
+            if (editResult != null)
+            {
+                apiresult = new APIResult<string>(true,
+                $"Editted campaign {campaign.Name} successfully", editResult.Id.ToString());
+            }
+            else
+            {
+                apiresult = new APIResult<string>(false, $"Edit campaign {campaign.Name} fail",
+                "Please check data and try again");
+            }
+            return apiresult;
         }
     }
 }

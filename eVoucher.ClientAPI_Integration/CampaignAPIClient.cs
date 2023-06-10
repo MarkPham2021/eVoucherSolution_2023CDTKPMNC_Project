@@ -102,6 +102,43 @@ namespace eVoucher.ClientAPI_Integration
             var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
             return apiresult;
         }
+        public async Task<APIResult<string>> Edit(CampaignEditRequest request, string token)
+        {
+            var uri = BASE_REQUEST + "/edit";
+            string selectitem = JsonConvert.SerializeObject(request.Games);
+            var requestContent = new MultipartFormDataContent();
+            if (request.ImageFile != null)
+            {
+                byte[] data;
+                using (var br = new BinaryReader(request.ImageFile.OpenReadStream()))
+                {
+                    data = br.ReadBytes((int)request.ImageFile.OpenReadStream().Length);
+                }
+                ByteArrayContent bytes = new ByteArrayContent(data);
+                requestContent.Add(bytes, "ImageFile", $"{request.Name}thumbnailImage{request.ImageFile.FileName}");
+            }
+            requestContent.Add(new StringContent(selectitem), "Games");
+            requestContent.Add(new StringContent(request.Id.ToString()), "Id");
+            requestContent.Add(new StringContent(request.Name), "Name");
+            requestContent.Add(new StringContent(request.Slogan), "Slogan");           
+            requestContent.Add(new StringContent(request.MetaKeyword), "MetaKeyword");
+            requestContent.Add(new StringContent(request.MetaDescription), "MetaDescription");
+            requestContent.Add(new StringContent(request.HomeFlag.ToString()), "HomeFlag");
+            requestContent.Add(new StringContent(request.HotFlag.ToString()), "HotFlag");
+            requestContent.Add(new StringContent(request.BeginningDate.ToString()), "BeginningDate");
+            requestContent.Add(new StringContent(request.EndingDate.ToString()), "EndingDate");
+            requestContent.Add(new StringContent(request.UpdatedBy), "UpdatedBy");
+            requestContent.Add(new StringContent(request.UpdatedTime.ToString()), "UpdatedTime");
+
+            _httpClient.DefaultRequestHeaders.Clear();
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            _httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("multipart/form-data"));
+            var response = await _httpClient.PutAsync(uri, requestContent);
+
+            var responsestring = await response.Content.ReadAsStringAsync();
+            var apiresult = JsonConvert.DeserializeObject<APIResult<string>>(responsestring);
+            return apiresult;
+        }
         public async Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token)
         {
             var uri = BASE_REQUEST + "/createvouchertype";           

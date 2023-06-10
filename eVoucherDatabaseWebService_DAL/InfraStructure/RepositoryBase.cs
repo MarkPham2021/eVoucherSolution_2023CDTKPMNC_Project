@@ -122,7 +122,7 @@ namespace eVoucher_DAL.InfraStructure
             return await _dbSet.FirstOrDefaultAsync(expression);
         }
 
-        public async Task<T?> GetSingleById(int id)
+        public virtual async Task<T?> GetSingleById(int id)
         {
             return await _dbSet.FindAsync(id);
         }

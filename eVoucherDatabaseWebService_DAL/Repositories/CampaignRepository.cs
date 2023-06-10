@@ -20,7 +20,7 @@ namespace eVoucher_DAL.Repositories
 
         public async Task<Campaign?> DropCampaign(int id)
         {
-            var dropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 0 WHERE [Id] = {id}");
+            var dropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 0, [UpdatedTime] ={DateTime.Now} WHERE [Id] = {id}");
             var campaigns = await _context.Set<Campaign>()
                 .Include(c => c.Partner)
                 .ThenInclude(p => p.Partnercategory)
@@ -35,7 +35,7 @@ namespace eVoucher_DAL.Repositories
 
         public async Task<List<CampaignVM>> GetAllCampaignVMs()
         {
-            var data = _context.Campaigns
+            var data = await _context.Campaigns
                 .Include(c=>c.Partner)
                 .ThenInclude(Partner => Partner.AppUser)
                 .Include(c => c.Partner)
@@ -47,7 +47,7 @@ namespace eVoucher_DAL.Repositories
                 .Include(c => c.CampaignImages)
                 .Include(c => c.VoucherTypes)
                 .ThenInclude(VoucherType=> VoucherType.VoucherTypeImages)
-                .ToList();
+                .ToListAsync();
             var campaignvmlist = new List<CampaignVM>();
             foreach (var vm in data)
             {
@@ -114,12 +114,25 @@ namespace eVoucher_DAL.Repositories
 
         public async Task<Campaign?> UnDropCampaign(int id)
         {
-            var undropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 1 WHERE [Id] = {id}");
+            var undropCampaign = await _context.Database.ExecuteSqlAsync($"UPDATE [Campaigns] SET [Status] = 1,[UpdatedTime] ={DateTime.Now} WHERE [Id] = {id}");
             var campaigns = await _context.Set<Campaign>()
                 .Include(c => c.Partner)
                 .ThenInclude(p => p.Partnercategory)
                 .Include(c => c.CampaignImages)
                 .Where(c => c.Id == id).ToListAsync();
+            if (!campaigns.Any())
+            {
+                return null;
+            }
+            return campaigns[0];
+        }
+        public override async Task<Campaign?> GetSingleById(int id)
+        {
+            var campaigns = await _context.Set<Campaign>()
+                            .Include(c => c.Partner)
+                            .Include(c => c.CampaignImages)
+                            .Include(c => c.CampaignGames)
+                            .Where(c => c.Id == id).ToListAsync();
             if (!campaigns.Any())
             {
                 return null;

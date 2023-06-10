@@ -8,11 +8,13 @@ namespace eVoucher.Partner.Controllers
     [Authorize]
     public class CampaignController : BaseController
     {
-        private IFrCampaignService _frCampaignService;
+        private readonly IFrCampaignService _frCampaignService;
+        private readonly ICommonService _commonService;
 
-        public CampaignController(IFrCampaignService frCampaignService)
+        public CampaignController(IFrCampaignService frCampaignService, ICommonService commonService)
         {
             _frCampaignService = frCampaignService;
+            _commonService = commonService;
         }
 
         [HttpGet]
@@ -60,7 +62,51 @@ namespace eVoucher.Partner.Controllers
                 ViewData["result"] = "success";
             return RedirectToAction("Index");
         }
-
+        [HttpGet("Edit/{id}")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            
+            //Prepare for game list check box
+            var token = HttpContext.Session.GetString("Token");
+            var games = await _frCampaignService.GetAllGames(token);
+            ViewBag.games = games;
+            //get current data of campaign
+            var campaignvm = await _frCampaignService.GetCampaignVMById(id, token);
+            //get check status for games
+            bool RandomWheelGameChecked =false, TerrisGameChecked =false;
+            if (campaignvm.campaignGames.Count >0) 
+            {
+                if(campaignvm.campaignGames.FirstOrDefault(x => x.Name == "Random Wheel")!= null)
+                {
+                    RandomWheelGameChecked = true;
+                }
+                if (campaignvm.campaignGames.FirstOrDefault(x => x.Name == "Terris") != null)
+                {
+                    TerrisGameChecked = true;
+                }
+            }
+            bool[] GameChecked = { RandomWheelGameChecked, TerrisGameChecked };            
+            ViewBag.campaignvm = campaignvm;
+            ViewBag.BeginDatestr = _commonService.FormatDatetimeToDatetimeLocalStr(campaignvm.BeginningDate);
+            ViewBag.EndDatestr = _commonService.FormatDatetimeToDatetimeLocalStr(campaignvm.EndingDate);
+            ViewBag.GameChecked = GameChecked;            
+            return View();
+        }
+        [HttpPost("edit/{id}")]
+        public async Task<IActionResult> Edit([FromForm] CampaignEditRequest request)
+        {
+            if (!ModelState.IsValid)
+                return View(request);
+            var token = HttpContext.Session.GetString("Token");
+            var result = await _frCampaignService.EditCampaign(request, token);
+            if (!result.IsSucceeded)
+            {
+                ViewData["result"] = "unsuccess";
+            }
+            else
+                ViewData["result"] = "success";
+            return RedirectToAction("Index");
+        }
         /* 03 method:[httpget] ViewVoucherType + [httpget]CreateVoucherType + [httpost]CreateVoucherType
          * have been move to VoucherTypeController successfully for the function search for work
          * then the 2 view: ViewVoucherType and CreateVoucherType will no use but remain in folder view Campaign

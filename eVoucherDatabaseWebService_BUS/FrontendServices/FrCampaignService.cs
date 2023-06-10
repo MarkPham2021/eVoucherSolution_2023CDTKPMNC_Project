@@ -22,6 +22,7 @@ namespace eVoucher_BUS.FrontendServices
         Task<List<Game>> GetAllGames(string token);
 
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request, string token);
+        Task<APIResult<string>> EditCampaign(CampaignEditRequest request, string token);
 
         Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
 
@@ -94,6 +95,7 @@ namespace eVoucher_BUS.FrontendServices
                              vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == user.ToLower()) &&
                              (vm.Status == ActiveStatus.Active)
                              select vm;
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .ToList();
@@ -169,6 +171,7 @@ namespace eVoucher_BUS.FrontendServices
                              where vm.PartnerCategoryId == request.CategoryId
                              select vm;
             }
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
                             .Take(request.PageSize)
                             .ToList();
@@ -213,6 +216,11 @@ namespace eVoucher_BUS.FrontendServices
                 }
             }
             return campaign;
+        }
+
+        public async Task<APIResult<string>> EditCampaign(CampaignEditRequest request, string token)
+        {
+            return await _campaignAPIClient.Edit(request, token);
         }
     }
 }
