@@ -33,5 +33,19 @@ namespace eVoucher.ClientAPI_Integration
             PeriodicalReport report = JsonConvert.DeserializeObject<PeriodicalReport>(response);
             return report;
         }
+        public async Task<PartnerPeriodicalReport?> PartnerCreatePeriodicalReport(PartnerCreatePeriodicalReportRequest request, 
+            string token)
+        {
+            string content = JsonConvert.SerializeObject(request);
+            var uri = BASE_REQUEST + $"/PartnerCreatePeriodicalReport/{content}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            if (response == null)
+            {
+                return null;
+            }
+            PartnerPeriodicalReport report = JsonConvert.DeserializeObject<PartnerPeriodicalReport>(response);
+            return report;
+        }
     }
 }

@@ -1,4 +1,5 @@
-﻿using eVoucher.ClientAPI_Integration;
+﻿using Azure.Core;
+using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
 using eVoucher_Utility.Enums;
@@ -6,6 +7,8 @@ using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
+using System.Linq.Dynamic.Core.Tokenizer;
+using static eVoucher_ViewModel.StatisticVM.PartnerPeriodicalReport;
 
 namespace eVoucher_BUS.FrontendServices
 {
@@ -13,7 +16,8 @@ namespace eVoucher_BUS.FrontendServices
     {
         //for partner app
         Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, string token);
-
+        //for partner app
+        Task<PageResult<CampaignVM>> GetAllEndedCampaignVMsPaging(string userinfo, GetManageCampaignPagingRequest request, string token);
         Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid,
             GetManageCampaignPagingRequest request, string token);
 
@@ -32,6 +36,7 @@ namespace eVoucher_BUS.FrontendServices
         Task<Campaign?> DropCampaign(int campaignid, string token);
 
         Task<Campaign?> UnDropCampaign(int campaignid, string token);
+        Task<List<CampaignVM>> PartnerGetAllActiveCampaignVMs(string user, string token);
     }
 
     public class FrCampaignService : IFrCampaignService
@@ -221,6 +226,49 @@ namespace eVoucher_BUS.FrontendServices
         public async Task<APIResult<string>> EditCampaign(CampaignEditRequest request, string token)
         {
             return await _campaignAPIClient.Edit(request, token);
+        }
+        public async Task<List<CampaignVM>> PartnerGetAllActiveCampaignVMs(string user,string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            
+            var filterdata = from vm in data
+                             where vm.CreatedBy.ToLower() == user.ToLower() &&
+                             (vm.Status == ActiveStatus.Active)
+                             select vm;
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
+            return filterdata.ToList();
+        }
+
+        public async Task<PageResult<CampaignVM>> GetAllEndedCampaignVMsPaging(string userinfo, GetManageCampaignPagingRequest request, string token)
+        {
+            var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
+            if (string.IsNullOrEmpty(request.Keyword))
+            {
+                request.Keyword = "";
+            }
+            var filterdata = from vm in data
+                             where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
+                             vm.MetaKeyword.ToLower().Contains(request.Keyword.ToLower()) ||
+                             vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == userinfo.ToLower()) &&
+                             (vm.EndingDate < DateTime.Now)
+                             select vm;
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
+            var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+            string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            foreach (var item in pagedata)
+            {
+                item.ImagePath = BaseAdress + item.ImagePath;
+            }
+            var pageresult = new PageResult<CampaignVM>()
+            {
+                PageIndex = request.PageIndex,
+                PageSize = request.PageSize,
+                TotalItems = filterdata.Count(),
+                Items = pagedata
+            };
+            return pageresult;
         }
     }
 }

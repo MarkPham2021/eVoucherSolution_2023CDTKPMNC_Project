@@ -11,6 +11,7 @@ namespace eVoucher_BUS.BackendServices
     public interface IStatisticService
     {
         Task<PeriodicalReport?> CreatePeriodicalReport(CreatePeriodicalReportRequest request);
+        Task<PartnerPeriodicalReport> CreatePartnerPeriodicalReport(PartnerCreatePeriodicalReportRequest request);
     }
     public class StatisticService: IStatisticService
     {
@@ -20,9 +21,14 @@ namespace eVoucher_BUS.BackendServices
             _periodicalReportQuery = periodicalReportQuery;
         }
 
+        public async Task<PartnerPeriodicalReport> CreatePartnerPeriodicalReport(PartnerCreatePeriodicalReportRequest request)
+        {
+            return await _periodicalReportQuery.GetPartnerPeriodicalReport(request);
+        }
+
         public async Task<PeriodicalReport?> CreatePeriodicalReport(CreatePeriodicalReportRequest request)
         {
-            return await _periodicalReportQuery.GetPeriodicalReport(request);
+           return await _periodicalReportQuery.GetPeriodicalReport(request);
         }
     }
 }

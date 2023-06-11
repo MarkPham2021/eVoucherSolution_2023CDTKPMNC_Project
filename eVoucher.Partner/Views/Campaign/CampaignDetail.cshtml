@@ -1,0 +1,110 @@
+﻿@model eVoucher_ViewModel.Requests.CampaignRequests.CampaignVM
+@{
+
+}
+<div class="container">
+    <div class="row">
+        <!--Column Campaign-->
+        <div class="col col-md-7 col-sm-12">
+            <!--Campaign infomation-->
+            <div class="row">
+                <div class="col col-md-12 col-sm-12">
+                    <div class="card p-2">
+                        <img src="@Model.ImagePath" width="320" class="card-img-top" alt="...">
+                    </div>
+                </div>
+                <div class="col col-md-7 col-sm-12">
+                    <h5>@Model.Name</h5>
+                    <p>@Model.Slogan</p>
+                </div>
+            </div>
+            <!--VoucherTypes-->
+            <div class="row">
+
+                @foreach (var item in Model.VoucherTypes)
+                {
+                    <div class="col-md-4">
+                        <div class="card">
+                            <img class="card-img-top" src="@item.ImagePath" width="400" height="238">
+                            <div class="card-body">
+                                <h6 class="card-title">@item.Name</h6>
+                                <p class="card-text">Gift: @item.Promotion</p>
+                                <p class="card-text">Expired date: @item.ExpiringDate.ToShortDateString()</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+
+            </div>
+        </div>
+        <!--Column for Game section-->
+        <div class="col col-md-5 col-sm-12">
+
+
+            @if (Model.campaignGames != null)
+            {
+                <div class="row">
+                    @foreach (var game in Model.campaignGames)
+                    {
+                        if (game.Name == "Random Wheel")
+                        {
+                            <div id="RandomWheel" class="col col-md-12 col-sm-12 mx-2 align-content-center">
+                                <partial name="_RandomWheelGame" />
+                                @*<partial name="_RandomWheelGame" />*@
+                                <input type="hidden" class="campaignGameId"
+                                       value="@game.Id" />
+
+                            </div>
+                        }
+                        if (game.Name == "Terris")
+                        {
+                            <div id="Teris" class="col col-md-12 col-sm-12 align-content-center mx-2">
+                                <partial name="_TerisGame" />
+                                @*<partial name="_TerisGame" />*@
+                                <input type="hidden" class="campaignGameId"
+                                       value="@game.Id" />
+                            </div>
+                        }
+                    }
+                </div>
+            }
+
+        </div>
+    </div>
+    
+    <div class="row mt-3 bg-light py-3">
+        <div class="col col-md-3">
+            <div class="card p-2" style="width: 16rem;">
+                <img src="@Model.PartnerImagePath" class="card-img-top" alt="...">
+            </div>
+        </div>
+        <div class="col col-md-4">
+            <h5>Store name: @Model.PartnerName</h5>
+            <p>Address: @Model.PartnerAddress</p>
+            <p>Phone: @Model.PartnerPhoneNumber</p>
+            <p>Category: @Model.PartnerCategoryName</p>
+        </div>
+    </div>
+</div>
+@*<partial name="_GoogleMap" />*@
+
+<script>
+    // Select modal
+    var mpopup = document.getElementById('mpopupBox');
+
+    // Select close action element
+    var close = document.getElementsByClassName("close")[0];
+
+    // Close modal once close element is clicked
+    close.onclick = function () {
+        mpopup.style.display = "none";
+    };
+
+    // Close modal when user clicks outside of the modal box
+    window.onclick = function (event) {
+        if (event.target == mpopup) {
+            mpopup.style.display = "none";
+        }
+    };
+</script>

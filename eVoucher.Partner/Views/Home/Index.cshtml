@@ -1,8 +1,500 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿
+@model eVoucher_ViewModel.StatisticVM.PartnerPeriodicalReport
+@{
+    ViewData["Title"] = "DashBoard";
+    var l = Model.Data.Count;
+    int changeinActiveCampaignCount = Model.Data[l - 1].NumberOfActiveCampaigns -
+                                Model.Data[l - 2].NumberOfActiveCampaigns;
+    int changeinEndedCampaignCount = Model.Data[l - 1].NumberOfEndedCampaigns -
+                                Model.Data[l - 2].NumberOfEndedCampaigns;
+    int changeindeliveredVoucherCount = Model.Data[l - 1].NumberOfDeliveredVouchers -
+                                Model.Data[l - 2].NumberOfDeliveredVouchers;
+    int changeinVoucherDeliveredInPeriodCount = Model.Data[l - 1].NumberOfVouchersDeliveredInPeriod -
+                                Model.Data[l - 2].NumberOfVouchersDeliveredInPeriod;
+    string explain = "";
+    if (string.IsNullOrEmpty(ViewBag.CampaignName))
+    {
+        explain = " of all campaigns:";
+    }
+    else
+    {
+        explain = $" of campaign '{ViewBag.CampaignName}'";
+    }
 
+}
 <div class="text-center">
     <h1 class="display-4 text-danger">Welcome</h1>
     <p class="display-6 text-primary">Place to develop customer base and raise your revenue</p>
 </div>
+<div class="bg-primary bg-opacity-75">
+    <h6 class="text-md-start font-weight-bold my-2 text-warning">Periodical Statistic:</h6>
+</div>
+<form asp-controller="Home" asp-action="Index" method="get">
+    <div class="row my-3">
+        <div class="form-group col-lg-4 col-md-4">
+            <div class="form-check-inline">
+                <label class="radio inline mx-3">
+                    <input type="radio" name="periodicaltype" value="1" checked>
+                    <span class="text-black  text-lg-center fw-bold"> Daily </span>
+                </label>
+                <label class="radio inline mx-3">
+                    <input type="radio" name="periodicaltype" value="2">
+                    <span class="text-black text-lg-center fw-bold">Weekly </span>
+                </label>
+                <label class="radio inline mx-3">
+                    <input type="radio" name="periodicaltype" value="3">
+                    <span class="text-black text-lg-center fw-bold">Monthly </span>
+                </label>
+                <label class="radio inline mx-3">
+                    <input type="radio" name="periodicaltype" value="4">
+                    <span class="text-black text-lg-center fw-bold">Annual </span>
+                </label>
+            </div>
+        </div>
+        <div class="col-lg-5 col-md-5">
+            <select name="campaignId" class="form-control" asp-items="@ViewBag.Campaigns">
+                <option value="0">--Choose campaign--</option>
+            </select>
+        </div>
+        <div class="col-lg-3 col-md-3">
+            <button type="submit" class="form-control btn btn-primary float-start">View</button>
+        </div>
+
+    </div>
+</form>
+<div class="container-fluid">
+    <div class="row container-fluid">
+        <div class="col col-lg-3 col-md-4 col-sm-12">
+            <a asp-controller="Campaign" asp-action="Index" class="text-decoration-none">
+                <div class="card bg-primary text-white mb-4">
+                    <div class="card-body">Active Campaigns </div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfActiveCampaigns</div>
+                        <div class="small text-white">
+                            @if (changeinActiveCampaignCount > 0)
+                            {
+                                <i class=" fa-solid fa-arrow-up"></i>
+                                @changeinActiveCampaignCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }
+                            else if (changeinActiveCampaignCount < 0)
+                            {
+                                <i class=" fa-solid fa-arrow-down"></i>
+                                @changeinActiveCampaignCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }
+                            else
+                            {
+                                <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col col-lg-3 col-md-4 col-sm-12">
+            <a asp-controller="Campaign" asp-action="ViewEndedCampaign" class="text-decoration-none">
+                <div class="card bg-warning text-white mb-4">
+                    <div class="card-body">Ended Campaigns</div>
+                    <div class="card-footer d-flex align-items-center justify-content-between">
+                        <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfEndedCampaigns</div>
+                        <div class="small text-white">
+                            @if (changeinEndedCampaignCount > 0)
+                            {
+                                <i class=" fa-solid fa-arrow-up"></i>
+                                @changeinEndedCampaignCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }
+                            else if (changeinEndedCampaignCount < 0)
+                            {
+                                <i class=" fa-solid fa-arrow-down"></i>
+                                @changeinEndedCampaignCount
+                                <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                            }
+                            else
+                            {
+                                <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </a>
+        </div>
+        <div class="col col-lg-3 col-md-4 col-sm-12">
+            <div class="card bg-success text-white mb-4">
+                <div class="card-body">Cumulative Voucher Delivered @explain</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfDeliveredVouchers</div>
+                    <div class="small text-white">
+                        @if (changeindeliveredVoucherCount > 0)
+                        {
+                            <i class=" fa-solid fa-arrow-up"></i>
+                            @changeindeliveredVoucherCount
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                        }
+                        else if (changeindeliveredVoucherCount < 0)
+                        {
+                            <i class=" fa-solid fa-arrow-down"></i>
+                            @changeindeliveredVoucherCount
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                        }
+                        else
+                        {
+                            <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col col-lg-3 col-md-4 col-sm-12">
+            <div class="card bg-danger text-white mb-4">
+                <div class="card-body">Vouchers Delivered in period @explain</div>
+                <div class="card-footer d-flex align-items-center justify-content-between">
+                    <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfVouchersDeliveredInPeriod</div>
+                    <div class="small text-white">
+                        @if (changeinVoucherDeliveredInPeriodCount > 0)
+                        {
+                            <i class=" fa-solid fa-arrow-up"></i>
+                            @changeinVoucherDeliveredInPeriodCount
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                        }
+                        else if (changeinVoucherDeliveredInPeriodCount < 0)
+                        {
+                            <i class=" fa-solid fa-arrow-down"></i>
+                            @changeinVoucherDeliveredInPeriodCount
+                            <p>(Compare to @Model.Data[l - 2].DateReport)</p>
+                        }
+                        else
+                        {
+                            <p>(Unchange from @Model.Data[l - 2].DateReport)</p>
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--Bar charts-->
+        <div class="row">
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card bg-light mx-0 px-0 mb-1">
+                    <canvas id="ActiveCampaignsChangeChart" height="400">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
+                    <canvas id="EndedCampaignChangeChart" height="400">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
+                    <canvas id="CumulativeVoucherDeliveredChart" height="400">
+                    </canvas>
+                </div>
+            </div>
+            <div class="col col-lg-3 col-md-6 col-sm-12">
+                <div class="card bg-white text-white mb-1 mx-0 px-0">
+                    <canvas id="VoucherDeliveredInPeriodChangeChart" height="400">
+                    </canvas>
+                </div>
+            </div>
+        </div>
+        
+    </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script type="text/javascript">
+    const activecampaignchart = document.getElementById('ActiveCampaignsChangeChart');
+    const endedcampaignchart = document.getElementById('EndedCampaignChangeChart');
+    const cumulativedeliveredvoucherchart = document.getElementById('CumulativeVoucherDeliveredChart');
+    const voucherdeliveredinperiodchart = document.getElementById('VoucherDeliveredInPeriodChangeChart');
+    
+    var activecampaignCount = [];
+    var endedcampaignCount = [];
+    var cumulativedeliveredVoucherCount = [];
+    var voucherDeliveredInPeriodCount = [];
+    var Dates = [];    
+    //get data for charts
+    @{
+
+        if (Model.Data.Count > 0)
+        {
+            foreach (var item in Model.Data)
+            {
+                @:activecampaignCount.push(@item.NumberOfActiveCampaigns);
+                @:endedcampaignCount.push(@item.NumberOfEndedCampaigns);
+                @:cumulativedeliveredVoucherCount.push(@item.NumberOfDeliveredVouchers);
+                @:voucherDeliveredInPeriodCount.push(@item.NumberOfVouchersDeliveredInPeriod);                
+                @:Dates.push('@item.DateReport');
+            }
+        }
+    }    
+        //active campaigns bar chart
+        var activecampaignBar =
+    {
+        label: "active campaigns",
+        data: activecampaignCount,
+        backgroundColor: [
+            'rgba(21, 6, 209, 0.78)',
+            'rgba(21, 6, 209, 0.81)',
+            'rgba(21, 6, 209, 0.85)',
+            'rgba(21, 6, 209, 0.86)',
+            'rgba(21, 6, 209, 0.90)',
+            'rgba(21, 6, 209, 0.92)',
+            'rgba(21, 6, 209, 0.96)'
+        ],
+        borderColor: [
+            'rgba(255,255,255, 0.8)',
+            'rgba(255,255,255, 0.85)',
+            'rgba(255,255,255, 0.90)',
+            'rgba(255,255,255, 0.92)',
+            'rgba(255,255,255, 0.94)',
+            'rgba(255,255,255, 0.96)',
+            'rgba(255,255,255, 0.98)'
+        ],
+        borderWidth: 1,
+        lineTension: 0,
+    };
+
+    var activecampaignsdatasetvalues = {
+        labels: Dates, // x-azis label values
+        datasets: [activecampaignBar] // y-axis
+    };
+    var activecampaignsbarChartOptions = {
+        indexAxis: 'x',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+
+                gridLines: {
+                    display: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            },
+            y: {
+                ticks: {
+                    min: 0,
+                    max: 1000,
+                    maxTicksLimit: 7
+                },
+                gridLines: {
+                    display: true
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Active Campaigns Change'
+            }
+        }
+    }
+
+    var activecampaignsBarChart = new Chart(
+        activecampaignchart.getContext('2d'), {
+        type: 'bar',
+        data: activecampaignsdatasetvalues,
+        options: activecampaignsbarChartOptions
+    });
+    //endedcampaign bar chart
+
+    var endedcampaignBar = {
+        label: "Ended campaigns",
+        data: endedcampaignCount,
+        backgroundColor: [
+            'rgba(199, 126, 10, 0.78)',
+            'rgba(199, 126, 10, 0.81)',
+            'rgba(199, 126, 10, 0.85)',
+            'rgba(199, 126, 10, 0.86)',
+            'rgba(199, 126, 10, 0.90)',
+            'rgba(199, 126, 10, 0.92)',
+            'rgba(199, 126, 10, 0.96)'
+        ],
+        borderColor: [
+            'rgba(227, 44, 11, 0.8)',
+            'rgba(227, 44, 11, 0.85)',
+            'rgba(227, 44, 11, 0.90)',
+            'rgba(227, 44, 11, 0.92)',
+            'rgba(227, 44, 11, 0.94)',
+            'rgba(227, 44, 11, 0.96)',
+            'rgba(227, 44, 11, 0.98)'
+        ],
+        borderWidth: 1,
+        lineTension: 0,
+    };
+
+    var endedcampaigndatasetvalues = {
+        labels: Dates, // x-azis label values
+        datasets: [endedcampaignBar] // y-axis
+    };
+    var endedcampaignbarChartOptions = {
+        indexAxis: 'x',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+
+                gridLines: {
+                    display: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            },
+            y: {
+                ticks: {
+                    min: 0,
+                    max: 1000,
+                    maxTicksLimit: 7
+                },
+                gridLines: {
+                    display: true
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Ended Campaigns Change'
+            }
+        }
+    }
+
+    var endedcampaignBarChart = new Chart(
+        endedcampaignchart.getContext('2d'), {
+        type: 'bar',
+        data: endedcampaigndatasetvalues,
+        options: endedcampaignbarChartOptions
+    });
+
+    //cumulative delivered voucher bar chart
+    var cumulativeDeliveredVouchersBar = {
+        label: "Cumulative delivered vouchers",
+        data: cumulativedeliveredVoucherCount,
+        backgroundColor: [
+            'rgba(12, 148, 84, 0.78)',
+            'rgba(12, 148, 84, 0.81)',
+            'rgba(12, 148, 84, 0.85)',
+            'rgba(12, 148, 84, 0.86)',
+            'rgba(12, 148, 84, 0.90)',
+            'rgba(12, 148, 84, 0.92)',
+            'rgba(12, 148, 84, 0.96)'
+        ],
+        borderColor: [
+            'rgba(206, 219, 22, 0.8)',
+            'rgba(206, 219, 22, 0.85)',
+            'rgba(206, 219, 22, 0.90)',
+            'rgba(206, 219, 22, 0.92)',
+            'rgba(206, 219, 22, 0.94)',
+            'rgba(206, 219, 22, 0.96)',
+            'rgba(206, 219, 22, 0.98)'
+        ],
+        borderWidth: 1,
+        lineTension: 0,
+    };
+
+    var cumulativeDeliveredVouchersdatasetvalues = {
+        labels: Dates, // x-azis label values
+        datasets: [cumulativeDeliveredVouchersBar] // y-axis
+    };
+    var cumulativeDeliveredVouchersbarChartOptions = {
+        indexAxis: 'x',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: {
+            x: {
+
+                gridLines: {
+                    display: false
+                },
+                ticks: {
+                    maxTicksLimit: 7
+                }
+            },
+            y: {
+                ticks: {
+                    min: 0,
+                    max: 15000,
+                    maxTicksLimit: 7
+                },
+                gridLines: {
+                    display: true
+                }
+            }
+        },
+        plugins: {
+            title: {
+                display: true,
+                text: 'Cumulative delivered vouchers change'
+            }
+        }
+    }
+
+    var cumulativeDeliveredVouchersBarChart = new Chart(
+        cumulativedeliveredvoucherchart.getContext('2d'), {
+        type: 'bar',
+        data: cumulativeDeliveredVouchersdatasetvalues,
+        options: cumulativeDeliveredVouchersbarChartOptions
+    });
+
+    //voucher delivered in period line chart
+    
+    var myLineChart = new Chart(voucherdeliveredinperiodchart, {
+        type: 'line',
+        data: {
+            labels: Dates,
+            datasets: [{
+                label: "Voucher delivered in period",
+                lineTension: 0.3,
+                backgroundColor: "#ff0000",
+                borderColor: "#006600",
+                pointRadius: 5,
+                pointBackgroundColor: "#ff0000",
+                pointBorderColor: "#ffff00",
+                pointHoverRadius: 9,
+                pointHoverBackgroundColor: "#ff66ff",
+                pointHitRadius: 50,
+                pointBorderWidth: 2,
+                data: voucherDeliveredInPeriodCount,
+            }],
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    time: {
+                        unit: 'date'
+                    },
+                    gridLines: {
+                        display: false
+                    },
+                    ticks: {
+                        maxTicksLimit: 5
+                    }
+                }],
+                yAxes: [{
+                    ticks: {
+                        min: 0,
+                        max: 30,
+                        maxTicksLimit: 5
+                    },
+                    gridLines: {
+                        color: "rgba(0, 0, 0, .125)",
+                    }
+                }],
+            },
+            legend: {
+                display: false
+            }
+        }
+    });
+</script>
+
+

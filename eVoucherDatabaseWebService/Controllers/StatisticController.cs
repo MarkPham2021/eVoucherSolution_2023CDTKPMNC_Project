@@ -26,5 +26,16 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
+        [HttpGet("PartnerCreatePeriodicalReport/{content}")]
+        public async Task<ActionResult<PartnerPeriodicalReport>> CreatePartnerPeriodicalReport([FromRoute] string content)
+        {
+            var request = JsonConvert.DeserializeObject<PartnerCreatePeriodicalReportRequest>(content);
+            var result = await _statisticService.CreatePartnerPeriodicalReport(request);
+            if (result == null)
+            {
+                return NotFound(null);
+            }
+            return Ok(result);
+        }
     }
 }

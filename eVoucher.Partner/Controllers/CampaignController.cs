@@ -1,5 +1,7 @@
-﻿using eVoucher_BUS.FrontendServices;
+﻿using eVoucher.ClientAPI_Integration;
+using eVoucher_BUS.FrontendServices;
 using eVoucher_ViewModel.Requests.CampaignRequests;
+using eVoucher_ViewModel.Requests.CustomerRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -10,11 +12,14 @@ namespace eVoucher.Partner.Controllers
     {
         private readonly IFrCampaignService _frCampaignService;
         private readonly ICommonService _commonService;
+        private readonly CustomerAPIClient _customerAPIClient;
 
-        public CampaignController(IFrCampaignService frCampaignService, ICommonService commonService)
+        public CampaignController(IFrCampaignService frCampaignService, 
+            ICommonService commonService, CustomerAPIClient customerAPIClient)
         {
             _frCampaignService = frCampaignService;
             _commonService = commonService;
+            _customerAPIClient = customerAPIClient;
         }
 
         [HttpGet]
@@ -31,7 +36,51 @@ namespace eVoucher.Partner.Controllers
             var data = await _frCampaignService.GetAllCampaignVMsPaging(userinfo, request, token);
             return View(data);
         }
+        [HttpGet]
+        public async Task<IActionResult> ViewEndedCampaign(string keyword = "", int pageIndex = 1, int pageSize = 3)
+        {
+            var token = HttpContext.Session.GetString("Token");
+            var request = new GetManageCampaignPagingRequest()
+            {
+                Keyword = keyword,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            };
+            string userinfo = User.Identity.Name;
+            var data = await _frCampaignService.GetAllEndedCampaignVMsPaging(userinfo, request, token);
+            return View(data);
+        }
+        [HttpGet("Id")]
+        public async Task<IActionResult> CampaignDetail(int Id)
+        {
+            var token = HttpContext.Session.GetString("Token");
+            var campaign = await _frCampaignService.GetCampaignVMById(Id, token);
 
+            if (campaign != null)
+            {
+                return View(campaign);
+            }
+
+            return NotFound("Your campaign not found!");
+        }
+
+        [HttpGet]
+        public IActionResult GetVoucher(int CampaignGameId)
+        {
+
+            var request = new CustomerPlayGameForVoucherRequest()
+            {
+                AppUserInfo = User.Identity.Name,
+                CampaignGameId = CampaignGameId,
+                GottenNumber = new Random().Next(1, 1000)
+            };
+
+            var token = HttpContext.Session.GetString("Token");
+            var response = _customerAPIClient.ClaimVoucher(request, token);
+            response.Wait();
+            var voucher = response.Result;
+            return Json(voucher);
+        }
         [HttpGet]
         public async Task<IActionResult> Create()
         {

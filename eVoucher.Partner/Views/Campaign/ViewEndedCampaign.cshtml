@@ -2,12 +2,12 @@
 @using eVoucher_ViewModel.Response;
 @model PageResult<CampaignVM>
 @{
-    ViewData["Title"] = "Campaign - Index";
+    ViewData["Title"] = "Ended Campaigns";
 }
 
 
 <div class="row container-fluid my-2 text-start">
-        <a class="btn btn-warning btn-lg">Ongoing Campaigns:</a>
+    <a class="btn btn-warning btn-lg">Ended Campaigns:</a>
 </div>
 <div class="row mb-3">
     @foreach (var item in Model.Items)
@@ -22,7 +22,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Begin date: @item.BeginningDate.ToShortDateString() -> End date: @item.EndingDate.ToShortDateString()</li>
                     <li class="list-group-item">@item.MetaDescription</li>
-                    
+
                 </ul>
                 <div class="card-body">
                     @Html.ActionLink("View detail", "CampaignDetail", new { id = item.Id }) |
@@ -32,10 +32,10 @@
             </div>
         </div>
     }
-    
+
 </div>
 @await Component.InvokeAsync("Pager", Model)
 <div class="row container-fluid my-2 align-content-end">
-    <a class="btn btn-primary btn-lg" asp-controller="Campaign" asp-action="Create">Create new Campaign</a>
+    <a class="btn btn-primary btn-lg" asp-controller="Home" asp-action="Index">Go to Dashboard</a>
 </div>
 
