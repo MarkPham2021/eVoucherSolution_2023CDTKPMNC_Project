@@ -126,6 +126,7 @@ namespace eVoucher_BUS.FrontendServices
             var filterdata = from vm in data
                              where ((vm.Name.ToLower().Contains(request.keyword.ToLower()) ||
                              vm.MetaKeyword.ToLower().Contains(request.keyword.ToLower()) ||
+                             vm.PartnerName.ToLower().Contains(request.keyword.ToLower()) ||
                              vm.MetaDescription.ToLower().Contains(request.keyword.ToLower()))) &&
                              (vm.Status == ActiveStatus.Active)
                              select vm;
