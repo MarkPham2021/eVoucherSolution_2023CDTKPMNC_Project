@@ -1,5 +1,6 @@
 ﻿using eVoucher_BUS.BackendServices;
 using eVoucher_ViewModel.StatisticVM;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -15,10 +16,9 @@ namespace eVoucherDatabaseWebService.Controllers
         {
             _statisticService = statisticService;
         }
-        [HttpGet("CreatePeriodicalReport/{content}")]
-        public async Task<ActionResult<PeriodicalReport>> CreatePeriodicalReport([FromRoute] string content)
-        {
-            var request = JsonConvert.DeserializeObject<CreatePeriodicalReportRequest>(content);
+        [HttpPost("CreatePeriodicalReport")]
+        public async Task<ActionResult<PeriodicalReport>> CreatePeriodicalReport([FromBody] CreatePeriodicalReportRequest request)
+        {            
             var result = await _statisticService.CreatePeriodicalReport(request);
             if (result == null)
             {
@@ -26,10 +26,9 @@ namespace eVoucherDatabaseWebService.Controllers
             }
             return Ok(result);
         }
-        [HttpGet("PartnerCreatePeriodicalReport/{content}")]
-        public async Task<ActionResult<PartnerPeriodicalReport>> CreatePartnerPeriodicalReport([FromRoute] string content)
+        [HttpPost("PartnerCreatePeriodicalReport")]
+        public async Task<ActionResult<PartnerPeriodicalReport>> CreatePartnerPeriodicalReport([FromBody] PartnerCreatePeriodicalReportRequest request)
         {
-            var request = JsonConvert.DeserializeObject<PartnerCreatePeriodicalReportRequest>(content);
             var result = await _statisticService.CreatePartnerPeriodicalReport(request);
             if (result == null)
             {

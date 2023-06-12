@@ -22,29 +22,31 @@ namespace eVoucher.ClientAPI_Integration
         }
         public async Task<PeriodicalReport?> CreatePeriodicalReport(CreatePeriodicalReportRequest request, string token)
         {
-            string content = JsonConvert.SerializeObject(request);
-            var uri = BASE_REQUEST + $"/CreatePeriodicalReport/{content}";
+            
+            var uri = BASE_REQUEST + "/CreatePeriodicalReport";                       
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _httpClient.GetStringAsync(uri);
+            var response = await _httpClient.PostAsJsonAsync(uri, request);
+            var responsestring = await response.Content.ReadAsStringAsync();
+            
             if (response == null)
             {
                 return null;
             }
-            PeriodicalReport report = JsonConvert.DeserializeObject<PeriodicalReport>(response);
+            PeriodicalReport report = JsonConvert.DeserializeObject<PeriodicalReport>(responsestring);
             return report;
         }
         public async Task<PartnerPeriodicalReport?> PartnerCreatePeriodicalReport(PartnerCreatePeriodicalReportRequest request, 
             string token)
         {
-            string content = JsonConvert.SerializeObject(request);
-            var uri = BASE_REQUEST + $"/PartnerCreatePeriodicalReport/{content}";
+            var uri = BASE_REQUEST + "/PartnerCreatePeriodicalReport";
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            var response = await _httpClient.GetStringAsync(uri);
+            var response = await _httpClient.PostAsJsonAsync(uri, request);
+            var responsestring = await response.Content.ReadAsStringAsync();
             if (response == null)
             {
                 return null;
             }
-            PartnerPeriodicalReport report = JsonConvert.DeserializeObject<PartnerPeriodicalReport>(response);
+            PartnerPeriodicalReport report = JsonConvert.DeserializeObject<PartnerPeriodicalReport>(responsestring);
             return report;
         }
     }
