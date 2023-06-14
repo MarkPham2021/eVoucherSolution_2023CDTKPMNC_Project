@@ -33,6 +33,7 @@ namespace eVoucher.Partner.Controllers
             string userinfo = User.Identity.Name;
             var request = new PartnerCreatePeriodicalReportRequest()
             {
+                Keyword = keyword,
                 UserInfo = userinfo,
                 PeriodicalType = periodicaltype,
                 CampaignId = campaignId,
