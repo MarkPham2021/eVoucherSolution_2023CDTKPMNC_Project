@@ -47,22 +47,24 @@
                     <li><a class="dropdown-item" href="#!">Activity Log</a></li>
                     <li><hr class="dropdown-divider" /></li>
                     <li><a class="dropdown-item" href="#!">Logout</a></li>
+        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" asp-action="Index" method="get">
 
+        </div>
+        
         <div class="container">
-            <a class="navbar-brand ps-3" asp-controller="Home" asp-action="Index">eVoucher Solution</a>
             <!-- Sidebar Toggle-->
             @if (!string.IsNullOrEmpty(token))
             {
                 <button class="btn text-white btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
                 <!-- Navbar Search-->
-                <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
+                <!--<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                     <div class="search-container">
                         <input type="text" name="search" placeholder="Search..." class="search-input text-success">
                         <a href="#" class="search-btn">
                             <i class="fas fa-search text-success"></i>
                         </a>
                     </div>
-                </form>
+                </form>-->
             }
 
             @if (string.IsNullOrEmpty(token))
@@ -79,13 +81,12 @@
                         <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             @*<li><a class="dropdown-item" href="#!">Account</a></li>*@
-                            <li><a class="dropdown-item" href="#!">Account Management</a></li>
+                            <li><a class="navbar-brand ps-3 text-dark" asp-action="AllVouchers" asp-controller="Voucher">Vouchers</a></li>
                             <li><hr class="dropdown-divider" /></li>
                             <li><a class="dropdown-item" asp-controller="Customer" asp-action="Logout">Logout</a></li>
                         </ul>
                     </li>
                 </ul>
-
             }
         </div>
     </nav> 
