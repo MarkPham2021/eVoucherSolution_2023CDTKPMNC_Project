@@ -1,4 +1,5 @@
-﻿using eVoucher_DAL.Repositories;
+﻿using Abp.Threading.Extensions;
+using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.StaffRequests;
@@ -8,7 +9,7 @@ namespace eVoucher_BUS.Services
 {
     public interface IStaffService
     {
-        List<Staff> GetAllStaffs();
+        Task<List<Staff>> GetAllStaffs();
 
         Task<Staff?> GetStaffById(int id);
 
@@ -19,6 +20,8 @@ namespace eVoucher_BUS.Services
         Task<Staff> DeleteStaff(int id);
 
         Task<Staff> DeleteStaff(Staff staff);
+        Task<Staff> Activate(int id);
+        Task<Staff> Lock(int id);
     }
 
     public class StaffService : IStaffService
@@ -45,15 +48,16 @@ namespace eVoucher_BUS.Services
             throw new NotImplementedException();
         }
 
-        public List<Staff> GetAllStaffs()
+        public async Task<List<Staff>> GetAllStaffs()
         {
-            var Staffs = _staffRepository.GetAll().ToList();
+            var Staffs = await _staffRepository.GetMulti(s=>s.IsDeleted == false, includes: new string[] {"AppUser"});
             return Staffs;
         }
 
-        public Task<Staff?> GetStaffById(int id)
+        public async Task<Staff?> GetStaffById(int id)
         {
-            throw new NotImplementedException();
+            var staff = await _staffRepository.GetSingleByCondition(s=>s.Id == id, includes: new string[] { "AppUser" });
+            return staff;
         }
 
         public async Task<Staff?> RegisterStaff(StaffRegisterRequest request)
@@ -75,7 +79,7 @@ namespace eVoucher_BUS.Services
                 CreatedBy = request.CreatedBy,
                 CreatedTime = request.CreatedTime,
                 IsDeleted = false,
-                Status = ActiveStatus.Active,
+                Status = ActiveStatus.InActive,
                 AppUser = user
             };
             var registerResult = await _staffRepository.Add(staff);
@@ -86,6 +90,20 @@ namespace eVoucher_BUS.Services
         public Task<Staff?> UpdateStaff(StaffUpdateRequest request)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<Staff> Activate(int id)
+        {
+            var staff = await _staffRepository.GetSingleByCondition(s=>s.Id==id);
+            staff.Status = ActiveStatus.Active;
+            return await _staffRepository.Update(staff);            
+        }
+
+        public async Task<Staff> Lock(int id)
+        {
+            var staff = await _staffRepository.GetSingleById(id);
+            staff.Status = ActiveStatus.InActive;
+            return await _staffRepository.Update(staff);
         }
     }
 }

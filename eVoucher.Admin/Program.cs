@@ -31,6 +31,7 @@ builder.Services.AddTransient<CampaignAPIClient>();
 builder.Services.AddTransient<StatisticAPIClient>();
 builder.Services.AddTransient<GoogleDistanceMatrixAPICLient>();
 builder.Services.AddTransient<ICommonService, CommonService>();
+builder.Services.AddTransient<IFrStaffService, FrStaffService>();
 builder.Services.AddTransient<IFrPartnerService, FrPartnerService>();
 builder.Services.AddTransient<IFrCampaignService, FrCampaignService>();
 builder.Services.AddTransient<IFrStatisticService, FrStatisticService>();

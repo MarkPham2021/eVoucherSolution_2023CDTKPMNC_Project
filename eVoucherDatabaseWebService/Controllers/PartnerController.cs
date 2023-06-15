@@ -70,14 +70,12 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         // GET api/partner/lock/5
         [HttpGet("lock/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<PartnerVM?>> LockPartner(int id)
         {
             return await _partnerService.LockPartner(id);
         }
         // GET api/partner/unlock/5
         [HttpGet("unlock/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<PartnerVM?>> UnLockPartner(int id)
         {
             return await _partnerService.UnLockPartner(id);

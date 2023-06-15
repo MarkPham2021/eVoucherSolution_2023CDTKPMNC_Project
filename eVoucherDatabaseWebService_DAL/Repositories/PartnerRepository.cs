@@ -45,7 +45,13 @@ namespace eVoucher_DAL.Repositories
                 .ToListAsync();
             return partners;
         }
-
+        public async override Task<Partner?> GetSingleById(int id)
+        {
+            var partner = await _context.Partners
+                        .Include(p => p.AppUser)
+                        .SingleOrDefaultAsync(p => p.Id == id);
+            return partner;
+        }
         public async Task<PartnerVM> LockPartner(int id)
         {
             var lockPartner = await _context.Database.ExecuteSqlAsync($"UPDATE [Partners] SET [Status] = 0 WHERE [Id] = {id}");

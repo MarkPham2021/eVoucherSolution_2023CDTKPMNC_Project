@@ -98,7 +98,7 @@ namespace eVoucher.Client.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            TempData["ErrorMessage"] = "Login failed due to wrong username or password, please try again!";
+            TempData["ErrorMessage"] = result.Message;
 
             return View("Login");
         }

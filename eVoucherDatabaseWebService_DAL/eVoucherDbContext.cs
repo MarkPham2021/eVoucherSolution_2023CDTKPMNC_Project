@@ -2,7 +2,6 @@
 global using Microsoft.AspNetCore.Identity;
 global using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 global using Microsoft.EntityFrameworkCore;
-using eVoucher_ViewModel.Requests.VoucherRequests;
 
 namespace eVoucher_DAL
 {
@@ -11,6 +10,7 @@ namespace eVoucher_DAL
         public eVoucherDbContext(DbContextOptions options) : base(options)
         {
         }
+
         // the followed functions are disable because it was declare in eVoucherDatabaseWebservice startup.cs -> configureservices
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -18,7 +18,7 @@ namespace eVoucher_DAL
 
             optionsBuilder.UseSqlServer("name=ConnectionStrings:DefaultConnection", b => b.MigrationsAssembly("eVoucher_Migrations"));
         }
-        
+
         protected eVoucherDbContext()
         { }
 
@@ -36,7 +36,7 @@ namespace eVoucher_DAL
         public DbSet<Voucher> Vouchers { get; set; }
         public DbSet<PartnerImage> PartnerImages { get; set; }
         public DbSet<CampaignImage> CampaignImages { get; set; }
-        public DbSet<VoucherTypeImage> VoucherTypeImages { get; set; }                
+        public DbSet<VoucherTypeImage> VoucherTypeImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -47,7 +47,6 @@ namespace eVoucher_DAL
             modelBuilder.Entity<IdentityRoleClaim<int>>().ToTable("AppRoleClaims");
             modelBuilder.Entity<IdentityUserToken<int>>().ToTable("AppUserTokens").HasKey(x => x.UserId);
 
-            
             //modelBuilder.Entity<Customer>()
             //    .HasMany(e => e.GamePlayResult)
             //    .WithOne(e => e.CustomerId)

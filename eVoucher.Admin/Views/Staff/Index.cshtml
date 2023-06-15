@@ -1,0 +1,69 @@
+﻿@using eVoucher_DTO.Models;
+@model eVoucher_ViewModel.Response.PageResult<Staff>
+@{
+    ViewData["Title"] = "Our Staffs";
+}
+<div class="container-fluid">
+    <div class="row container-fluid fw-bold">
+        <div class="col-2 rounded-1 border border-1 align-content-center">
+            <span>Name</span>
+        </div>
+        <div class="col-1 rounded-1 border border-1 align-content-center">
+            <span>UserName</span>
+        </div>
+        <div class="col-2 rounded-1 border border-1 align-content-center">
+            <span>Department</span>
+        </div>
+        <div class="col-1 rounded-1 border border-1 align-content-center">
+            <span>Gender</span>
+        </div>
+        <div class="col-2 rounded-1 border border-1 align-content-center">
+            <span>Phone</span>
+        </div>
+        <div class="col-2 rounded-1 border border-1 align-content-center">
+            <span>Email</span>
+        </div>
+        <div class="col-1 rounded-1 border border-1 align-content-center">
+            <span>Status</span>
+        </div>
+        <div class="col-1 rounded-1 border border-1 align-content-center">
+            <span>Action</span>
+        </div>
+    </div>
+    @foreach (var item in Model.Items)
+    {
+        <div class="row container-fluid">
+            <div class="col-2 rounded-1 border border-1">
+                <span>@item.Name</span>
+            </div>
+            <div class="col-1 rounded-1 border border-1 align-content-center">
+                <span>@item.AppUser.UserName</span>
+            </div>
+            <div class="col-2 rounded-1 border border-1 align-content-center">
+                <span>@item.Department</span>
+            </div>
+            <div class="col-1 rounded-1 border border-1">
+                <span>@item.Gender</span>
+            </div>
+            <div class="col-2 rounded-1 border border-1">
+                <span>@item.AppUser.PhoneNumber</span>
+            </div>
+            <div class="col-2 rounded-1 border border-1">
+                <span>@item.AppUser.Email</span>
+            </div>
+            <div class="col-1 rounded-1 border border-1">
+                <span>@item.Status</span>
+            </div>
+            <div class="col-1 rounded-1 border border-1">
+                <p>
+                    @Html.ActionLink("Activate", "Activate", new { id = item.Id },new {@class ="text-white fw-bold bg-primary "}) |
+                    @Html.ActionLink("Lock", "Lock", new { id = item.Id },new {@class ="text-white fw-bold bg-danger"} )
+                </p>
+            </div>
+        </div>
+    }
+    @await Component.InvokeAsync("Pager", Model)
+</div>
+
+
+

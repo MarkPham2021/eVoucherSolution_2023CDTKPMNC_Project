@@ -78,7 +78,7 @@ namespace eVoucher_BUS.Services
 
         public async Task<Customer?> GetCustomerById(int id)
         {
-            return await _customerRepository.GetSingleById(id);
+            return await _customerRepository.GetSingleByCondition(c=>c.Id == id, includes: new string[] {"AppUsers"});
         }
 
         public async Task<Customer?> RegisterCustomer(CustomerRegisterRequest request)

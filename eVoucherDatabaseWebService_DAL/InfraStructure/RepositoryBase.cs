@@ -110,7 +110,7 @@ namespace eVoucher_DAL.InfraStructure
             return _resetSet.AsQueryable();
         }
 
-        public async Task<T?> GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null)
+        public virtual async Task<T?> GetSingleByCondition(Expression<Func<T, bool>> expression, string[] includes = null)
         {
             if (includes != null && includes.Count() > 0)
             {
