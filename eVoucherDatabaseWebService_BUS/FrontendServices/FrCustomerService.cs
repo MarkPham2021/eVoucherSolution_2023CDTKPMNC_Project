@@ -4,6 +4,7 @@ using eVoucher_Utility.Constants;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Requests.Common;
+using eVoucher_ViewModel.Requests.CustomerRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
@@ -23,11 +24,16 @@ namespace eVoucher_BUS.FrontendServices
         Task<List<VoucherVM>?> GetAllVouchersOfCustomerByCustomerId(int id, string token);
 
         Task<VoucherVM?> GetVoucherVMById(int id, string token);
-
+        //Use for paging view Voucher Index of Client App
         Task<PageResult<VoucherVM>> GetCustomerVouchersPaging(string user, GetCustomerVouchersRequestPaging request,
             string token);
+        //Use for paging view Home of Client App
         Task<PageResult<CampaignVM>> GetCustomerCampaignVMsPaging(GetCustomerCampaignPagingRequest request,
             string token);
+        //Use for paging View Customer Index of Admin App
+        Task<PageResult<Customer>> GetAdminAllCustomersPaging (GetAllCustomersPagingRequest request, string token);
+        Task<Customer> Activate(int id, string token);
+        Task<Customer> Lock(int id, string token);
     }
 
     public class FrCustomerService : IFrCustomerService
@@ -251,6 +257,43 @@ namespace eVoucher_BUS.FrontendServices
                 }
             }
             
+        }
+
+        public async Task<PageResult<Customer>> GetAdminAllCustomersPaging(GetAllCustomersPagingRequest request, string token)
+        {
+            var data = await _customerAPIClient.GetAllCustomersFullInfo(token);
+            //filter by keyword
+            var filterdata = from vm in data
+                             where vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
+                             vm.AppUsers.PhoneNumber.Contains(request.Keyword.ToLower()) ||
+                             vm.AppUsers.Email.ToLower().Contains(request.Keyword.ToLower())
+                             select vm;
+            if(request.AccountStatus != ActiveStatus.AllStatus)
+            {
+                filterdata = from vm in filterdata
+                             where vm.Status == request.AccountStatus
+                             select vm;
+            }
+            filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
+            var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)
+                            .Take(request.PageSize)
+                            .ToList();
+            var pageresult = new PageResult<Customer>()
+                    {
+                        PageIndex = request.PageIndex,
+                        PageSize = request.PageSize,
+                        TotalItems = filterdata.Count(),
+                        Items = pagedata
+                    };
+            return pageresult;    
+        }
+        public async Task<Customer> Activate(int id, string token)
+        {
+            return await _customerAPIClient.Activate(id, token);
+        }
+        public async Task<Customer> Lock(int id, string token)
+        {
+            return await _customerAPIClient.Lock(id, token);
         }
     }
 }

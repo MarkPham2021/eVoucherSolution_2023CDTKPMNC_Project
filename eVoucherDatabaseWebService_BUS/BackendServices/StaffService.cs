@@ -1,5 +1,4 @@
-﻿using Abp.Threading.Extensions;
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.StaffRequests;
@@ -20,8 +19,10 @@ namespace eVoucher_BUS.Services
         Task<Staff> DeleteStaff(int id);
 
         Task<Staff> DeleteStaff(Staff staff);
-        Task<Staff> Activate(int id);
-        Task<Staff> Lock(int id);
+
+        Task<Staff?> Activate(int id);
+
+        Task<Staff?> Lock(int id);
     }
 
     public class StaffService : IStaffService
@@ -30,7 +31,7 @@ namespace eVoucher_BUS.Services
         private readonly UserManager<AppUser> _userManager;
         private RoleManager<AppRole> _roleManager;
 
-        public StaffService(IStaffRepository staffRepository, UserManager<AppUser> userManager, 
+        public StaffService(IStaffRepository staffRepository, UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager)
         {
             _staffRepository = staffRepository;
@@ -38,25 +39,25 @@ namespace eVoucher_BUS.Services
             _roleManager = roleManager;
         }
 
-        public Task<Staff> DeleteStaff(int id)
+        public async Task<Staff> DeleteStaff(int id)
         {
             throw new NotImplementedException();
         }
 
-        public Task<Staff> DeleteStaff(Staff staff)
+        public async Task<Staff> DeleteStaff(Staff staff)
         {
             throw new NotImplementedException();
         }
 
         public async Task<List<Staff>> GetAllStaffs()
         {
-            var Staffs = await _staffRepository.GetMulti(s=>s.IsDeleted == false, includes: new string[] {"AppUser"});
+            var Staffs = await _staffRepository.GetMulti(s => s.IsDeleted == false, includes: new string[] { "AppUser" });
             return Staffs;
         }
 
         public async Task<Staff?> GetStaffById(int id)
         {
-            var staff = await _staffRepository.GetSingleByCondition(s=>s.Id == id, includes: new string[] { "AppUser" });
+            var staff = await _staffRepository.GetSingleByCondition(s => s.Id == id, includes: new string[] { "AppUser" });
             return staff;
         }
 
@@ -87,23 +88,21 @@ namespace eVoucher_BUS.Services
             return registerResult;
         }
 
-        public Task<Staff?> UpdateStaff(StaffUpdateRequest request)
+        public async Task<Staff?> UpdateStaff(StaffUpdateRequest request)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<Staff> Activate(int id)
+        public async Task<Staff?> Activate(int id)
         {
-            var staff = await _staffRepository.GetSingleByCondition(s=>s.Id==id);
-            staff.Status = ActiveStatus.Active;
-            return await _staffRepository.Update(staff);            
+            var staff = await _staffRepository.Activate(id);
+            return staff;
         }
 
         public async Task<Staff> Lock(int id)
         {
-            var staff = await _staffRepository.GetSingleById(id);
-            staff.Status = ActiveStatus.InActive;
-            return await _staffRepository.Update(staff);
+            var staff = await _staffRepository.Lock(id);
+            return (staff);
         }
     }
 }

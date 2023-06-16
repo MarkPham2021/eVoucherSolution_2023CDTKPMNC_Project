@@ -9,6 +9,7 @@ namespace eVoucher_Utility.Enums
     public enum ActiveStatus
     {
         InActive,
-        Active
+        Active,
+        AllStatus
     }
 }

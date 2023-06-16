@@ -109,5 +109,21 @@ namespace eVoucher.ClientAPI_Integration
             VoucherVM vouchervm = JsonConvert.DeserializeObject<VoucherVM>(response);
             return vouchervm;
         }
+        public async Task<Customer> Activate(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/activate/{id}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var customer = JsonConvert.DeserializeObject<Customer>(response);
+            return customer;
+        }
+        public async Task<Customer> Lock(int id, string token)
+        {
+            var uri = BASE_REQUEST + $"/lock/{id}";
+            _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
+            var response = await _httpClient.GetStringAsync(uri);
+            var customer = JsonConvert.DeserializeObject<Customer>(response);
+            return customer;
+        }
     }
 }

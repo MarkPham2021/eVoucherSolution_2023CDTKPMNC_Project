@@ -1,18 +1,42 @@
 ﻿@using eVoucher_DTO.Models;
-@model eVoucher_ViewModel.Response.PageResult<Staff>
+@using eVoucher_Utility.Enums
+@model eVoucher_ViewModel.Response.PageResult<Customer>
 @{
-    ViewData["Title"] = "Our Staffs";
+    ViewData["Title"] = "Our Customers";
 }
 <div class="container-fluid">
+    <form asp-controller="Customer" asp-action="Index" method="get">
+        <div class="row my-3">
+            <div class="form-group col-lg-4 col-md-4">
+                <div class="form-check-inline">
+                    <label class="radio inline mx-3">
+                        <input type="radio" name="accountStatus" value="@ActiveStatus.AllStatus" checked>
+                        <span class="text-black  text-lg-center fw-bold"> All status </span>
+                    </label>
+                    <label class="radio inline mx-3">
+                        <input type="radio" name="accountStatus" value="@ActiveStatus.Active">
+                        <span class="text-black text-lg-center fw-bold"> Active </span>
+                    </label>
+                    <label class="radio inline mx-3">
+                        <input type="radio" name="accountStatus" value="@ActiveStatus.InActive">
+                        <span class="text-black text-lg-center fw-bold"> InActive </span>
+                    </label>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3">
+                <button type="submit" class="form-control btn btn-primary float-start">View</button>
+            </div>
+        </div>
+    </form>
     <div class="row container-fluid fw-bold">
         <div class="col-2 rounded-1 border border-1 align-content-center">
             <span>Name</span>
         </div>
-        <div class="col-1 rounded-1 border border-1 align-content-center">
+        <div class="col-2 rounded-1 border border-1 align-content-center">
             <span>UserName</span>
         </div>
-        <div class="col-2 rounded-1 border border-1 align-content-center">
-            <span>Department</span>
+        <div class="col-1 rounded-1 border border-1 align-content-center">
+            <span>Date of birth</span>
         </div>
         <div class="col-1 rounded-1 border border-1 align-content-center">
             <span>Gender</span>
@@ -36,20 +60,20 @@
             <div class="col-2 rounded-1 border border-1">
                 <span>@item.Name</span>
             </div>
-            <div class="col-1 rounded-1 border border-1 align-content-center">
-                <span>@item.AppUser.UserName</span>
-            </div>
             <div class="col-2 rounded-1 border border-1 align-content-center">
-                <span>@item.Department</span>
+                <span>@item.AppUsers.UserName</span>
+            </div>
+            <div class="col-1 rounded-1 border border-1 align-content-center">
+                <span>@item.DOB.ToShortDateString()</span>
             </div>
             <div class="col-1 rounded-1 border border-1">
                 <span>@item.Gender</span>
             </div>
             <div class="col-1 rounded-1 border border-1">
-                <span>@item.AppUser.PhoneNumber</span>
+                <span>@item.AppUsers.PhoneNumber</span>
             </div>
             <div class="col-2 rounded-1 border border-1">
-                <span>@item.AppUser.Email</span>
+                <span>@item.AppUsers.Email</span>
             </div>
             <div class="col-1 rounded-1 border border-1">
                 <span>@item.Status</span>

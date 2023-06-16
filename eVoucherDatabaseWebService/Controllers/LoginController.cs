@@ -9,9 +9,9 @@ namespace eVoucherDatabaseWebService.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private UserService _userService;
+        private IUserService _userService;
 
-        public LoginController(UserService userService)
+        public LoginController(IUserService userService)
         {
             _userService = userService;
         }

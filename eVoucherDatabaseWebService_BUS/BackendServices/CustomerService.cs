@@ -28,6 +28,8 @@ namespace eVoucher_BUS.Services
         Task<List<VoucherVM>?> GetAllVouchersOfCustomerByUserInfo(string userinfo);
         Task<List<VoucherVM>?> GetAllVouchersOfCustomerByCustomerId(int id);
         Task<VoucherVM?> GetVoucherVMById(int id);
+        Task<Customer?> Activate(int id);
+        Task<Customer?> Lock(int id);
     }
 
     public class CustomerService : ICustomerService
@@ -271,6 +273,27 @@ namespace eVoucher_BUS.Services
         public async Task<VoucherVM?> GetVoucherVMById(int id)
         {
             return await _voucherRepository.GetVoucherVMById(id);
+        }
+        public async Task<Customer?> Activate(int id)
+        {
+            var customer = await _customerRepository.GetSingleByCondition(c=>c.Id == id, includes: new string[] {"AppUsers"});
+            if (customer != null)
+            {
+                customer.Status = ActiveStatus.Active;
+                customer = await _customerRepository.Update(customer);
+            }
+            return customer;
+        }
+
+        public async Task<Customer?> Lock(int id)
+        {
+            var customer = await _customerRepository.GetSingleByCondition(c => c.Id == id, includes: new string[] { "AppUsers" });
+            if (customer != null)
+            {
+                customer.Status = ActiveStatus.InActive;
+                customer = await _customerRepository.Update(customer);
+            }
+            return customer;
         }
     }
 }

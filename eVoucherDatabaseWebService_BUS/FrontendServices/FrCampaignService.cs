@@ -1,5 +1,4 @@
-﻿using Azure.Core;
-using eVoucher.ClientAPI_Integration;
+﻿using eVoucher.ClientAPI_Integration;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Constants;
 using eVoucher_Utility.Enums;
@@ -7,8 +6,6 @@ using eVoucher_ViewModel.Requests.CampaignRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
 using eVoucher_ViewModel.Response;
 using Microsoft.Extensions.Configuration;
-using System.Linq.Dynamic.Core.Tokenizer;
-using static eVoucher_ViewModel.StatisticVM.PartnerPeriodicalReport;
 
 namespace eVoucher_BUS.FrontendServices
 {
@@ -16,8 +13,10 @@ namespace eVoucher_BUS.FrontendServices
     {
         //for partner app
         Task<PageResult<CampaignVM>> GetAllCampaignVMsPaging(string user, GetManageCampaignPagingRequest request, string token);
+
         //for partner app
         Task<PageResult<CampaignVM>> GetAllEndedCampaignVMsPaging(string userinfo, GetManageCampaignPagingRequest request, string token);
+
         Task<PageResult<VoucherTypeVM>> GetVoucherTypesOfCampaignPaging(int campaignid,
             GetManageCampaignPagingRequest request, string token);
 
@@ -26,6 +25,7 @@ namespace eVoucher_BUS.FrontendServices
         Task<List<Game>> GetAllGames(string token);
 
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequest request, string token);
+
         Task<APIResult<string>> EditCampaign(CampaignEditRequest request, string token);
 
         Task<APIResult<string>> CreateVoucherType(CampaignCreateVoucherTypeRequest request, string token);
@@ -36,6 +36,7 @@ namespace eVoucher_BUS.FrontendServices
         Task<Campaign?> DropCampaign(int campaignid, string token);
 
         Task<Campaign?> UnDropCampaign(int campaignid, string token);
+
         Task<List<CampaignVM>> PartnerGetAllActiveCampaignVMs(string user, string token);
     }
 
@@ -198,9 +199,9 @@ namespace eVoucher_BUS.FrontendServices
         public async Task<Campaign?> DropCampaign(int campaignid, string token)
         {
             var campaign = await _campaignAPIClient.DropCampaign(campaignid, token);
-            if (campaign != null) 
-            { 
-                if(campaign.CampaignImages.Count > 0)
+            if (campaign != null)
+            {
+                if (campaign.CampaignImages.Count > 0)
                 {
                     campaign.CampaignImages[0].ImagePath = _configuration[SystemConstants.AppSettings.BaseAddress] +
                                                             campaign.CampaignImages[0].ImagePath;
@@ -227,10 +228,11 @@ namespace eVoucher_BUS.FrontendServices
         {
             return await _campaignAPIClient.Edit(request, token);
         }
-        public async Task<List<CampaignVM>> PartnerGetAllActiveCampaignVMs(string user,string token)
+
+        public async Task<List<CampaignVM>> PartnerGetAllActiveCampaignVMs(string user, string token)
         {
             var data = await _campaignAPIClient.GetAllCampaignVMsAsync(token);
-            
+
             var filterdata = from vm in data
                              where vm.CreatedBy.ToLower() == user.ToLower() &&
                              (vm.Status == ActiveStatus.Active)

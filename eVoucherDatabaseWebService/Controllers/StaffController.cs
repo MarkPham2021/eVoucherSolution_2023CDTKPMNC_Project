@@ -11,9 +11,9 @@ namespace eVoucherDatabaseWebService.Controllers
     [Authorize]
     public class StaffController : ControllerBase
     {
-        private readonly StaffService _staffService;
+        private readonly IStaffService _staffService;
 
-        public StaffController(StaffService staffService)
+        public StaffController(IStaffService staffService)
         {
             _staffService = staffService;
         }
@@ -32,14 +32,16 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff
         [HttpGet]
+        [AllowAnonymous]
         public async Task<ActionResult<List<Staff>>> GetAll()
         {
             var result = await _staffService.GetAllStaffs();
             return Ok(result);
         }
         //Get api/staff/id
-        [HttpGet("/{id}")]
-        public async Task<ActionResult<Staff>> GetSingleById(int id)
+        [HttpGet("{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Staff>> GetSingleById([FromRoute]int id)
         {
             var staff = await _staffService.GetStaffById(id);
             if (staff == null)
@@ -53,7 +55,7 @@ namespace eVoucherDatabaseWebService.Controllers
         [AllowAnonymous]
         public async Task<ActionResult<Staff>> Activate(int id)
         {
-            var staff = _staffService.Activate(id);
+            var staff = await _staffService.Activate(id);
             if (staff == null)
             {
                 return NotFound();
@@ -62,9 +64,10 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/lock/id
         [HttpGet("lock/{id}")]
+        [AllowAnonymous]
         public async Task<ActionResult<Staff>> Lock(int id)
         {
-            var staff = _staffService.Lock(id);
+            var staff = await _staffService.Lock(id);
             if (staff == null)
             {
                 return NotFound();

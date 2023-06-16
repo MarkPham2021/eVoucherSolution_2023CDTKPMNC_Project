@@ -21,15 +21,6 @@ namespace eVoucher_DAL.Repositories
             var staff = await this.GetSingleByCondition(s => s.Id == id, includes: new string[] { "AppUser" });
             return staff;
         }
-
-        public async override Task<Staff?> GetSingleById(int id)
-        {
-            var staff = await _context.Staffs
-                        .Include(s => s.AppUser)
-                        .SingleOrDefaultAsync(s => s.Id == id);
-            return staff;            
-        }
-
         public async Task<Staff> Lock(int id)
         {
             var lockStaff = await _context.Database.ExecuteSqlAsync($"UPDATE [Staffs] SET [Status] = 0 WHERE [Id] = {id}");

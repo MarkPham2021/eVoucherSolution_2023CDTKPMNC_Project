@@ -1,4 +1,5 @@
-﻿using eVoucher_BUS.Services;
+﻿using eVoucher_BUS.FrontendServices;
+using eVoucher_BUS.Services;
 using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CustomerRequests;
 using eVoucher_ViewModel.Requests.VoucherRequests;
@@ -85,6 +86,30 @@ namespace eVoucherDatabaseWebService.Controllers
         {
             var vouchervm = await _customerService.GetVoucherVMById(id);
             return Ok(vouchervm);
+        }
+        //Get api/staff/activate/id
+        [HttpGet("activate/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Staff>> Activate(int id)
+        {
+            var staff = await _customerService.Activate(id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+            return Ok(staff);
+        }
+        //Get api/staff/lock/id
+        [HttpGet("lock/{id}")]
+        [AllowAnonymous]
+        public async Task<ActionResult<Staff>> Lock(int id)
+        {
+            var staff = await _customerService.Lock(id);
+            if (staff == null)
+            {
+                return NotFound();
+            }
+            return Ok(staff);
         }
     }
 }
