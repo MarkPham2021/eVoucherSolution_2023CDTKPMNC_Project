@@ -6,12 +6,12 @@
 
     <div class="container-fluid">
         <div class="bg-primary bg-opacity-75">
-            <h6 class="text-md-start font-weight-bold my-2 ps-5 text-warning">Information of @Model.Name</h6>
+            <h3 class="text-md-start my-2 ps-5 text-warning fw-bold">Information of @Model.Name</h3>
         </div>
         <!--Staff detail-->
         <div class="row">
 
-            <div class="col col-lg-6 col-md-6 col-sm-12 my-3 border-2">
+            <div class="col col-lg-5 col-md-6 col-sm-12 my-3 border border-2">
                 <div class="card-header bg-info fw-bold border-1 rounded-1">Full name: @Model.Name</div>
                 <div class="card-body bg-white rounded-1 mb-1">
                     <p>Gender: @Model.Gender</p>
@@ -29,7 +29,7 @@
             @Html.ActionLink("Activate", "Activate", new { id = Model.Id },new {@class ="text-white fw-bold bg-primary "}) |
             @Html.ActionLink("Lock", "Lock", new { id = Model.Id },new {@class ="text-white fw-bold bg-danger"} )
         </p>
-        <div class="col col-lg-4 col-md-5 col-sm-12 my-3 border-2">
+        <div class="col col-lg-5 col-md-6 col-sm-12 my-3 border border-2">
             <a class="form-control bg-primary text-white fw-semibold " asp-action="Index" asp-controller="Customer">Back to Our customers</a>
         </div>
     </div>

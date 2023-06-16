@@ -80,7 +80,8 @@ namespace eVoucher_DAL.StatisticQuery
                         .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active)
                         .CountAsync();
                     numberofactivecampaigns = await _context.Campaigns
-                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active)
+                            .Where(x => x.CreatedTime <= p && x.EndingDate >= p &&
+                                x.IsDeleted == false && x.Status == ActiveStatus.Active)
                             .CountAsync();
                     
                     numberofdeliveredvouchers = await _context.Vouchers
@@ -96,7 +97,7 @@ namespace eVoucher_DAL.StatisticQuery
                         .CountAsync();
                     numberofactivecampaigns = await _context.Campaigns
                             .Include(c => c.Partner)
-                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false 
+                            .Where(x => x.CreatedTime <= p && x.EndingDate >= p && x.IsDeleted == false 
                                 && x.Status == ActiveStatus.Active && x.Partner.Partnercategory.Id == request.CategoryId)
                             .CountAsync();
                     
@@ -132,8 +133,8 @@ namespace eVoucher_DAL.StatisticQuery
                         .CountAsync(),
                     NumberOfActiveCampaigns = await _context.Campaigns
                             .Include(c => c.Partner)
-                            .Where(x => x.IsDeleted == false && x.Status == ActiveStatus.Active 
-                                && x.Partner.Partnercategory.Id == _category.Id)
+                            .Where(x => x.IsDeleted == false && x.Status == ActiveStatus.Active
+                                && x.EndingDate >= DateTime.Now && x.Partner.Partnercategory.Id == _category.Id)
                             .CountAsync(),
                     NumberOfDeliveredVouchers = await _context.Vouchers
                             .Include(v => v.GamePlayResult)
@@ -210,8 +211,8 @@ namespace eVoucher_DAL.StatisticQuery
                 if (request.CampaignId == 0) //all campaigns
                 {
                     numberofactivecampaigns = await _context.Campaigns
-                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active
-                            && x.CreatedBy ==request.UserInfo)
+                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active 
+                            && x.EndingDate >= p && x.CreatedBy ==request.UserInfo)
                             .CountAsync();
                     numberofendedcampaigns = await _context.Campaigns
                             .Where(x => x.IsDeleted == false && x.EndingDate<p
@@ -234,8 +235,8 @@ namespace eVoucher_DAL.StatisticQuery
                 else //specified a campaign
                 {
                     numberofactivecampaigns = await _context.Campaigns
-                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active
-                            && x.CreatedBy == request.UserInfo)
+                            .Where(x => x.CreatedTime <= p && x.IsDeleted == false && x.Status == ActiveStatus.Active 
+                            && x.EndingDate >= p && x.CreatedBy == request.UserInfo)
                             .CountAsync();
                     numberofendedcampaigns = await _context.Campaigns
                             .Where(x => x.IsDeleted == false && x.EndingDate < p

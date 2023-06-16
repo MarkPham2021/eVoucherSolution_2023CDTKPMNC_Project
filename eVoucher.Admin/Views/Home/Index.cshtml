@@ -92,7 +92,7 @@
         <div class="col col-lg-3 col-md-4 col-sm-12">
             <a asp-controller="Campaign" asp-action="Index" class="text-decoration-none">
                 <div class="card bg-warning text-white mb-4">
-                    <div class="card-body">Campaigns @explain</div>
+                    <div class="card-body">Ongoing Campaigns @explain</div>
                     <div class="card-footer d-flex align-items-center justify-content-between">
                         <div class="small text-white stretched-link">Total number at @Model.Data[l-1].DateReport: @Model.Data[l-1].NumberOfActiveCampaigns</div>
                         <div class="small text-white">
@@ -211,7 +211,7 @@
                 </div>
             </div>
             <div class="col col-lg-3 col-md-6 col-sm-12">
-                <div class="card-header bg-warning bg-opacity-50 fw-bold border-1 rounded-1">Active campaigns in Categories Chart</div>
+                <div class="card-header bg-warning bg-opacity-50 fw-bold border-1 rounded-1">Ongoing campaigns in Categories Chart</div>
                 <div class="card bg-white rounded-1 mb-1">
                     <canvas id="CampaignInCategoriesChart" height="196">
                     </canvas>
@@ -410,7 +410,7 @@
         plugins: {
             title: {
                 display: true,
-                text: 'Change in number of active Campaigns'
+                text: 'Change in number of ongoing Campaigns'
             }
         }
     }

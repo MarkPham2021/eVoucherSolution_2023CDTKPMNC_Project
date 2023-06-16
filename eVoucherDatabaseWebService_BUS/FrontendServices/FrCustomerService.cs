@@ -134,7 +134,7 @@ namespace eVoucher_BUS.FrontendServices
                              vm.MetaKeyword.ToLower().Contains(request.keyword.ToLower()) ||
                              vm.PartnerName.ToLower().Contains(request.keyword.ToLower()) ||
                              vm.MetaDescription.ToLower().Contains(request.keyword.ToLower()))) &&
-                             (vm.Status == ActiveStatus.Active)
+                             (vm.Status == ActiveStatus.Active) &&(vm.EndingDate>= DateTime.Now)
                              select vm;
             
             //filter by category

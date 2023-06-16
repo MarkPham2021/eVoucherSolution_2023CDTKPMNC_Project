@@ -18,7 +18,7 @@ namespace eVoucher.Admin.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "", int categoryId = 0, int pageIndex = 1, int pageSize = 3)
+        public async Task<IActionResult> Index(string keyword = "", int categoryId = 0, int pageIndex = 1, int pageSize = 4)
         {
             var token = HttpContext.Session.GetString("Token");
             var request = new GetAdminCampaignsPagingRequest()

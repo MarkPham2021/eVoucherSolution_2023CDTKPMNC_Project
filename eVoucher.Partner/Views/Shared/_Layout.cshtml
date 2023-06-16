@@ -52,9 +52,11 @@
                             <h6 class="text-white">Manage</h6>
                         </div>
                         <a class="nav-link collapsed" asp-controller="Campaign" asp-action="Index" >
-                            Campaigns
+                            Ongoing Campaigns
                         </a>
-
+                        <a class="nav-link collapsed" asp-controller="Campaign" asp-action="ViewEndedCampaign">
+                            Ended Campaigns
+                        </a>                        
                         <a class="nav-link collapsed" asp-controller="Voucher" asp-action="Index" >
                             Vouchers
                         </a>

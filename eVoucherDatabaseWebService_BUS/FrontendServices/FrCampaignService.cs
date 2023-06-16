@@ -99,7 +99,7 @@ namespace eVoucher_BUS.FrontendServices
                              where (vm.Name.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.MetaKeyword.ToLower().Contains(request.Keyword.ToLower()) ||
                              vm.MetaDescription.ToLower().Contains(request.Keyword.ToLower())) && (vm.CreatedBy.ToLower() == user.ToLower()) &&
-                             (vm.Status == ActiveStatus.Active)
+                             (vm.Status == ActiveStatus.Active) && (vm.EndingDate >= DateTime.Now)
                              select vm;
             filterdata = filterdata.OrderByDescending(x => x.CreatedTime);
             var pagedata = filterdata.Skip((request.PageIndex - 1) * request.PageSize)

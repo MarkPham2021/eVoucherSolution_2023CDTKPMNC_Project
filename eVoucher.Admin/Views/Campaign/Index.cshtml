@@ -28,32 +28,36 @@
     </form>
     <div class="container-fluid">
         <div class="bg-primary bg-opacity-75">
-            <h6 class="text-md-start font-weight-bold my-2 text-warning">Campaigns @explain:</h6>
+            <h5 class="text-md-start font-weight-bold my-2 text-warning">Campaigns @explain:</h5>
         </div>
         <!--Campaigns-->
         <div class="row">
             @foreach (var item in Model.Items)
             {
-                <div class="col col-lg-4 col-md-6 col-sm-12 my-3 border-2">
-                    <div class="row card-img-bottom container-fluid">
-                        <img src="@item.ImagePath" class="flex-fill" height="200" width="360" />
+                <div class="col col-lg-5 col-md-6 col-sm-12 my-1 ms-2 border border-2">
+                    <div class="card-header bg-info fw-bold border-1 rounded-1">@item.Name: @item.Slogan</div>
+                    <div class="row border border-1">
+                        <div class="col-6">
+                            <p>Begin: @item.BeginningDate.ToShortDateString() --> End: @item.EndingDate.ToShortDateString() </p>
+                            <p>Category: @item.PartnerCategoryName</p>
+                            <p>Status: @item.Status</p>
+                        </div>
+                        <div class="col-5 ms-1">
+                            <div class="row card-img-bottom container-fluid my-1">
+                                <img src="@item.ImagePath" class="flex-fill" height="160" width="260" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-header bg-info fw-bold border-1 rounded-1">@item.Name</div>
-                    <div class="card-body bg-white rounded-1 mb-1">
-                        <p class="fw-bold">@item.Slogan</p>
-                        <p>Begin: @item.BeginningDate.ToShortDateString() --> End: @item.EndingDate.ToShortDateString() </p>
-                        <p>Vendor: @item.PartnerName</p>
-                        <p>Category: @item.PartnerCategoryName</p>
+                    <h6 class="fw-bold text-center text-decoration-underline mt-1">Store Information:</h6>
+                    <div class="bg-white rounded-1 my-1 border border-1">
+                        <p>Store: @item.PartnerName</p>
                         <p>Address: @item.PartnerAddress</p>
                         <p>Phone: @item.PartnerPhoneNumber</p>
-                        <p>Status: @item.Status</p>
                     </div>
-                    <div >
-                        <p>
-                            @Html.ActionLink("Drop campaign", "Drop", new { id = item.Id },new {@class ="text-white fw-bold bg-danger"}) |
-                            @Html.ActionLink("Undrop campaign", "UnDrop", new { id = item.Id },new {@class ="text-white fw-bold bg-primary"} )
-                        </p>
-                    </div>
+                    <p>
+                        @Html.ActionLink("Drop campaign", "Drop", new { id = item.Id },new {@class ="text-white fw-bold bg-danger"}) |
+                        @Html.ActionLink("Undrop campaign", "UnDrop", new { id = item.Id },new {@class ="text-white fw-bold bg-primary"} )
+                    </p>
                 </div>
             }
             @await Component.InvokeAsync("Pager", Model)
