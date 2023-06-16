@@ -13,6 +13,7 @@ namespace eVoucher_BUS.FrontendServices
 {
     public interface IFrCustomerService
     {
+        Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request, string token);
         Task<List<Customer>?> GetAllCustomersFullInfo(string token);
 
         Task<Customer?> GetCustomerFullInfoById(int id, string token);
@@ -294,6 +295,14 @@ namespace eVoucher_BUS.FrontendServices
         public async Task<Customer> Lock(int id, string token)
         {
             return await _customerAPIClient.Lock(id, token);
+        }
+
+        public async Task<APIClaimVoucherResult> ClaimVoucher(CustomerPlayGameForVoucherRequest request, string token)
+        {
+            var response = await _customerAPIClient.ClaimVoucher(request, token);
+            string BaseAdress = _configuration[SystemConstants.AppSettings.BaseAddress];
+            response._Voucher.ImagePath = BaseAdress + response._Voucher.ImagePath;
+            return response;
         }
     }
 }

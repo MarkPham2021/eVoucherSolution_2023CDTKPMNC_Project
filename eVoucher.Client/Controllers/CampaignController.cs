@@ -17,16 +17,16 @@ namespace eVoucher.Client.Controllers
     public class CampaignController : Controller
     {
         private readonly IFrCampaignService _frCampaignService;
+        private readonly IFrCustomerService _frCustomerService;
         private readonly IConfiguration _configuration;
-        private readonly CustomerAPIClient _customerAPIClient;
-
+        
         public CampaignController(IFrCampaignService frCampaignService,
-                                    CustomerAPIClient customerAPIClient,
+                                    IFrCustomerService frCustomerService,
                                     IConfiguration configuration)
         {
             _frCampaignService = frCampaignService;
+            _frCustomerService = frCustomerService;
             _configuration = configuration;
-            _customerAPIClient = customerAPIClient;
         }
         // GET: /<controller>/
         [Route("{Id}")]
@@ -45,7 +45,7 @@ namespace eVoucher.Client.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetVoucher(int CampaignGameId)
+        public async Task<IActionResult> GetVoucher(int CampaignGameId)
         {
             
             var request = new CustomerPlayGameForVoucherRequest()
@@ -56,9 +56,8 @@ namespace eVoucher.Client.Controllers
             };
 
             var token = HttpContext.Session.GetString("Token");
-            var response = _customerAPIClient.ClaimVoucher(request, token);
-            response.Wait();
-            var voucher = response.Result;
+            var response = await _frCustomerService.ClaimVoucher(request, token);
+            var voucher = response._Voucher;
             return Json(voucher);
         }
     }
