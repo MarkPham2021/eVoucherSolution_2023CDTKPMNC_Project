@@ -37,7 +37,6 @@ namespace eVoucher.Client.Controllers
 
             if (campaign != null)
             {
-                //campaign.ImagePath = _configuration[SystemConstants.AppSettings.BaseAddress] + campaign.ImagePath;
                 return View("CampaignDetails", campaign);
             }
 
