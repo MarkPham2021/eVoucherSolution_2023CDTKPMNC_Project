@@ -34,7 +34,6 @@ namespace eVoucherDatabaseWebService.Controllers
             return Ok(result);
         }
         [HttpPost("ClaimVoucher")]
-        [AllowAnonymous]
         public async Task<ActionResult<APIClaimVoucherResult>> ClaimVoucher([FromBody] CustomerPlayGameForVoucherRequest request)
         {
             var result = await _customerService.ClaimVoucher(request);
@@ -51,21 +50,18 @@ namespace eVoucherDatabaseWebService.Controllers
             return Ok(data);
         }
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Customer?>> GetById(int id)
         {
             var customer = await _customerService.GetCustomerFullInfoById(id);
             return Ok(customer);
         }
         [HttpGet("userinfo/{userinfo}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Customer?>> GetById(string userinfo)
         {
             var customer = await _customerService.GetCustomerFullInfoByUserInfo(userinfo);
             return Ok(customer);
         }
         [HttpGet("GetAllVouchersOfCustomerByUserInfo/{userinfo}")]
-        [AllowAnonymous]
         public async Task<ActionResult<List<VoucherVM>?>> GetAllVouchersOfCustomerByUserInfo(string userinfo)
         {
             var vouchervms = await _customerService.GetAllVouchersOfCustomerByUserInfo(userinfo);
@@ -73,7 +69,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         
         [HttpGet("GetAllVoucherVMsOfCustomerByCustomerId/{customerid}")]
-        [AllowAnonymous]
         public async Task<ActionResult<List<VoucherVM>?>> GetAllVoucherVMsOfCustomerByCustomerId(int customerid)
         {
             var vouchervms = await _customerService.GetAllVouchersOfCustomerByCustomerId(customerid);
@@ -81,7 +76,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         
         [HttpGet("GetVoucherVMById/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<VoucherVM?>> GetVoucherVMById(int id)
         {
             var vouchervm = await _customerService.GetVoucherVMById(id);
@@ -89,7 +83,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/activate/id
         [HttpGet("activate/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Staff>> Activate(int id)
         {
             var staff = await _customerService.Activate(id);
@@ -101,7 +94,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/lock/id
         [HttpGet("lock/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Staff>> Lock(int id)
         {
             var staff = await _customerService.Lock(id);

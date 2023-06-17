@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace eVoucher.Partner.Controllers
 {
     [Authorize]
-    public class VoucherTypeController : BaseController
+    public class VoucherTypeController : Controller
     {
         private IFrCampaignService _frCampaignService;
         public VoucherTypeController(IFrCampaignService frCampaignService)

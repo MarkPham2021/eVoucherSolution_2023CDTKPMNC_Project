@@ -77,7 +77,7 @@ namespace eVoucher.Client.Controllers
         {
             var result = await _loginAPIClient.Login(request);
 
-            if (result !=null && result.IsSucceeded)
+            if (result != null && result.IsSucceeded)
             {
                 //HttpContext.Session.SetString("LoginToken", result.ResultObj);
 

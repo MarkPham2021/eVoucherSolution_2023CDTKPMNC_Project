@@ -1,10 +1,12 @@
 ﻿using eVoucher.ClientAPI_Integration;
 using eVoucher_ViewModel.Requests.GameRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eVoucher.Admin.Controllers
 {
-    public class GameController : BaseController
+    [Authorize]
+    public class GameController : Controller
     {
         private GameAPIClient _gameAPIClient;
         public GameController(GameAPIClient gameAPIClient)

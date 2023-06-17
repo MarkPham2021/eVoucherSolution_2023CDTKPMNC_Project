@@ -84,7 +84,7 @@ namespace eVoucher.Partner.Controllers
             ViewData["result"] = result.Message;
             return View(request);
         }
-
+        [AllowAnonymous]
         private async Task<IActionResult> Login(LoginRequest request)
         {
             if (!ModelState.IsValid)

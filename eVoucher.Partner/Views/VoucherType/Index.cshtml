@@ -25,13 +25,7 @@
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item">Expired date: @item.ExpiringDate.ToShortDateString()</li>
                     <li class="list-group-item">Maxamount: @item.MaxAmount/RemainAmount: @item.RemainAmount</li>
-
                 </ul>
-                <div class="card-body">
-                    @Html.ActionLink("View detail", "ViewDetail", new { id = item.Id }) |
-                    @Html.ActionLink("Edit", "EditVoucherType", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "DeleteVoucherType", new { id = item.Id })
-                </div>
             </div>
         </div>
     }    
@@ -39,6 +33,5 @@
 @await Component.InvokeAsync("Pager", Model)
 <div class="row container-fluid my-2 align-content-end">
     @Html.ActionLink("Create new VoucherType", "Create", new { id = campaignid })
-
 </div>
 

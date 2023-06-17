@@ -11,6 +11,7 @@ namespace eVoucherDatabaseWebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class PartnerController : ControllerBase
     {
         private IPartnerService _partnerService;
@@ -24,6 +25,7 @@ namespace eVoucherDatabaseWebService.Controllers
 
         // GET: api/<PartnerController>
         [HttpGet("getallpartnercategories")]
+        [AllowAnonymous]
         public async Task<ActionResult<List<PartnerCategory>>> GetAllPartnerCategories()
         {
             //var categories = _partnerCategoryService.GetAllPartnerCategorys().ToList();

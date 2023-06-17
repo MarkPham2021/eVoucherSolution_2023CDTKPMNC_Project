@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace eVoucher.Partner.Controllers
 {
     [Authorize]
-    public class CampaignController : BaseController
+    public class CampaignController : Controller
     {
         private readonly IFrCampaignService _frCampaignService;
         private readonly ICommonService _commonService;

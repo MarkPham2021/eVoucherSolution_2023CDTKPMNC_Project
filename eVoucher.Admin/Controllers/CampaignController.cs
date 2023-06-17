@@ -1,16 +1,18 @@
 ﻿using eVoucher_BUS.FrontendServices;
 using eVoucher_DTO.Models;
 using eVoucher_ViewModel.Requests.CampaignRequests;
-using eVoucher_ViewModel.Requests.PartnerRequests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace eVoucher.Admin.Controllers
 {
+    [Authorize]
     public class CampaignController : Controller
     {
         private readonly IFrCampaignService _frCampaignService;
         private readonly IFrPartnerService _frPartnerService;
+
         public CampaignController(IFrCampaignService frCampaignService, IFrPartnerService frPartnerService)
         {
             _frCampaignService = frCampaignService;
@@ -45,7 +47,7 @@ namespace eVoucher.Admin.Controllers
                 ViewBag.CategoryName = "";
             }
             ViewBag.Categories = selectlistpartnercategory;
-            var pageresult = await _frCampaignService.GetAdminCampaignVMsPaging(request,token);
+            var pageresult = await _frCampaignService.GetAdminCampaignVMsPaging(request, token);
             return View(pageresult);
         }
 

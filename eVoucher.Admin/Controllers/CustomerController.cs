@@ -1,11 +1,8 @@
 ﻿using eVoucher_BUS.FrontendServices;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CustomerRequests;
-using eVoucher_ViewModel.Requests.StaffRequests;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
-using System.Drawing.Printing;
 
 namespace eVoucher.Admin.Controllers
 {
@@ -13,12 +10,14 @@ namespace eVoucher.Admin.Controllers
     public class CustomerController : Controller
     {
         private readonly IFrCustomerService _frcustomerService;
-        public CustomerController(IFrCustomerService frCustomerService) 
+
+        public CustomerController(IFrCustomerService frCustomerService)
         {
             _frcustomerService = frCustomerService;
         }
+
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "",  int pageIndex = 1, int pageSize = 10, ActiveStatus accountStatus = ActiveStatus.AllStatus)
+        public async Task<IActionResult> Index(string keyword = "", int pageIndex = 1, int pageSize = 10, ActiveStatus accountStatus = ActiveStatus.AllStatus)
         {
             var token = HttpContext.Session.GetString("Token");
             var request = new GetAllCustomersPagingRequest()
@@ -39,7 +38,7 @@ namespace eVoucher.Admin.Controllers
             var customer = await _frcustomerService.GetCustomerFullInfoById(id, token);
             return View(customer);
         }
-        
+
         [HttpGet("Customer/Activate/{id}")]
         public async Task<IActionResult> Activate(int id)
         {
@@ -71,6 +70,5 @@ namespace eVoucher.Admin.Controllers
             var pageresult = await _frcustomerService.GetAdminAllCustomersPaging(request, token);
             return View("Index", pageresult);
         }
-        
     }
 }

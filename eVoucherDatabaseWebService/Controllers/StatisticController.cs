@@ -9,6 +9,7 @@ namespace eVoucherDatabaseWebService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class StatisticController : ControllerBase
     {
         private readonly IStatisticService _statisticService;

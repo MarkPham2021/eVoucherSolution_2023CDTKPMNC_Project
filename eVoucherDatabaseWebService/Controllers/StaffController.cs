@@ -32,7 +32,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff
         [HttpGet]
-        [AllowAnonymous]
         public async Task<ActionResult<List<Staff>>> GetAll()
         {
             var result = await _staffService.GetAllStaffs();
@@ -40,7 +39,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/id
         [HttpGet("{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Staff>> GetSingleById([FromRoute]int id)
         {
             var staff = await _staffService.GetStaffById(id);
@@ -52,7 +50,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/activate/id
         [HttpGet("activate/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Staff>> Activate(int id)
         {
             var staff = await _staffService.Activate(id);
@@ -64,7 +61,6 @@ namespace eVoucherDatabaseWebService.Controllers
         }
         //Get api/staff/lock/id
         [HttpGet("lock/{id}")]
-        [AllowAnonymous]
         public async Task<ActionResult<Staff>> Lock(int id)
         {
             var staff = await _staffService.Lock(id);
