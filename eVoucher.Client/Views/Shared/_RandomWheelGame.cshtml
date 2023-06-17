@@ -161,13 +161,12 @@
 
                 /* Get the result value from object "data" */
                 console.log(data[picked].value)
-                var mpopup = document.getElementById('mpopupBox');
+                
                 if (data[picked].value == 1) {
                     var randomWheel = document.getElementById("RandomWheel");
-                    var campaginGameId = document.getElementsByClassName("campaignGameId")[0].value
+                    var campaginGameId = randomWheel.getElementsByClassName("campaignGameId")[0].value
                     console.log("random wheel campaginGameId: ", campaginGameId)
-                    getVoucher(campaginGameId)
-                    mpopup.style.display = "block";
+                    getVoucherForRandomWheel(campaginGameId)
                 }
 
                 /* Comment the below line for restrict spin to sngle time */
@@ -218,14 +217,30 @@
         return array;
     }
 
-    function getVoucher(id) {
+    function getVoucherForRandomWheel(id) {
+        var result;
         var uri = `Campaign/GetVoucher?CampaignGameId=${id}`
         $.ajax({
             url: '@Url.Action("GetVoucher","Campaign")',
             data: { CampaignGameId: id },
             success: function (data) {
-                console.log(data)
+                addVoucher(data)
             }
         })
+    }
+
+    function addVoucher(voucher) {
+        var mpopup = document.getElementById('mpopupBox');
+        mpopup.style.display = "block";
+        var d = new Date(voucher.expiringDate)
+        var expiredDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear()
+        mpopup.getElementsByClassName('modal-body')[0].innerHTML = `<div class="card">
+            <img class="card-img-top" src = "${voucher.imagePath}" alt = "Card image cap" >
+                <div class="card-body">
+                    <h5 class="card-title">${voucher.name}</h5>
+                    <p class="card-text">Promotion: ${voucher.promotion}</p>
+                    <p class="card-text">Expired date: ${expiredDate}</p>
+                </div>
+            </div >`
     }
 </script>

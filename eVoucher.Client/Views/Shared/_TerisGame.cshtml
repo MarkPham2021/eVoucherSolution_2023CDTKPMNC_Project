@@ -72,6 +72,7 @@
 
 <div id="teris" onload="draw()">
     <h1>TERRIS</h1>
+    <p>Let score more than 2 to win a voucher!</p>
     <p id="score">score: 0</p>
     <div id="container">
         <canvas id="console"></canvas>
@@ -459,7 +460,7 @@
                 checkCompleteRows();
             } else {
                 stop();
-                if (score > 2) {
+                if (score >= 2) {
                     showVoucherPopup();
                 }
             }
@@ -470,20 +471,18 @@
 
     function showVoucherPopup() {
         var mpopup = document.getElementById('mpopupBox');
-        var randomWheel = document.getElementById("RandomWheel");
-        var campaginGameId = document.getElementsByClassName("campaignGameId")[0].value
-        console.log(campaginGameId)
-        getVoucher(campaginGameId)
-        mpopup.style.display = "block";
+        var terris = document.getElementById("Teris");
+        var campaginGameId = terris.getElementsByClassName("campaignGameId")[0].value;
+        getVoucherForTeris(campaginGameId)
     }
 
-    function getVoucher(id) {
+    function getVoucherForTeris(id) {
         var uri = `Campaign/GetVoucher?CampaignGameId=${id}`
         $.ajax({
             url: '@Url.Action("GetVoucher","Campaign")',
             data: { CampaignGameId: id },
             success: function (data) {
-                console.log(data)
+                addVoucher(data)
             }
         })
     }
