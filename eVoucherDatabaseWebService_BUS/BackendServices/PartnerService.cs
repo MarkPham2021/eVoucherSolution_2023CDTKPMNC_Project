@@ -32,11 +32,11 @@ namespace eVoucher_BUS.Services
     }
     public class PartnerService : IPartnerService
     {
-        private IPartnerRepository _partnerRepository;
-        private IPartnerCategoryRepository _partnerCategoryRepository;
-        private IFileStorageService _fileStorageService;
+        private readonly IPartnerRepository _partnerRepository;
+        private readonly IPartnerCategoryRepository _partnerCategoryRepository;
+        private readonly IFileStorageService _fileStorageService;
         private readonly UserManager<AppUser> _userManager;
-        private RoleManager<AppRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
         private const string USER_CONTENT_FOLDER_NAME = "eVoucher_images";
         public PartnerService(IPartnerRepository partnerRepository, IPartnerCategoryRepository partnerCategoryRepository,
             IFileStorageService fileStorageService, UserManager<AppUser> userManager, RoleManager<AppRole> roleManager)

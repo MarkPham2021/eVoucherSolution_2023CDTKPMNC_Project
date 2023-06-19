@@ -27,9 +27,9 @@ namespace eVoucher_BUS.Services
 
     public class StaffService : IStaffService
     {
-        private IStaffRepository _staffRepository;
+        private readonly IStaffRepository _staffRepository;
         private readonly UserManager<AppUser> _userManager;
-        private RoleManager<AppRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
         public StaffService(IStaffRepository staffRepository, UserManager<AppUser> userManager,
             RoleManager<AppRole> roleManager)

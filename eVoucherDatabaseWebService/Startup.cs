@@ -62,30 +62,30 @@ namespace eVoucherDatabaseWebService
                 .AddEntityFrameworkStores<eVoucherDbContext>()
                 .AddDefaultTokenProviders();
             //Declare DI 
-            services.AddTransient<UserManager<AppUser>, UserManager<AppUser>>();
-            services.AddTransient<SignInManager<AppUser>>();
-            services.AddTransient<RoleManager<AppRole>>();
-            services.AddTransient<IGameRepository,GameRepository>();
-            services.AddTransient<IGameService, GameService>();
-            services.AddTransient<IStaffRepository, StaffRepository>();
-            services.AddTransient<IStaffService, StaffService>();
-            services.AddTransient<IPartnerCategoryRepository, PartnerCategoryRepository>();
-            services.AddTransient<IPartnerRepository,PartnerRepository>();
-            services.AddTransient<IPartnerService, PartnerService>();
-            services.AddTransient<IPartnerCategoryService, PartnerCategoryService>();
-            services.AddTransient<IFileStorageService, FileStorageService>();
-            services.AddTransient<IUserService, UserService>();
-            services.AddTransient<ICustomerRepository,CustomerRepository>();
-            services.AddTransient<ICustomerService, CustomerService>();
-            services.AddTransient<ICampaignRepository, CampaignRepository>();
-            services.AddTransient<ICampaignService, CampaignService>();
-            services.AddTransient<ICampaignGameRepository, CampaignGameRepository>();
-            services.AddTransient<IVoucherTypeRepository, VoucherTypeRepository>();
-            services.AddTransient<IVoucherRepository, VoucherRepository>();
-            services.AddTransient<IGamePlayResultRepository, GamePlayResultRepository>();
-            services.AddTransient<IVoucherTypeImageRepository, VoucherTypeImageRepository>();
-            services.AddTransient<PeriodicalReportQuery>();
-            services.AddTransient<IStatisticService, StatisticService>();
+            services.AddScoped<UserManager<AppUser>, UserManager<AppUser>>();
+            services.AddScoped<SignInManager<AppUser>>();
+            services.AddScoped<RoleManager<AppRole>>();
+            services.AddScoped<IGameRepository,GameRepository>();
+            services.AddScoped<IGameService, GameService>();
+            services.AddScoped<IStaffRepository, StaffRepository>();
+            services.AddScoped<IStaffService, StaffService>();
+            services.AddScoped<IPartnerCategoryRepository, PartnerCategoryRepository>();
+            services.AddScoped<IPartnerRepository,PartnerRepository>();
+            services.AddScoped<IPartnerService, PartnerService>();
+            services.AddScoped<IPartnerCategoryService, PartnerCategoryService>();
+            services.AddScoped<IFileStorageService, FileStorageService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<ICustomerRepository,CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+            services.AddScoped<ICampaignRepository, CampaignRepository>();
+            services.AddScoped<ICampaignService, CampaignService>();
+            services.AddScoped<ICampaignGameRepository, CampaignGameRepository>();
+            services.AddScoped<IVoucherTypeRepository, VoucherTypeRepository>();
+            services.AddScoped<IVoucherRepository, VoucherRepository>();
+            services.AddScoped<IGamePlayResultRepository, GamePlayResultRepository>();
+            services.AddScoped<IVoucherTypeImageRepository, VoucherTypeImageRepository>();
+            services.AddScoped<PeriodicalReportQuery>();
+            services.AddScoped<IStatisticService, StatisticService>();
             services.AddControllers()
                 .AddJsonOptions(options =>
                 {

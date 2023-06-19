@@ -1,6 +1,6 @@
 ﻿@model eVoucher_ViewModel.Requests.CampaignRequests.CampaignVM
 @{
-
+    ViewData["Title"] = "Campaign - Detail";
 }
 <div class="container">
     <div class="row">
@@ -8,22 +8,21 @@
         <div class="col col-md-7 col-sm-12">
             <!--Campaign infomation-->
             <div class="row">
-                <div class="col col-md-12 col-sm-12">
-                    <div class="card p-2">
-                        <img src="@Model.ImagePath" width="320" class="card-img-top" alt="...">
-                    </div>
-                </div>
-                <div class="col col-md-7 col-sm-12">
-                    <h5>@Model.Name</h5>
-                    <p>@Model.Slogan</p>
+                <div class="card p-2">
+                    <img src="@Model.ImagePath" width="320" class="card-img-top" alt="...">
                 </div>
             </div>
+            <div class="row mt-3">
+                <h5>@Model.Name</h5>
+                <p>@Model.Slogan</p>
+                <p>Begin: @Model.BeginningDate.ToShortDateString() --> End: @Model.EndingDate.ToShortDateString()</p>
+            </div>
             <!--VoucherTypes-->
-            <div class="row">
+            <div class="row mt-3">
                 
                 @foreach (var item in Model.VoucherTypes)
                 {
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-sm-12">
                         <div class="card">
                             <img class="card-img-top" src="@item.ImagePath" width="400" height="238">
                             <div class="card-body">
@@ -89,12 +88,12 @@
         </div>
     </div>
     <div class="row mt-3 bg-light py-3">
-        <div class="col col-md-3">
+        <div class="col col-md-4 col-lg-4">
             <div class="card p-2" style="width: 16rem;">
                 <img src="@Model.PartnerImagePath" class="card-img-top" alt="...">
             </div>
         </div>
-        <div class="col col-md-4">
+        <div class="col col-md-7 col-lg-6 ms-2">
             <h5>Store name: @Model.PartnerName</h5>
             <p>Address: @Model.PartnerAddress</p>
             <p>Phone: @Model.PartnerPhoneNumber</p>
@@ -102,6 +101,7 @@
         </div>
     </div>
 </div>
+
 @*<partial name="_GoogleMap" />*@
 
 <script>
@@ -122,4 +122,18 @@
             mpopup.style.display = "none";
         }
     };
+    function addVoucher(voucher) {
+        var mpopup = document.getElementById('mpopupBox');
+        mpopup.style.display = "block";
+        var d = new Date(voucher.expiringDate)
+        var expiredDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear()
+        mpopup.getElementsByClassName('modal-body')[0].innerHTML = `<div class="card">
+                <img class="card-img-top" src = "${voucher.imagePath}" alt = "Card image cap" >
+                    <div class="card-body">
+                        <h5 class="card-title">${voucher.name}</h5>
+                        <p class="card-text">Promotion: ${voucher.promotion}</p>
+                        <p class="card-text">Expired date: ${expiredDate}</p>
+                    </div>
+                </div >`
+    }
 </script>

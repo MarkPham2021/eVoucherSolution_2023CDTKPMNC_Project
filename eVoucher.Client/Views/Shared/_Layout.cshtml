@@ -28,7 +28,7 @@
         @*<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>*@
         <a class="navbar-brand ps-3" asp-action="AllVouchers" asp-controller="Voucher">My Vouchers</a>
         <!-- Navbar Search-->        
-        <!--<form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" asp-action="Index" method="get">
+        <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" asp-action="Index" method="get">
             <div class="search-container">
                 <input type="text" name="keyword" placeholder="Search..." class="search-input text-success">
                 <button type="submit" class="search-btn">
@@ -36,28 +36,11 @@
                 </button>
             </div>
         </form>
-        <a class="nav-link text-white m-2" asp-controller="Customer" asp-action="Login">Login</a>
-        <a class="nav-link text-white m-2" asp-controller="Customer" asp-action="SignUp">Sign Up</a>-->
-        <!-- Navbar-->
-        <!--<ul class="navbar-nav ms-auto ms-md-0 me-3 me-lg-4">
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
-                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                    <li><a class="dropdown-item" href="#!">User.Identity.Name</a></li>
-                    <li><a class="dropdown-item" href="#!">Activity Log</a></li>
-                    <li><hr class="dropdown-divider" /></li>
-                    <li><a class="dropdown-item" href="#!">Logout</a></li>
-        <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0" asp-action="Index" method="get">
-
-        </div>-->
+        
         
         <div class="container">
             <!-- Sidebar Toggle-->
-            @if (!string.IsNullOrEmpty(token))
-            {
-                <button class="btn text-white btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
-            }
-
+            
             @if (string.IsNullOrEmpty(token))
             {
                 <div class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0"></div>

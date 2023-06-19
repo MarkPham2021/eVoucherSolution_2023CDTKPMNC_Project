@@ -2,15 +2,22 @@
 @model eVoucher_ViewModel.StatisticVM.PartnerPeriodicalReport
 @{
     ViewData["Title"] = "DashBoard";
-    var l = Model.Data.Count;
-    int changeinActiveCampaignCount = Model.Data[l - 1].NumberOfActiveCampaigns -
-                                Model.Data[l - 2].NumberOfActiveCampaigns;
-    int changeinEndedCampaignCount = Model.Data[l - 1].NumberOfEndedCampaigns -
-                                Model.Data[l - 2].NumberOfEndedCampaigns;
-    int changeindeliveredVoucherCount = Model.Data[l - 1].NumberOfDeliveredVouchers -
-                                Model.Data[l - 2].NumberOfDeliveredVouchers;
-    int changeinVoucherDeliveredInPeriodCount = Model.Data[l - 1].NumberOfVouchersDeliveredInPeriod -
-                                Model.Data[l - 2].NumberOfVouchersDeliveredInPeriod;
+    int l =4;
+    int changeinActiveCampaignCount;
+    int changeinEndedCampaignCount;
+    int changeindeliveredVoucherCount;
+    int changeinVoucherDeliveredInPeriodCount;
+    
+    l = Model.Data.Count;
+    changeinActiveCampaignCount = Model.Data[l - 1].NumberOfActiveCampaigns -
+                            Model.Data[l - 2].NumberOfActiveCampaigns;
+    changeinEndedCampaignCount = Model.Data[l - 1].NumberOfEndedCampaigns -
+                            Model.Data[l - 2].NumberOfEndedCampaigns;
+    changeindeliveredVoucherCount = Model.Data[l - 1].NumberOfDeliveredVouchers -
+                            Model.Data[l - 2].NumberOfDeliveredVouchers;
+    changeinVoucherDeliveredInPeriodCount = Model.Data[l - 1].NumberOfVouchersDeliveredInPeriod -
+                            Model.Data[l - 2].NumberOfVouchersDeliveredInPeriod;
+    
     string explain = "";
     if (string.IsNullOrEmpty(ViewBag.CampaignName))
     {

@@ -1,5 +1,4 @@
-﻿
-using eVoucher_DAL.Repositories;
+﻿using eVoucher_DAL.Repositories;
 using eVoucher_DTO.Models;
 using eVoucher_Utility.Enums;
 using eVoucher_ViewModel.Requests.CampaignRequests;
@@ -8,7 +7,6 @@ using eVoucher_ViewModel.Response;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
-using System.IO;
 
 namespace eVoucher_BUS.Services
 {
@@ -16,30 +14,36 @@ namespace eVoucher_BUS.Services
     {
         Task<List<Campaign>> GetAllCampaigns();
 
-        Task<Campaign?> GetCampaignById(int id);        
+        Task<Campaign?> GetCampaignById(int id);
 
         Task<APIResult<string>> CreateCampaign(CampaignCreateRequestforBackend request);
+
         Task<APIResult<string>> EditCampaign(CampaignEditRequestforBackEnd request);
+
         Task<APIResult<string>> CreateCampaignVoucherType(CampaignCreateVoucherTypeRequest request);
+
         Task<APIResult<string>> DeleteCampaign(int id);
+
         Task<List<CampaignVM>> GetAllCampaignVMs();
+
         Task<Campaign?> DropCampaign(int id);
+
         Task<Campaign?> UnDropCampaign(int id);
     }
 
     public class CampaignService : ICampaignService
     {
-        private ICampaignRepository _campaignRepository;
-        private IPartnerRepository _partnerRepository;
-        private IGameRepository _gameRepository;
-        private IVoucherTypeRepository _voucherTypeRepository;
-        
-        private ICampaignGameRepository _campaignGameRepository;
-        private IFileStorageService _fileStorageService;
+        private readonly ICampaignRepository _campaignRepository;
+        private readonly IPartnerRepository _partnerRepository;
+        private readonly IGameRepository _gameRepository;
+        private readonly IVoucherTypeRepository _voucherTypeRepository;
+
+        private readonly ICampaignGameRepository _campaignGameRepository;
+        private readonly IFileStorageService _fileStorageService;
         private const string USER_CONTENT_FOLDER_NAME = "eVoucher_images";
 
         public CampaignService(ICampaignRepository campaignRepository, IPartnerRepository partnerRepository,
-            IGameRepository gameRepository,ICampaignGameRepository campaignGameRepository,
+            IGameRepository gameRepository, ICampaignGameRepository campaignGameRepository,
             IVoucherTypeRepository voucherTypeRepository, IFileStorageService fileStorageService)
         {
             _campaignRepository = campaignRepository;
@@ -49,7 +53,7 @@ namespace eVoucher_BUS.Services
             _voucherTypeRepository = voucherTypeRepository;
             _fileStorageService = fileStorageService;
         }
-        
+
         public async Task<APIResult<string>> CreateCampaign(CampaignCreateRequestforBackend request)
         {
             //declare campaign and assign value for properties
@@ -87,12 +91,12 @@ namespace eVoucher_BUS.Services
                 };
             }
             campaign.CampaignGames = new List<CampaignGame>();
-                         
+
             //process to assign campaigngame
-            var selectitems = JsonConvert.DeserializeObject<List<SelectItem>>(request.Games);            
-            foreach(var item in selectitems)
+            var selectitems = JsonConvert.DeserializeObject<List<SelectItem>>(request.Games);
+            foreach (var item in selectitems)
             {
-                if(item.IsSelected)
+                if (item.IsSelected)
                 {
                     var game = await _gameRepository.GetSingleById(item.Id);
                     var campaigngame = new CampaignGame()
@@ -126,16 +130,17 @@ namespace eVoucher_BUS.Services
             }
             return apiresult;
         }
+
         public async Task<APIResult<string>> CreateCampaignVoucherType(CampaignCreateVoucherTypeRequest request)
         {
             APIResult<string> apiresult;
-            if(string.IsNullOrEmpty(request.LuckyNumberstr))
+            if (string.IsNullOrEmpty(request.LuckyNumberstr))
             {
                 request.LuckyNumberstr = "";
             }
             var vouchertype = new VoucherType()
             {
-                Name = request.Name,                
+                Name = request.Name,
                 Campaign = await _campaignRepository.GetSingleByCondition(x => x.Id == request.CampaignId),
                 DiscountRate = request.DiscountRate,
                 Promotion = request.Promotion,
@@ -151,7 +156,7 @@ namespace eVoucher_BUS.Services
             if (request.IsgetLuckyNumbersRandom)
             {
                 var luckynumberlist = new List<int>();
-                var rand =new Random();
+                var rand = new Random();
                 for (int i = 1; i <= request.NumberofLuckyNumbers; i++)
                 {
                     int luckynumber = rand.Next(1, 1000);
@@ -181,7 +186,7 @@ namespace eVoucher_BUS.Services
                 };
             }
             var registerResult = await _voucherTypeRepository.Add(vouchertype);
-            
+
             if (registerResult != null)
             {
                 apiresult = new APIResult<string>(true,
@@ -191,9 +196,10 @@ namespace eVoucher_BUS.Services
             {
                 apiresult = new APIResult<string>(false, $"Create campaign {vouchertype.Name} fail",
                 "Please check data and try again");
-            }            
+            }
             return apiresult;
         }
+
         public Task<APIResult<string>> DeleteCampaign(int id)
         {
             throw new NotImplementedException();
@@ -208,11 +214,13 @@ namespace eVoucher_BUS.Services
         {
             throw new NotImplementedException();
         }
-        public async Task<List<CampaignVM>> GetAllCampaignVMs() 
+
+        public async Task<List<CampaignVM>> GetAllCampaignVMs()
         {
-            var result = await _campaignRepository.GetAllCampaignVMs();            
+            var result = await _campaignRepository.GetAllCampaignVMs();
             return result;
         }
+
         private async Task<string> SaveFile(IFormFile file)
         {
             var originalFileName = ContentDispositionHeaderValue.Parse(file.ContentDisposition).FileName.Trim('"');
@@ -233,8 +241,6 @@ namespace eVoucher_BUS.Services
 
         public async Task<APIResult<string>> EditCampaign(CampaignEditRequestforBackEnd request)
         {
-            //declare campaign and assign value for properties
-
             var campaign = await _campaignRepository.GetSingleById(request.Id);
             campaign.Name = request.Name;
             campaign.Slogan = request.Slogan;
@@ -245,7 +251,7 @@ namespace eVoucher_BUS.Services
             campaign.BeginningDate = request.BeginningDate;
             campaign.EndingDate = request.EndingDate;
             campaign.UpdatedBy = request.UpdatedBy;
-            campaign.UpdatedTime = request.UpdatedTime;            
+            campaign.UpdatedTime = request.UpdatedTime;
             //add image
             if (request.ImageFile != null)
             {
@@ -253,15 +259,11 @@ namespace eVoucher_BUS.Services
                 {
                     campaign.CampaignImages = new List<CampaignImage>();
                 }
-                if (campaign.CampaignImages.Count>0)
+                if (campaign.CampaignImages.Count > 0)
                 {
-                    if (File.Exists(campaign.CampaignImages[0].ImagePath))
-                    {
-                        File.Delete(campaign.CampaignImages[0].ImagePath);
-                    }
                     campaign.CampaignImages.Clear();
                 }
-                
+
                 var image = new CampaignImage()
                 {
                     Caption = $"{campaign.Name}_Thumbnail_image",
@@ -273,19 +275,15 @@ namespace eVoucher_BUS.Services
                 };
                 campaign.CampaignImages.Add(image);
             }
-            if(campaign.CampaignGames == null)
+            if (campaign.CampaignGames == null)
             {
                 campaign.CampaignGames = new List<CampaignGame>();
             }
-            if(campaign.CampaignGames.Count>0)
+            if (campaign.CampaignGames.Count > 0)
             {
-                foreach(var g in campaign.CampaignGames)
-                {
-                    _campaignGameRepository.Delete(g);
-                }
                 campaign.CampaignGames.Clear();
             }
-            
+
             //process to assign campaigngame
             var selectitems = JsonConvert.DeserializeObject<List<SelectItem>>(request.Games);
             foreach (var item in selectitems)
@@ -304,8 +302,6 @@ namespace eVoucher_BUS.Services
                         Status = ActiveStatus.Active
                     };
                     campaign.CampaignGames.Add(campaigngame);
-                    //var assigngameresult = await _campaignGameRepository.Add(campaigngame);
-                    //add to game.campaignchosencount
                     game.CampaignChosenCount += 1;
                     var updategame = await _gameRepository.Update(game);
                 }
@@ -321,7 +317,7 @@ namespace eVoucher_BUS.Services
             {
                 apiresult = new APIResult<string>(false, $"Edit campaign {campaign.Name} fail",
                 "Please check data and try again");
-            }
+            }            
             return apiresult;
         }
     }

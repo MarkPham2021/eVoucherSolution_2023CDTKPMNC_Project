@@ -128,16 +128,12 @@ namespace eVoucher_DAL.Repositories
         }
         public override async Task<Campaign?> GetSingleById(int id)
         {
-            var campaigns = await _context.Set<Campaign>()
+            var campaign = await _context.Campaigns
                             .Include(c => c.Partner)
                             .Include(c => c.CampaignImages)
                             .Include(c => c.CampaignGames)
-                            .Where(c => c.Id == id).ToListAsync();
-            if (!campaigns.Any())
-            {
-                return null;
-            }
-            return campaigns[0];
+                            .SingleOrDefaultAsync(c => c.Id == id);
+            return campaign;
         }
     }
 }

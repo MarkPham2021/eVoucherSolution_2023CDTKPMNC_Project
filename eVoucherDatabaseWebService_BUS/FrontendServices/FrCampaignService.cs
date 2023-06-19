@@ -42,9 +42,9 @@ namespace eVoucher_BUS.FrontendServices
 
     public class FrCampaignService : IFrCampaignService
     {
-        private CampaignAPIClient _campaignAPIClient;
-        private GameAPIClient _gameAPIClient;
-        private IConfiguration _configuration;
+        private readonly CampaignAPIClient _campaignAPIClient;
+        private readonly GameAPIClient _gameAPIClient;
+        private readonly IConfiguration _configuration;
 
         public FrCampaignService(CampaignAPIClient campaignAPIClient, GameAPIClient gameAPIClient,
             IConfiguration configuration)

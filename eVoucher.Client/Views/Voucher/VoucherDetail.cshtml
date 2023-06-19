@@ -5,14 +5,14 @@
 <div class="container">
     <!--Vouchertype image-->
     <div class="row">
-        <div class="col col-md-12 col-sm-12">
+        <div class="col col-lg-5 col-md-6 col-sm-12">
             <div class="card p-2">
-                <img src="@Model.VoucherTypeImagePath" class="card-img-top" width="360" alt="...">
+                <img src="@Model.VoucherTypeImagePath" class="card-img-top" width="300" height="180" alt="...">
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col col-md-12 col-sm-12">
+        <div class="col col-lg-6 col-md-7 col-sm-12">
             <p>Campaign: @Model.CampaignName</p>
             <p>Voucher type: @Model.VoucherTypeName</p>
             <p>Promotion: @Model.Promotion</p>
@@ -24,6 +24,5 @@
             <p>Expired date: @Model.ExpiringDate.ToShortDateString()</p>
         </div>
     </div>
-            
 </div>
-@*<partial name="_GoogleMap" />*@
+

@@ -34,16 +34,16 @@ namespace eVoucher_BUS.Services
 
     public class CustomerService : ICustomerService
     {
-        private ICustomerRepository _customerRepository;
-        private ICampaignRepository _campaignRepository;
-        private IVoucherTypeRepository _voucherTypeRepository;
-        private IVoucherTypeImageRepository _voucherTypeImageRepository;
-        private IVoucherRepository _voucherRepository;
-        private ICampaignGameRepository _campaignGameRepository;
-        private IGamePlayResultRepository _gamePlayResultRepository;
-        private IGameRepository _gameRepository;
+        private readonly ICustomerRepository _customerRepository;
+        private readonly ICampaignRepository _campaignRepository;
+        private readonly IVoucherTypeRepository _voucherTypeRepository;
+        private readonly IVoucherTypeImageRepository _voucherTypeImageRepository;
+        private readonly IVoucherRepository _voucherRepository;
+        private readonly ICampaignGameRepository _campaignGameRepository;
+        private readonly IGamePlayResultRepository _gamePlayResultRepository;
+        private readonly IGameRepository _gameRepository;
         private readonly UserManager<AppUser> _userManager;
-        private RoleManager<AppRole> _roleManager;
+        private readonly RoleManager<AppRole> _roleManager;
 
         public CustomerService(ICustomerRepository customerRepository, IVoucherTypeRepository voucherTypeRepository,
             IVoucherRepository voucherRepository, IGamePlayResultRepository gamePlayResultRepository, 

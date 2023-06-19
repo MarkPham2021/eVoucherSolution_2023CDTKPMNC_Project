@@ -1,6 +1,6 @@
 ﻿@model eVoucher_ViewModel.Requests.CampaignRequests.CampaignVM
 @{
-
+    ViewData["Title"] = "Campaign - Detail";
 }
 <div class="container">
     <div class="row">
@@ -8,18 +8,17 @@
         <div class="col col-md-7 col-sm-12">
             <!--Campaign infomation-->
             <div class="row">
-                <div class="col col-md-12 col-sm-12">
-                    <div class="card p-2">
-                        <img src="@Model.ImagePath" width="320" class="card-img-top" alt="...">
-                    </div>
-                </div>
-                <div class="col col-md-7 col-sm-12">
-                    <h5>@Model.Name</h5>
-                    <p>@Model.Slogan</p>
+                <div class="card p-2">
+                    <img src="@Model.ImagePath" width="320" class="card-img-top" alt="...">
                 </div>
             </div>
+            <div class="row mt-3">
+                <h5>@Model.Name</h5>
+                <p>@Model.Slogan</p>
+                <p>Begin: @Model.BeginningDate.ToShortDateString() --> End: @Model.EndingDate.ToShortDateString()</p>
+            </div>
             <!--VoucherTypes-->
-            <div class="row">
+            <div class="row mt-3">
 
                 @foreach (var item in Model.VoucherTypes)
                 {
@@ -40,8 +39,6 @@
         </div>
         <!--Column for Game section-->
         <div class="col col-md-5 col-sm-12">
-
-
             @if (Model.campaignGames != null)
             {
                 <div class="row">

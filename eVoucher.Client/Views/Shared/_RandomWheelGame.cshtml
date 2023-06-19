@@ -228,19 +228,4 @@
             }
         })
     }
-
-    function addVoucher(voucher) {
-        var mpopup = document.getElementById('mpopupBox');
-        mpopup.style.display = "block";
-        var d = new Date(voucher.expiringDate)
-        var expiredDate = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear()
-        mpopup.getElementsByClassName('modal-body')[0].innerHTML = `<div class="card">
-            <img class="card-img-top" src = "${voucher.imagePath}" alt = "Card image cap" >
-                <div class="card-body">
-                    <h5 class="card-title">${voucher.name}</h5>
-                    <p class="card-text">Promotion: ${voucher.promotion}</p>
-                    <p class="card-text">Expired date: ${expiredDate}</p>
-                </div>
-            </div >`
-    }
 </script>

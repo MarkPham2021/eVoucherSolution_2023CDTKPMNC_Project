@@ -34,7 +34,6 @@ namespace eVoucher.Client.Controllers
         {
             var token = HttpContext.Session.GetString("Token");
             var campaign = await _frCampaignService.GetCampaignVMById(Id, token);
-
             if (campaign != null)
             {
                 return View("CampaignDetails", campaign);
